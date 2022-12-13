@@ -7,13 +7,13 @@ import 'package:sqflite/sqflite.dart';
 class AulasDAO {
   Database? _db;
 
-  Future<List<Aulas>> GetLista(
-      String? DataIni, String? DataFim, int? ID_ALUNO_INT) async {
+  Future<List<Aulas>> onGetLista(
+      String? dataIni, String? dataFim, int? idAlunoInt) async {
     _db = await Connection.Get();
 
     List<Map<String, dynamic>> lstMap;
 
-    if (ID_ALUNO_INT == null) {
+    if (idAlunoInt == null) {
       lstMap = await _db!.rawQuery(
           '''SELECT A.*, AL.NOME_STR AS ALUNO_STR, TP.DESCRICAO_STR AS TIPO_STR,
                 CASE WHEN A.CONCLUIDO_BIT = 0 THEN 'Pendente' ELSE 'Concluído' END AS CONCLUIDO_STR
@@ -21,7 +21,7 @@ class AulasDAO {
                 INNER JOIN CAD_ALUNOS_TAB AL ON AL.ID_ALUNO_INT = A.ID_ALUNO_INT
                 INNER JOIN SIS_TIPOS_AULA_TAB TP ON TP.ID_TIPO_INT = A.ID_TIPO_INT
                 WHERE DATE(DATA_DTI) BETWEEN ? AND ?
-                ORDER BY DATA_DTI''', [DataIni, DataFim]);
+                ORDER BY DATA_DTI''', [dataIni, dataFim]);
     } else {
       lstMap = await _db!.rawQuery(
           '''SELECT A.*, AL.NOME_STR AS ALUNO_STR, TP.DESCRICAO_STR AS TIPO_STR,
@@ -30,31 +30,31 @@ class AulasDAO {
                 INNER JOIN CAD_ALUNOS_TAB AL ON AL.ID_ALUNO_INT = A.ID_ALUNO_INT
                 INNER JOIN SIS_TIPOS_AULA_TAB TP ON TP.ID_TIPO_INT = A.ID_TIPO_INT
                 WHERE A.ID_ALUNO_INT = ?
-                ORDER BY DATA_DTI DESC''', [ID_ALUNO_INT]);
+                ORDER BY DATA_DTI DESC''', [idAlunoInt]);
     }
 
     //List<Map<String, dynamic>> lstMap = await _db!.query("CAD_AULAS_TAB");
     List<Aulas> lstEntities = List.generate(lstMap.length, (i) {
       var linha = lstMap[i];
       return Aulas(
-        ID_AULA_INT: linha["ID_AULA_INT"],
-        ID_ALUNO_INT: linha["ID_ALUNO_INT"],
-        ALUNO_STR: linha["ALUNO_STR"],
-        ID_TIPO_INT: linha["ID_TIPO_INT"],
-        TIPO_STR: linha["TIPO_STR"],
-        INSTRUTOR_STR: linha["INSTRUTOR_STR"],
-        DATA_DTI: DateTime.parse(linha["DATA_DTI"]),
-        CONCLUIDO_BIT: linha["CONCLUIDO_BIT"] == 1 ? true : false,
-        CONCLUIDO_STR: linha["CONCLUIDO_STR"],
-        ASSUNTO_STR: linha["ASSUNTO_STR"],
-        OBSERVACAO_STR: linha["OBSERVACAO_STR"],
+        idAula: linha["ID_AULA_INT"],
+        idAluno: linha["ID_ALUNO_INT"],
+        aluno: linha["ALUNO_STR"],
+        idTipo: linha["ID_TIPO_INT"],
+        tipo: linha["TIPO_STR"],
+        instrutor: linha["INSTRUTOR_STR"],
+        data: DateTime.parse(linha["DATA_DTI"]),
+        concluido: linha["CONCLUIDO_BIT"] == 1 ? true : false,
+        concluidoStr: linha["CONCLUIDO_STR"],
+        assunto: linha["ASSUNTO_STR"],
+        observacao: linha["OBSERVACAO_STR"],
       );
     });
 
     return lstEntities;
   }
 
-  Future<List<Alunos>> GetAlunos() async {
+  Future<List<Alunos>> onGetAlunos() async {
     _db = await Connection.Get();
 
     List<Map<String, dynamic>> lstMap =
@@ -62,44 +62,43 @@ class AulasDAO {
     List<Alunos> lstEntities = List.generate(lstMap.length, (i) {
       var linha = lstMap[i];
       return Alunos(
-        ID_ALUNO_INT: linha["ID_ALUNO_INT"],
-        NOME_STR: linha["NOME_STR"],
+        idAluno: linha["ID_ALUNO_INT"],
+        nome: linha["NOME_STR"],
       );
     });
 
     return lstEntities;
   }
 
-  Future<List<TiposAula>> GetTipos() async {
+  Future<List<TiposAula>> onGetTipos() async {
     _db = await Connection.Get();
 
     List<Map<String, dynamic>> lstMap = await _db!.query("SIS_TIPOS_AULA_TAB");
     List<TiposAula> lstEntities = List.generate(lstMap.length, (i) {
       var linha = lstMap[i];
       return TiposAula(
-          ID_TIPO_INT: linha["ID_TIPO_INT"],
-          DESCRICAO_STR: linha["DESCRICAO_STR"]);
+          idTipo: linha["ID_TIPO_INT"], descricao: linha["DESCRICAO_STR"]);
     });
 
     return lstEntities;
   }
 
-  Future<int> Save(Aulas aula) async {
+  Future<int> onSave(Aulas aula) async {
     _db = await Connection.Get();
     String sql;
-    if (aula.ID_AULA_INT == null) {
+    if (aula.idAula == null) {
       sql =
           '''INSERT INTO CAD_AULAS_TAB (ID_ALUNO_INT, ID_TIPO_INT, INSTRUTOR_STR, DATA_DTI, 
               CONCLUIDO_BIT, ASSUNTO_STR, OBSERVACAO_STR)
               VALUES (?,?,?,?,?,?,?)''';
       int id = await _db!.rawInsert(sql, [
-        aula.ID_ALUNO_INT,
-        aula.ID_TIPO_INT,
-        aula.INSTRUTOR_STR,
-        aula.DATA_DTI.toString(),
-        aula.CONCLUIDO_BIT,
-        aula.ASSUNTO_STR,
-        aula.OBSERVACAO_STR
+        aula.idAluno,
+        aula.idTipo,
+        aula.instrutor,
+        aula.data.toString(),
+        aula.concluido,
+        aula.assunto,
+        aula.observacao
       ]);
 
       return id;
@@ -109,21 +108,21 @@ class AulasDAO {
               DATA_DTI = ?, CONCLUIDO_BIT = ?, ASSUNTO_STR = ?, OBSERVACAO_STR = ?
               WHERE ID_AULA_INT = ?''';
       _db!.rawUpdate(sql, [
-        aula.ID_ALUNO_INT,
-        aula.ID_TIPO_INT,
-        aula.INSTRUTOR_STR,
-        aula.DATA_DTI.toString(),
-        aula.CONCLUIDO_BIT,
-        aula.ASSUNTO_STR,
-        aula.OBSERVACAO_STR,
-        aula.ID_AULA_INT
+        aula.idAluno,
+        aula.idTipo,
+        aula.instrutor,
+        aula.data.toString(),
+        aula.concluido,
+        aula.assunto,
+        aula.observacao,
+        aula.idAula
       ]);
 
-      return aula.ID_AULA_INT!;
+      return aula.idAula!;
     }
   }
 
-  Delete(int id) async {
+  onDelete(int id) async {
     _db = await Connection.Get();
     String sql = '''DELETE FROM CAD_AULAS_TAB
                     WHERE ID_AULA_INT = ?''';

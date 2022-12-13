@@ -5,16 +5,16 @@ import 'package:controle_alunos_musica_ft/database/dao/rel_alunos_dao.dart';
 import 'package:controle_alunos_musica_ft/entities/alunos.dart';
 import 'package:controle_alunos_musica_ft/entities/aulas.dart';
 import 'package:intl/intl.dart';
-import 'package:open_document/open_document.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 class RelatorioAlunos {
-  Future<void> GeraRelatorio(int ID_ALUNO_INT) async {
-    var _dao = RelAlunosDAO();
-    List<Alunos> lstAluno = await _dao.GetAlunoRelatorio(ID_ALUNO_INT);
-    List<Aulas> lstAulas = await _dao.GetAulasAlunoRelatorio(ID_ALUNO_INT);
+  Future<void> onGeraRelatorio(int idAluno) async {
+    var dao = RelAlunosDAO();
+    List<Alunos> lstAluno = await dao.onGetAlunoRelatorio(idAluno);
+    List<Aulas> lstAulas = await dao.onGetAulasAlunoRelatorio(idAluno);
     DateFormat formatter = DateFormat('ddMMyyyy');
     DateFormat formatter2 = DateFormat('dd/MM/yyyy');
 
@@ -27,39 +27,42 @@ class RelatorioAlunos {
           mainAxisAlignment: pw.MainAxisAlignment.start,
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: [
-            pw.Text(lstAluno[0].NOME_STR.toString(),
-                style:
-                    pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold)),
-            pw.Text("Fone: " + lstAluno[0].FONE_STR.toString()),
-            pw.Text("Instrumento: " +
-                lstAluno[0].INSTRUMENTO_STR.toString() +
-                "       Método: " +
-                lstAluno[0].METODO_STR.toString()),
-            pw.Text("Status: " + lstAluno[0].STATUS_STR.toString()),
-            pw.Text("Início: " +
-                (lstAluno[0].DATA_INICIO_GEM_DTI != null
-                    ? formatter2.format(lstAluno[0].DATA_INICIO_GEM_DTI!)
-                    : "") +
-                "       Oficialização: " +
-                (lstAluno[0].DATA_OFICIALIZACAO_DTI != null
-                    ? formatter2.format(lstAluno[0].DATA_OFICIALIZACAO_DTI!)
-                    : "")),
-            pw.Text("Data relatório: " + formatter2.format(DateTime.now())),
+            ///Cabeçalho
+            pw.Text(
+              lstAluno[0].nome.toString(),
+              style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold),
+            ),
+            pw.Text("Fone: ${lstAluno[0].fone}"),
+            pw.Text(
+                "Instrumento: ${lstAluno[0].instrumento}       Método: ${lstAluno[0].metodo}"),
+            pw.Text("Status: ${lstAluno[0].status}"),
+            pw.Text(
+                "Início: ${lstAluno[0].dataInicioGEM != null ? formatter2.format(lstAluno[0].dataInicioGEM!) : ""}       Oficialização: ${lstAluno[0].dataOficializacao != null ? formatter2.format(lstAluno[0].dataOficializacao!) : ""}"),
+            pw.Text("Data relatório: ${formatter2.format(DateTime.now())}"),
             pw.SizedBox(height: 20),
+
+            ///Título
             pw.Center(
-                child: pw.Text("Aulas",
-                    style: pw.TextStyle(
-                        fontSize: 20, fontWeight: pw.FontWeight.bold))),
+              child: pw.Text(
+                "Aulas",
+                style: pw.TextStyle(
+                  fontSize: 20,
+                  fontWeight: pw.FontWeight.bold,
+                ),
+              ),
+            ),
             pw.SizedBox(height: 10),
+
+            ///Conteúdo/tabela
             pw.Table.fromTextArray(
               headers: ["Data", "Tipo", "Assunto", "Instrutor", "Status"],
               data: lstAulas
                   .map((aula) => [
-                        formatter2.format(aula.DATA_DTI),
-                        aula.TIPO_STR,
-                        aula.ASSUNTO_STR,
-                        aula.INSTRUTOR_STR,
-                        aula.CONCLUIDO_STR
+                        formatter2.format(aula.data),
+                        aula.tipo,
+                        aula.assunto,
+                        aula.instrutor,
+                        aula.concluidoStr
                       ])
                   .toList(),
             ),
@@ -116,10 +119,8 @@ class RelatorioAlunos {
     );
 
     final data = await pdf.save();
-    String fileName = "Relat " +
-        lstAluno[0].NOME_STR.toString() +
-        " " +
-        formatter.format(DateTime.now());
+    String fileName =
+        "Relat ${lstAluno[0].nome} ${formatter.format(DateTime.now())}";
     savePdfFile(fileName, data);
   }
 
@@ -133,9 +134,9 @@ class RelatorioAlunos {
       var filePath = "${directory?.path}/$fileName.pdf";
       final file = File(filePath);
       await file.writeAsBytes(byteList);
-      await OpenDocument.openDocument(filePath: filePath);
+      OpenFile.open(filePath);
     } catch (e) {
-      print(e);
+      //print(e);
     }
   }
 }

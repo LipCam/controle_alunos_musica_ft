@@ -1,5 +1,9 @@
-import 'package:controle_alunos_musica_ft/core/app_toast.dart';
-import 'package:controle_alunos_musica_ft/core/date_picker.dart';
+// ignore_for_file: use_key_in_widget_constructors
+
+import 'package:controle_alunos_musica_ft/components/custom_input_decoration.dart';
+import 'package:controle_alunos_musica_ft/components/custom_text_field.dart';
+import 'package:controle_alunos_musica_ft/config/app_toast.dart';
+import 'package:controle_alunos_musica_ft/components/date_picker.dart';
 import 'package:controle_alunos_musica_ft/entities/status_alunos.dart';
 import 'package:controle_alunos_musica_ft/views/alunos/alunos_form_back.dart';
 import 'package:flutter/material.dart';
@@ -9,35 +13,35 @@ import 'package:url_launcher/url_launcher.dart';
 class AlunosForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var _back = AlunosFormBack(context);
-    final _keyForm = GlobalKey<FormState>();
+    var back = AlunosFormBack(context);
+    final keyForm = GlobalKey<FormState>();
     TextEditingController? txtFoneController = TextEditingController();
-    txtFoneController.text =
-        _back.aluno?.FONE_STR != null ? _back.aluno!.FONE_STR! : "";
+    txtFoneController.text = back.aluno?.fone != null ? back.aluno!.fone! : "";
+    double alturaCampos = 15;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Alunos"),
+        title: const Text("Alunos"),
         actions: [
           IconButton(
-              icon: Icon(Icons.check),
+              icon: const Icon(Icons.check),
               tooltip: "Salvar",
               onPressed: () async {
-                if (_keyForm.currentState!.validate()) {
-                  _keyForm.currentState!.save();
-                  _back.aluno?.ID_ALUNO_INT = await _back.Save();
-                  _back.NovoReg = false;
-                  ToastMessage("Salvo");
+                if (keyForm.currentState!.validate()) {
+                  keyForm.currentState!.save();
+                  back.aluno?.idAluno = await back.onSave();
+                  back.novoReg = false;
+                  onToastMessage("Salvo");
                 }
               }),
           Observer(
             builder: (c) => Visibility(
-              visible: !_back.NovoReg,
+              visible: !back.novoReg,
               child: PopupMenuButton(itemBuilder: (a) {
                 return [
                   PopupMenuItem(
                     child: Row(
-                      children: [
+                      children: const [
                         Icon(
                           Icons.music_note,
                           color: Colors.black,
@@ -47,12 +51,12 @@ class AlunosForm extends StatelessWidget {
                       ],
                     ),
                     onTap: () => Future(
-                      () => _back.GoToAulasLista(context, _back.aluno!),
+                      () => back.onGoToAulasLista(context, back.aluno!),
                     ),
                   ),
                   PopupMenuItem(
                     child: Row(
-                      children: [
+                      children: const [
                         Icon(
                           Icons.notes,
                           color: Colors.black,
@@ -62,12 +66,12 @@ class AlunosForm extends StatelessWidget {
                       ],
                     ),
                     onTap: () {
-                      _back.GeraRelatorio(_back.aluno!.ID_ALUNO_INT!);
+                      back.onGeraRelatorio(back.aluno!.idAluno!);
                     },
                   ),
                   PopupMenuItem(
                     child: Row(
-                      children: [
+                      children: const [
                         Icon(
                           Icons.delete,
                           color: Colors.red,
@@ -78,30 +82,31 @@ class AlunosForm extends StatelessWidget {
                     ),
                     onTap: () {
                       Future<void>.delayed(
-                          Duration(milliseconds: 500),
-                          () => showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                    title: Text("Exclusão"),
-                                    content:
-                                        Text("Deseja excluir este registro?"),
-                                    actions: [
-                                      TextButton(
-                                          child: Text("Não"),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          }),
-                                      TextButton(
-                                        child: Text("Sim"),
-                                        onPressed: () {
-                                          _back.Delete(
-                                              _back.aluno!.ID_ALUNO_INT!);
-                                          Navigator.of(context).pop();
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                    ],
-                                  )));
+                        const Duration(milliseconds: 500),
+                        () => showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text("Exclusão"),
+                            content:
+                                const Text("Deseja excluir este registro?"),
+                            actions: [
+                              TextButton(
+                                  child: const Text("Não"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  }),
+                              TextButton(
+                                child: const Text("Sim"),
+                                onPressed: () {
+                                  back.onDelete(back.aluno!.idAluno!);
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
                     },
                   ),
                 ];
@@ -112,198 +117,163 @@ class AlunosForm extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
             child: Form(
-                key: _keyForm,
+                key: keyForm,
                 child: Column(
                   children: [
-                    TextFormField(
-                      decoration: InputDecoration(labelText: "Nome"),
+                    CustomTextField(
+                      label: "Nome",
                       textCapitalization: TextCapitalization.words,
-                      initialValue: _back.aluno?.NOME_STR,
-                      validator: _back.validaNome,
-                      onSaved: (value) => _back.aluno?.NOME_STR = value,
+                      initialValue: back.aluno?.nome,
+                      validator: back.validaNome,
+                      onSaved: (value) => back.aluno?.nome = value,
                     ),
                     FutureBuilder(
-                      future: _back.GetStatus(),
+                      future: back.onGetStatus(),
                       builder: (context, future) {
                         if (future.hasData) {
                           List<StatusAlunos> lstStatus =
                               future.data as List<StatusAlunos>;
                           return DropdownButtonFormField<dynamic>(
-                            decoration: InputDecoration(labelText: "Status"),
-                            value: _back.aluno?.ID_STATUS_INT != null
-                                ? _back.aluno!.ID_STATUS_INT
+                            decoration:
+                                CustomInputDecoration.onCustomInputDecoration(
+                                    "Status"),
+                            value: back.aluno?.idStatus != null
+                                ? back.aluno!.idStatus
                                 : 1,
                             items: lstStatus.map((e) {
                               return DropdownMenuItem(
-                                value: e.ID_STATUS_INT,
-                                child: Text(e.DESCRICAO_STR.toString()),
+                                value: e.idStatus,
+                                child: Text(e.descricao.toString()),
                               );
                             }).toList(),
                             onChanged: (value) {},
-                            onSaved: (value) =>
-                                _back.aluno?.ID_STATUS_INT = value,
+                            onSaved: (value) => back.aluno?.idStatus = value,
                           );
                         } else {
-                          return CircularProgressIndicator();
+                          return const CircularProgressIndicator();
                         }
                       },
                     ),
-                    TextFormField(
-                      decoration: InputDecoration(labelText: "Instrumento"),
+                    SizedBox(height: alturaCampos),
+                    CustomTextField(
+                      label: "Instrumento",
                       textCapitalization: TextCapitalization.words,
-                      initialValue: _back.aluno?.INSTRUMENTO_STR,
-                      onSaved: (value) => _back.aluno?.INSTRUMENTO_STR = value,
+                      initialValue: back.aluno?.instrumento,
+                      onSaved: (value) => back.aluno?.instrumento = value,
                     ),
-                    TextFormField(
-                      decoration: InputDecoration(labelText: "Método"),
+                    CustomTextField(
+                      label: "Método",
                       textCapitalization: TextCapitalization.words,
-                      initialValue: _back.aluno?.METODO_STR,
-                      onSaved: (value) => _back.aluno?.METODO_STR = value,
+                      initialValue: back.aluno?.metodo,
+                      onSaved: (value) => back.aluno?.metodo = value,
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
-                          child: TextFormField(
-                            decoration: InputDecoration(labelText: "Telefone"),
-                            keyboardType: TextInputType.phone,
+                          child: CustomTextField(
+                            label: "Telefone",
+                            textInputType: TextInputType.phone,
                             controller: txtFoneController,
                             //initialValue: _back.aluno?.FONE_STR,
-                            onSaved: (value) => _back.aluno?.FONE_STR = value,
+                            onSaved: (value) => back.aluno?.fone = value,
                           ),
                         ),
-                        SizedBox(width: 10),
                         IconButton(
-                          icon: Icon(Icons.phone, color: Colors.blue, size: 40),
+                          icon: const Icon(
+                            Icons.phone,
+                            color: Colors.blue,
+                            size: 40,
+                          ),
                           onPressed: () =>
-                              SendUrl("tel://${txtFoneController.text}"),
+                              onSendUrl("tel://${txtFoneController.text}"),
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         IconButton(
-                          icon: Icon(Icons.whatsapp,
-                              color: Colors.green, size: 40),
-                          onPressed: () => SendUrl(
+                          icon: const Icon(
+                            Icons.whatsapp,
+                            color: Colors.green,
+                            size: 40,
+                          ),
+                          onPressed: () => onSendUrl(
                               "whatsapp://send?phone=+55${txtFoneController.text}"),
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                       ],
                     ),
-                    SizedBox(height: 10),
                     Row(
                       children: [
-                        Observer(
-                          builder: (b) => DatePickerClear(
-                              label: "Nascimento",
-                              date: _back.DataNasc,
-                              temData: _back.TemDataNasc,
-                              getDate: () async {
-                                DateTime? newDate = await showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    firstDate: DateTime(1900),
-                                    lastDate: DateTime.now());
-
-                                if (newDate != null) {
-                                  _back.aluno?.DATA_NASCIMENTO_DTI = newDate;
-                                  _back.setDataNasc(newDate);
-                                }
-                              },
-                              clearDate: () {
-                                _back.aluno?.DATA_NASCIMENTO_DTI = null;
-                                _back.setDataNasc(null);
-                              }),
+                        DatePickerClearStf(
+                          label: "Nascimento",
+                          date: back.aluno?.dataNascimento,
+                          tipoData: 1,
+                          onDateTimeChanged: (dt) {
+                            back.aluno?.dataNascimento = dt;
+                          },
+                          clearDate: () {
+                            back.aluno?.dataNascimento = null;
+                          },
                         ),
-                        SizedBox(width: 80),
-                        Observer(
-                          builder: (b) => DatePickerClear(
-                              label: "Batismo",
-                              date: _back.DataBatismo,
-                              temData: _back.TemDataBatismo,
-                              getDate: () async {
-                                DateTime? newDate = await showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    firstDate: DateTime(1900),
-                                    lastDate: DateTime.now());
-
-                                if (newDate != null) {
-                                  _back.aluno?.DATA_BATISMO_DTI = newDate;
-                                  _back.setDataBatismo(newDate);
-                                }
-                              },
-                              clearDate: () {
-                                _back.aluno?.DATA_BATISMO_DTI = null;
-                                _back.setDataBatismo(null);
-                              }),
+                        const SizedBox(width: 80),
+                        DatePickerClearStf(
+                          label: "Batismo",
+                          date: back.aluno?.dataBatismo,
+                          tipoData: 1,
+                          onDateTimeChanged: (dt) {
+                            back.aluno?.dataBatismo = dt;
+                          },
+                          clearDate: () {
+                            back.aluno?.dataBatismo = null;
+                          },
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       children: [
-                        Observer(
-                          builder: (a) => DatePickerClear(
-                              label: "Início GEM",
-                              date: _back.DataIniGem,
-                              temData: _back.TemDataIniGem,
-                              getDate: () async {
-                                DateTime? newDate = await showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    firstDate: DateTime(1900),
-                                    lastDate: DateTime.now());
-
-                                if (newDate != null) {
-                                  _back.aluno?.DATA_INICIO_GEM_DTI = newDate;
-                                  _back.setDataIniGem(newDate);
-                                }
-                              },
-                              clearDate: () {
-                                _back.aluno?.DATA_INICIO_GEM_DTI = null;
-                                _back.setDataIniGem(null);
-                              }),
+                        DatePickerClearStf(
+                          label: "Início GEM",
+                          date: back.aluno?.dataInicioGEM,
+                          tipoData: 1,
+                          onDateTimeChanged: (dt) {
+                            back.aluno?.dataInicioGEM = dt;
+                          },
+                          clearDate: () {
+                            back.aluno?.dataInicioGEM = null;
+                          },
                         ),
-                        SizedBox(width: 80),
-                        Observer(
-                          builder: (a) => DatePickerClear(
-                              label: "Oficialização",
-                              date: _back.DataOficializacao,
-                              temData: _back.TemDataOficializacao,
-                              getDate: () async {
-                                DateTime? newDate = await showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    firstDate: DateTime(1900),
-                                    lastDate: DateTime.now());
-
-                                if (newDate != null) {
-                                  _back.aluno?.DATA_OFICIALIZACAO_DTI = newDate;
-                                  _back.setDataOficializacao(newDate);
-                                }
-                              },
-                              clearDate: () {
-                                _back.aluno?.DATA_OFICIALIZACAO_DTI = null;
-                                _back.setDataOficializacao(null);
-                              }),
+                        const SizedBox(width: 80),
+                        DatePickerClearStf(
+                          label: "Oficialização",
+                          date: back.aluno?.dataOficializacao,
+                          tipoData: 1,
+                          onDateTimeChanged: (dt) {
+                            back.aluno?.dataOficializacao = dt;
+                          },
+                          clearDate: () {
+                            back.aluno?.dataOficializacao = null;
+                          },
                         ),
                       ],
                     ),
-                    TextFormField(
-                      decoration: InputDecoration(labelText: "Endereço"),
+                    SizedBox(height: alturaCampos),
+                    CustomTextField(
+                      label: "Endereço",
                       textCapitalization: TextCapitalization.words,
-                      initialValue: _back.aluno?.ENDERECO_STR,
-                      keyboardType: TextInputType.multiline,
+                      initialValue: back.aluno?.endereco,
+                      textInputType: TextInputType.multiline,
                       maxLines: 3,
-                      onSaved: (value) => _back.aluno?.ENDERECO_STR = value,
+                      onSaved: (value) => back.aluno?.endereco = value,
                     ),
-                    TextFormField(
-                      decoration: InputDecoration(labelText: "Observação"),
+                    CustomTextField(
+                      label: "Observação",
                       textCapitalization: TextCapitalization.words,
-                      initialValue: _back.aluno?.OBSERVACAO_STR,
-                      keyboardType: TextInputType.multiline,
+                      initialValue: back.aluno?.observacao,
+                      textInputType: TextInputType.multiline,
                       maxLines: 5,
-                      onSaved: (value) => _back.aluno?.OBSERVACAO_STR = value,
+                      onSaved: (value) => back.aluno?.observacao = value,
                     ),
                   ],
                 ))),
@@ -311,73 +281,11 @@ class AlunosForm extends StatelessWidget {
     );
   }
 
-  Future<void> SendUrl(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
+  Future<void> onSendUrl(String url) async {
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
     } else {
-      ToastMessage('Aplicativo não encontrado');
+      onToastMessage('Aplicativo não encontrado');
     }
   }
 }
-
-// Observer(builder: (a) {
-                        //   return Column(
-                        //     crossAxisAlignment: CrossAxisAlignment.start,
-                        //     children: [
-                        //       Text(
-                        //         "Nascimento",
-                        //         style:
-                        //             TextStyle(color: Colors.grey, fontSize: 12),
-                        //       ),
-                        //       Row(
-                        //         children: [
-                        //           GestureDetector(
-                        //               child: Text(
-                        //                 _back.DataNasc != null
-                        //                     ? _back.DataNasc!.day
-                        //                             .toString()
-                        //                             .padLeft(2, '0') +
-                        //                         "/" +
-                        //                         _back.DataNasc!.month
-                        //                             .toString()
-                        //                             .padLeft(2, '0') +
-                        //                         "/" +
-                        //                         _back.DataNasc!.year.toString()
-                        //                     : "__/__/____",
-                        //                 style: TextStyle(fontSize: 17),
-                        //               ),
-                        //               onTap: () async {
-                        //                 DateTime? newDate =
-                        //                     await showDatePicker(
-                        //                         context: context,
-                        //                         initialDate: DateTime.now(),
-                        //                         firstDate: DateTime(1900),
-                        //                         lastDate: DateTime.now());
-
-                        //                 if (newDate != null) {
-                        //                   _back.aluno?.DATA_NASCIMENTO_DTI =
-                        //                       newDate;
-                        //                   _back.setDataNasc(newDate);
-                        //                 }
-                        //               }),
-                        //           SizedBox(width: 10),
-                        //           Visibility(
-                        //             visible: _back.TemDataNasc,
-                        //             child: GestureDetector(
-                        //               child: Text(
-                        //                 "X",
-                        //                 style: TextStyle(
-                        //                     fontSize: 17,
-                        //                     fontWeight: FontWeight.bold),
-                        //               ),
-                        //               onTap: () {
-                        //                 _back.aluno?.DATA_NASCIMENTO_DTI = null;
-                        //                 _back.setDataNasc(null);
-                        //               },
-                        //             ),
-                        //           )
-                        //         ],
-                        //       ),
-                        //     ],
-                        //   );
-                        // }),

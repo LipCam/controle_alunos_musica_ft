@@ -1,4 +1,6 @@
-import 'package:controle_alunos_musica_ft/core/my_app.dart';
+// ignore_for_file: library_private_types_in_public_api
+
+import 'package:controle_alunos_musica_ft/config/my_app.dart';
 import 'package:controle_alunos_musica_ft/database/dao/alunos_dao.dart';
 import 'package:controle_alunos_musica_ft/entities/alunos.dart';
 import 'package:flutter/material.dart';
@@ -9,29 +11,29 @@ part 'alunos_lista_back.g.dart';
 class AlunosListaBack = _AlunosListaBack with _$AlunosListaBack;
 
 abstract class _AlunosListaBack with Store {
-  var _dao = AlunosDAO();
+  final _dao = AlunosDAO();
 
   _AlunosListaBack() {
-    CarregaLista();
+    carregaLista();
   }
 
   @observable
   Future<List<Alunos>>? lstEntities;
 
   @action
-  CarregaLista([dynamic TextPesquisa]) {
-    lstEntities = _dao.GetLista(TextPesquisa);
+  carregaLista([dynamic textPesquisa]) {
+    lstEntities = _dao.onGetLista(textPesquisa);
   }
 
-  GoToForm(BuildContext context, [Alunos? aluno]) {
+  goToForm(BuildContext context, [Alunos? aluno]) {
     Navigator.of(context)
-        .pushNamed(MyApp().ALUNOS_FORM, arguments: aluno)
-        .then(CarregaLista);
+        .pushNamed(MyApp().alunosForm, arguments: aluno)
+        .then(carregaLista);
   }
 
-  Delete(int id) {
-    _dao.Delete(id);
-    CarregaLista();
+  delete(int id) {
+    _dao.onDelete(id);
+    carregaLista();
   }
 
   //#region Pesquisa
@@ -40,7 +42,7 @@ abstract class _AlunosListaBack with Store {
   TextEditingController searchQueryController = TextEditingController();
 
   void updateSearchQuery(String newQuery) {
-    CarregaLista(newQuery);
+    carregaLista(newQuery);
   }
 
   void clearSearchQuery() {

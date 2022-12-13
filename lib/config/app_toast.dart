@@ -1,10 +1,9 @@
 import 'package:fluttertoast/fluttertoast.dart';
 
-void ToastMessage(String Message){
+void onToastMessage(String message) {
   Fluttertoast.showToast(
-      msg: Message,
+      msg: message,
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1
-  );
+      timeInSecForIosWeb: 1);
 }

@@ -25,35 +25,35 @@ mixin _$AulasListaBack on _AulasListaBack, Store {
     });
   }
 
-  late final _$DataIniAtom =
-      Atom(name: '_AulasListaBack.DataIni', context: context);
+  late final _$dataIniAtom =
+      Atom(name: '_AulasListaBack.dataIni', context: context);
 
   @override
-  DateTime? get DataIni {
-    _$DataIniAtom.reportRead();
-    return super.DataIni;
+  DateTime? get dataIni {
+    _$dataIniAtom.reportRead();
+    return super.dataIni;
   }
 
   @override
-  set DataIni(DateTime? value) {
-    _$DataIniAtom.reportWrite(value, super.DataIni, () {
-      super.DataIni = value;
+  set dataIni(DateTime? value) {
+    _$dataIniAtom.reportWrite(value, super.dataIni, () {
+      super.dataIni = value;
     });
   }
 
-  late final _$DataFimAtom =
-      Atom(name: '_AulasListaBack.DataFim', context: context);
+  late final _$dataFimAtom =
+      Atom(name: '_AulasListaBack.dataFim', context: context);
 
   @override
-  DateTime? get DataFim {
-    _$DataFimAtom.reportRead();
-    return super.DataFim;
+  DateTime? get dataFim {
+    _$dataFimAtom.reportRead();
+    return super.dataFim;
   }
 
   @override
-  set DataFim(DateTime? value) {
-    _$DataFimAtom.reportWrite(value, super.DataFim, () {
-      super.DataFim = value;
+  set dataFim(DateTime? value) {
+    _$dataFimAtom.reportWrite(value, super.dataFim, () {
+      super.dataFim = value;
     });
   }
 
@@ -61,11 +61,12 @@ mixin _$AulasListaBack on _AulasListaBack, Store {
       ActionController(name: '_AulasListaBack', context: context);
 
   @override
-  dynamic CarregaLista([dynamic DataIni, dynamic DataFim, int? ID_ALUNO_INT]) {
+  dynamic onCarregaLista(
+      [dynamic dataIni, dynamic dataFim, int? iD_ALUNO_INT]) {
     final _$actionInfo = _$_AulasListaBackActionController.startAction(
-        name: '_AulasListaBack.CarregaLista');
+        name: '_AulasListaBack.onCarregaLista');
     try {
-      return super.CarregaLista(DataIni, DataFim, ID_ALUNO_INT);
+      return super.onCarregaLista(dataIni, dataFim, iD_ALUNO_INT);
     } finally {
       _$_AulasListaBackActionController.endAction(_$actionInfo);
     }
@@ -75,8 +76,8 @@ mixin _$AulasListaBack on _AulasListaBack, Store {
   String toString() {
     return '''
 lstEntities: ${lstEntities},
-DataIni: ${DataIni},
-DataFim: ${DataFim}
+dataIni: ${dataIni},
+dataFim: ${dataFim}
     ''';
   }
 }

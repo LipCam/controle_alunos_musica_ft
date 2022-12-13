@@ -6,7 +6,7 @@ import 'package:sqflite/sqflite.dart';
 class RelAlunosDAO {
   Database? _db;
 
-  Future<List<Alunos>> GetAlunoRelatorio(int ID_ALUNO_INT) async {
+  Future<List<Alunos>> onGetAlunoRelatorio(int idAlunoInt) async {
     _db = await Connection.Get();
 
     List<Map<String, dynamic>> lstMap = await _db!.rawQuery(
@@ -16,36 +16,36 @@ class RelAlunosDAO {
                 AL.ENDERECO_STR
                 FROM CAD_ALUNOS_TAB AL
                 INNER JOIN SIS_STATUS_ALUNOS_TAB ST ON ST.ID_STATUS_INT = AL.ID_STATUS_INT
-                WHERE AL.ID_ALUNO_INT = ?''', [ID_ALUNO_INT]);
+                WHERE AL.ID_ALUNO_INT = ?''', [idAlunoInt]);
 
     List<Alunos> lstEntities = List.generate(lstMap.length, (i) {
       var linha = lstMap[i];
       return Alunos(
-          ID_ALUNO_INT: linha["ID_ALUNO_INT"],
-          NOME_STR: linha["NOME_STR"],
-          STATUS_STR: linha["STATUS_STR"],
-          INSTRUMENTO_STR: linha["INSTRUMENTO_STR"],
-          METODO_STR: linha["METODO_STR"],
-          FONE_STR: linha["FONE_STR"],
-          DATA_NASCIMENTO_DTI: linha["DATA_NASCIMENTO_DTI"] != null
+          idAluno: linha["ID_ALUNO_INT"],
+          nome: linha["NOME_STR"],
+          status: linha["STATUS_STR"],
+          instrumento: linha["INSTRUMENTO_STR"],
+          metodo: linha["METODO_STR"],
+          fone: linha["FONE_STR"],
+          dataNascimento: linha["DATA_NASCIMENTO_DTI"] != null
               ? DateTime.parse(linha["DATA_NASCIMENTO_DTI"])
               : null,
-          DATA_BATISMO_DTI: linha["DATA_BATISMO_DTI"] != null
+          dataBatismo: linha["DATA_BATISMO_DTI"] != null
               ? DateTime.parse(linha["DATA_BATISMO_DTI"])
               : null,
-          DATA_INICIO_GEM_DTI: linha["DATA_INICIO_GEM_DTI"] != null
+          dataInicioGEM: linha["DATA_INICIO_GEM_DTI"] != null
               ? DateTime.parse(linha["DATA_INICIO_GEM_DTI"])
               : null,
-          DATA_OFICIALIZACAO_DTI: linha["DATA_OFICIALIZACAO_DTI"] != null
+          dataOficializacao: linha["DATA_OFICIALIZACAO_DTI"] != null
               ? DateTime.parse(linha["DATA_OFICIALIZACAO_DTI"])
               : null,
-          ENDERECO_STR: linha["ENDERECO_STR"]);
+          endereco: linha["ENDERECO_STR"]);
     });
 
     return lstEntities;
   }
 
-  Future<List<Aulas>> GetAulasAlunoRelatorio(int ID_ALUNO_INT) async {
+  Future<List<Aulas>> onGetAulasAlunoRelatorio(int idAlunoInt) async {
     _db = await Connection.Get();
 
     List<Map<String, dynamic>> lstMap =
@@ -56,18 +56,18 @@ class RelAlunosDAO {
                 FROM CAD_AULAS_TAB A
                 INNER JOIN SIS_TIPOS_AULA_TAB TP ON TP.ID_TIPO_INT = A.ID_TIPO_INT
                 WHERE A.ID_ALUNO_INT = ?
-                ORDER BY A.DATA_DTI''', [ID_ALUNO_INT]);
+                ORDER BY A.DATA_DTI''', [idAlunoInt]);
 
     List<Aulas> lstEntities = List.generate(lstMap.length, (i) {
       var linha = lstMap[i];
       return Aulas(
-        ID_ALUNO_INT: linha["ID_ALUNO_INT"],
-        TIPO_STR: linha["TIPO_STR"],
-        INSTRUTOR_STR: linha["INSTRUTOR_STR"],
-        DATA_DTI: DateTime.parse(linha["DATA_DTI"]),
-        CONCLUIDO_BIT: linha["CONCLUIDO_BIT"] == 1 ? true : false,
-        CONCLUIDO_STR: linha["CONCLUIDO_STR"],
-        ASSUNTO_STR: linha["ASSUNTO_STR"],
+        idAluno: linha["ID_ALUNO_INT"],
+        tipo: linha["TIPO_STR"],
+        instrutor: linha["INSTRUTOR_STR"],
+        data: DateTime.parse(linha["DATA_DTI"]),
+        concluido: linha["CONCLUIDO_BIT"] == 1 ? true : false,
+        concluidoStr: linha["CONCLUIDO_STR"],
+        assunto: linha["ASSUNTO_STR"],
       );
     });
 

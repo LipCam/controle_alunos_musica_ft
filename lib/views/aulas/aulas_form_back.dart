@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:controle_alunos_musica_ft/database/dao/aulas_dao.dart';
 import 'package:controle_alunos_musica_ft/entities/alunos.dart';
 import 'package:controle_alunos_musica_ft/entities/aulas.dart';
@@ -11,7 +13,7 @@ class AulasFormBack = _AulasFormBack with _$AulasFormBack;
 
 abstract class _AulasFormBack with Store {
   Aulas? aula;
-  var _dao = AulasDAO();
+  final _dao = AulasDAO();
 
   _AulasFormBack(BuildContext context) {
     aula = ModalRoute.of(context)?.settings.arguments as Aulas;
@@ -19,37 +21,25 @@ abstract class _AulasFormBack with Store {
     // aula = parameter == null
     //     ? Aulas(CONCLUIDO_BIT: false, DATA_DTI: DateTime.now())
     //     : parameter as Aulas;
-    setData(aula!.DATA_DTI);
-    NovoReg = aula?.ID_AULA_INT == null;
-    Concluido = aula!.CONCLUIDO_BIT;
+    novoReg = aula?.idAula == null;
   }
 
   @observable
-  bool NovoReg = true;
+  bool novoReg = true;
 
-  @observable
-  DateTime? Data;
-
-  setData(DateTime dt) {
-    Data = dt;
+  Future<List<Alunos>> onGetAlunos() {
+    return _dao.onGetAlunos();
   }
 
-  @observable
-  bool? Concluido;
-
-  Future<List<Alunos>> GetAlunos() {
-    return _dao.GetAlunos();
+  Future<List<TiposAula>> onGetTipos() {
+    return _dao.onGetTipos();
   }
 
-  Future<List<TiposAula>> GetTipos() {
-    return _dao.GetTipos();
+  Future<int> onSave() async {
+    return await _dao.onSave(aula!);
   }
 
-  Future<int> Save() async {
-    return await _dao.Save(aula!);
-  }
-
-  Delete(int id) {
-    _dao.Delete(id);
+  onDelete(int id) {
+    _dao.onDelete(id);
   }
 }

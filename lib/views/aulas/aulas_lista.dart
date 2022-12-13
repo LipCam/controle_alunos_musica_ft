@@ -1,4 +1,6 @@
-import 'package:controle_alunos_musica_ft/core/date_picker.dart';
+// ignore_for_file: non_constant_identifier_names, must_be_immutable, use_key_in_widget_constructors
+
+import 'package:controle_alunos_musica_ft/components/date_picker.dart';
 import 'package:controle_alunos_musica_ft/entities/aulas.dart';
 import 'package:controle_alunos_musica_ft/views/aulas/aulas_lista_back.dart';
 import 'package:flutter/material.dart';
@@ -11,93 +13,79 @@ class AulasLista extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _back = AulasListaBack(context);
+    var back = AulasListaBack(context);
     return Scaffold(
       appBar: AppBar(
-          title: Text("Aulas" +
-              (_back.aluno != null
-                  ? " - " + _back.aluno!.NOME_STR.toString()
-                  : "")),
+          title: Text(
+              "Aulas${back.aluno != null ? " - ${back.aluno!.nome}" : ""}"),
           actions: [
             IconButton(
-                icon: Icon(Icons.add),
+                icon: const Icon(Icons.add),
                 onPressed: () {
                   Aulas aula = Aulas(
-                      ID_ALUNO_INT: _back.aluno?.ID_ALUNO_INT,
-                      CONCLUIDO_BIT: false,
-                      DATA_DTI: DateTime.now());
-                  _back.GoToForm(
+                      idAluno: back.aluno?.idAluno,
+                      concluido: false,
+                      data: DateTime.now());
+                  back.onGoToForm(
                       context,
                       aula,
-                      formatter.format(_back.DataIni!),
-                      formatter.format(_back.DataFim!),
-                      _back.aluno);
+                      formatter.format(back.dataIni!),
+                      formatter.format(back.dataFim!),
+                      back.aluno);
                 })
           ]),
       body: Column(children: [
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Observer(
-            builder: (a) => Column(
+          builder: (a) => Column(
+            children: [
+              Visibility(
+                visible: back.aluno == null,
+                child: Column(
                   children: [
-                    Visibility(
-                      visible: _back.aluno == null,
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              DatePicker(
-                                label: "Início",
-                                date: _back.DataIni!,
-                                getDate: () async {
-                                  DateTime? newDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(1900),
-                                      lastDate: DateTime.now());
-
-                                  if (newDate != null) {
-                                    _back.setDataIni(newDate);
-                                    _back.CarregaLista(
-                                        formatter.format(_back.DataIni!),
-                                        formatter.format(_back.DataFim!));
-                                  }
-                                },
-                              ),
-                              DatePicker(
-                                label: "Fim",
-                                date: _back.DataFim!,
-                                getDate: () async {
-                                  DateTime? newDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(1900),
-                                      lastDate: DateTime.now());
-
-                                  if (newDate != null) {
-                                    _back.setDataFim(newDate);
-                                    _back.CarregaLista(
-                                        formatter.format(_back.DataIni!),
-                                        formatter.format(_back.DataFim!));
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 5),
-                        ],
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        DatePicker(
+                          label: "Início",
+                          dateInit: back.dataIni!,
+                          tipoData: 0,
+                          onDateTimeChanged: (dt) {
+                            back.dataIni = dt;
+                            back.onCarregaLista(
+                              formatter.format(back.dataIni!),
+                              formatter.format(back.dataFim!),
+                            );
+                          },
+                        ),
+                        DatePicker(
+                          label: "Fim",
+                          dateInit: back.dataFim!,
+                          tipoData: 0,
+                          onDateTimeChanged: (dt) {
+                            back.dataFim = dt;
+                            back.onCarregaLista(
+                              formatter.format(back.dataIni!),
+                              formatter.format(back.dataFim!),
+                            );
+                          },
+                        ),
+                      ],
                     ),
-                    futureBuilder(_back),
                   ],
-                )),
+                ),
+              ),
+              futureBuilder(back),
+            ],
+          ),
+        ),
       ]),
     );
   }
 
-  FutureBuilder futureBuilder(AulasListaBack _back) {
+  FutureBuilder futureBuilder(AulasListaBack back) {
     return FutureBuilder(
-      future: _back.lstEntities,
+      future: back.lstEntities,
       builder: (context, future) {
         if (future.hasData) {
           List<Aulas> lst = future.data;
@@ -106,12 +94,12 @@ class AulasLista extends StatelessWidget {
               shrinkWrap: true,
               itemBuilder: (context, i) {
                 Aulas aula = lst[i];
-                return _back.aluno == null
-                    ? tileAulas(aula, context, _back)
-                    : tileAulasAluno(aula, context, _back);
+                return back.aluno == null
+                    ? tileAulas(aula, context, back)
+                    : tileAulasAluno(aula, context, back);
               });
         } else {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         }
@@ -119,18 +107,18 @@ class AulasLista extends StatelessWidget {
     );
   }
 
-  ListTile tileAulas(Aulas aula, BuildContext context, AulasListaBack _back) {
+  ListTile tileAulas(Aulas aula, BuildContext context, AulasListaBack back) {
     return ListTile(
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            aula.ALUNO_STR.toString(),
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            aula.aluno.toString(),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           Text(
-            formatter2.format(aula.DATA_DTI),
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            formatter2.format(aula.data),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
         ],
       ),
@@ -140,40 +128,42 @@ class AulasLista extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(aula.TIPO_STR.toString(), style: TextStyle(fontSize: 15)),
-              Text(aula.CONCLUIDO_STR.toString(),
-                  style: TextStyle(fontSize: 15)),
+              Text(aula.tipo.toString(), style: const TextStyle(fontSize: 15)),
+              Text(aula.concluidoStr.toString(),
+                  style: const TextStyle(fontSize: 15)),
             ],
           ),
-          Text(aula.ASSUNTO_STR!,
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+          Text(aula.assunto!,
+              style:
+                  const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
         ],
       ),
-      trailing: DeleteButton(context, _back, aula),
+      trailing: DeleteButton(context, back, aula),
       onTap: () {
-        _back.GoToForm(context, aula, formatter.format(_back.DataIni!),
-            formatter.format(_back.DataFim!), _back.aluno);
+        back.onGoToForm(context, aula, formatter.format(back.dataIni!),
+            formatter.format(back.dataFim!), back.aluno);
       },
     );
   }
 
   ListTile tileAulasAluno(
-      Aulas aula, BuildContext context, AulasListaBack _back) {
+      Aulas aula, BuildContext context, AulasListaBack back) {
     return ListTile(
+      dense: true,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            formatter2.format(aula.DATA_DTI),
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            formatter2.format(aula.data),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           Text(
-            aula.TIPO_STR.toString(),
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            aula.tipo.toString(),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           Text(
-            aula.CONCLUIDO_STR.toString(),
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            aula.concluidoStr.toString(),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
         ],
       ),
@@ -183,48 +173,47 @@ class AulasLista extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(aula.ASSUNTO_STR.toString(), style: TextStyle(fontSize: 15)),
+              Text(aula.assunto.toString(),
+                  style: const TextStyle(fontSize: 15)),
             ],
           ),
         ],
       ),
-      trailing: DeleteButton(context, _back, aula),
+      trailing: DeleteButton(context, back, aula),
       onTap: () {
-        _back.GoToForm(context, aula, formatter.format(_back.DataIni!),
-            formatter.format(_back.DataFim!), _back.aluno);
+        back.onGoToForm(context, aula, formatter.format(back.dataIni!),
+            formatter.format(back.dataFim!), back.aluno);
       },
     );
   }
 
-  Widget DeleteButton(BuildContext context, AulasListaBack _back, Aulas aula) {
+  Widget DeleteButton(BuildContext context, AulasListaBack back, Aulas aula) {
     return IconButton(
-      icon: Icon(Icons.delete),
+      icon: const Icon(Icons.delete),
       color: Colors.red,
       onPressed: () {
         showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-                  title: Text("Exclusão"),
-                  content: Text("Deseja excluir este registro?"),
-                  actions: [
-                    TextButton(
-                        child: Text("Não"),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        }),
-                    TextButton(
-                      child: Text("Sim"),
-                      onPressed: () {
-                        _back.Delete(
-                            aula.ID_AULA_INT!,
-                            formatter.format(_back.DataIni!),
-                            formatter.format(_back.DataFim!),
-                            _back.aluno);
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                ));
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text("Exclusão"),
+            content: const Text("Deseja excluir este registro?"),
+            actions: [
+              TextButton(
+                  child: const Text("Não"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  }),
+              TextButton(
+                child: const Text("Sim"),
+                onPressed: () {
+                  back.onDelete(aula.idAula!, formatter.format(back.dataIni!),
+                      formatter.format(back.dataFim!), back.aluno);
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
       },
     );
   }

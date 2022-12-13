@@ -1,6 +1,6 @@
 class TiposAula {
-  int? ID_TIPO_INT;
-  String? DESCRICAO_STR;
+  int? idTipo;
+  String? descricao;
 
-  TiposAula({this.ID_TIPO_INT, this.DESCRICAO_STR});
+  TiposAula({this.idTipo, this.descricao});
 }

@@ -1,4 +1,6 @@
-import 'package:controle_alunos_musica_ft/core/my_app.dart';
+// ignore_for_file: non_constant_identifier_names, library_private_types_in_public_api
+
+import 'package:controle_alunos_musica_ft/config/my_app.dart';
 import 'package:controle_alunos_musica_ft/database/dao/aulas_dao.dart';
 import 'package:controle_alunos_musica_ft/entities/alunos.dart';
 import 'package:controle_alunos_musica_ft/entities/aulas.dart';
@@ -11,52 +13,44 @@ part 'aulas_lista_back.g.dart';
 class AulasListaBack = _AulasListaBack with _$AulasListaBack;
 
 abstract class _AulasListaBack with Store {
-  var _dao = AulasDAO();
+  final _dao = AulasDAO();
   Alunos? aluno;
   DateFormat formatter = DateFormat('yyyy-MM-dd');
 
   _AulasListaBack(BuildContext context) {
     var arguments = ModalRoute.of(context)?.settings.arguments;
     aluno = arguments != null ? arguments as Alunos : null;
-    DataIni = DateTime.now();
-    DataFim = DateTime.now();
-    CarregaLista(formatter.format(DataIni!), formatter.format(DataFim!),
-        aluno?.ID_ALUNO_INT);
+    dataIni = DateTime.now();
+    dataFim = DateTime.now();
+    onCarregaLista(
+        formatter.format(dataIni!), formatter.format(dataFim!), aluno?.idAluno);
   }
 
   @observable
   Future<List<Aulas>>? lstEntities;
 
   @action
-  CarregaLista([dynamic DataIni, dynamic DataFim, int? ID_ALUNO_INT]) {
-    DataIni = DataIni != null ? DataIni : formatter.format(this.DataIni!);
-    DataFim = DataFim != null ? DataFim : formatter.format(this.DataFim!);
-    lstEntities = _dao.GetLista(DataIni, DataFim, ID_ALUNO_INT);
+  onCarregaLista([dynamic dataIni, dynamic dataFim, int? iD_ALUNO_INT]) {
+    dataIni = dataIni ?? formatter.format(this.dataIni!);
+    dataFim = dataFim ?? formatter.format(this.dataFim!);
+    lstEntities = _dao.onGetLista(dataIni, dataFim, iD_ALUNO_INT);
   }
 
   @observable
-  DateTime? DataIni;
-
-  setDataIni(DateTime dt) {
-    DataIni = dt;
-  }
+  DateTime? dataIni;
 
   @observable
-  DateTime? DataFim;
+  DateTime? dataFim;
 
-  setDataFim(DateTime dt) {
-    DataFim = dt;
-  }
-
-  GoToForm(BuildContext context, Aulas? aula, String DataIni, String DataFim,
+  onGoToForm(BuildContext context, Aulas? aula, String dataIni, String dataFim,
       Alunos? aluno) {
     Navigator.of(context)
-        .pushNamed(MyApp().AULAS_FORM, arguments: aula)
-        .then(((value) => CarregaLista(DataIni, DataFim, aluno?.ID_ALUNO_INT)));
+        .pushNamed(MyApp().aulasForm, arguments: aula)
+        .then(((value) => onCarregaLista(dataIni, dataFim, aluno?.idAluno)));
   }
 
-  Delete(int id, String DataIni, String DataFim, Alunos? aluno) {
-    _dao.Delete(id);
-    CarregaLista(DataIni, DataFim, aluno?.ID_ALUNO_INT);
+  onDelete(int id, String dataIni, String dataFim, Alunos? aluno) {
+    _dao.onDelete(id);
+    onCarregaLista(dataIni, dataFim, aluno?.idAluno);
   }
 }

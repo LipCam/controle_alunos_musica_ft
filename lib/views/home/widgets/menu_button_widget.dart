@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 
 class MenuButtonWidget extends StatelessWidget {
@@ -10,22 +12,29 @@ class MenuButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () {
-          Navigator.of(context).pushNamed(route);
-        },
-        child: Container(
-          decoration: BoxDecoration(
-              color: Colors.grey[300],
-              border: Border.all(color: Colors.grey, width: 1),
-              borderRadius: BorderRadius.circular(15)),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(height: 100, child: Image.asset(image)),
-              SizedBox(height: 10),
-              Text(label, style: TextStyle(color: Colors.blue, fontSize: 20))
-            ],
-          ),
-        ));
+      onTap: () {
+        Navigator.of(context).pushNamed(route);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+            color: Colors.grey[300],
+            border: Border.all(color: Colors.grey, width: 1),
+            borderRadius: BorderRadius.circular(15)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(height: 100, child: Image.asset(image)),
+            const SizedBox(height: 10),
+            Text(
+              label,
+              style: const TextStyle(
+                color: Colors.blue,
+                fontSize: 20,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

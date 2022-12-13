@@ -6,7 +6,7 @@ import 'package:sqflite/sqflite.dart';
 class AlunosDAO {
   Database? _db;
 
-  Future<List<Alunos>> GetLista(String? TextPesquisa) async {
+  Future<List<Alunos>> onGetLista(String? textPesquisa) async {
     _db = await Connection.Get();
 
     List<Map<String, dynamic>> lstMap = await _db!.rawQuery('''SELECT A.*, 
@@ -19,41 +19,41 @@ class AlunosDAO {
                 INNER JOIN SIS_STATUS_ALUNOS_TAB S ON S.ID_STATUS_INT = A.ID_STATUS_INT
                 WHERE A.NOME_STR LIKE ?
                 ORDER BY NOME_STR''',
-        [(TextPesquisa != null ? "%" + TextPesquisa + "%" : "%%")]);
+        [(textPesquisa != null ? "%$textPesquisa%" : "%%")]);
 
     //List<Map<String, dynamic>> lstMap = await _db!.query("CAD_ALUNOS_TAB");
 
     List<Alunos> lstEntities = List.generate(lstMap.length, (i) {
       var linha = lstMap[i];
       return Alunos(
-        ID_ALUNO_INT: linha["ID_ALUNO_INT"],
-        NOME_STR: linha["NOME_STR"],
-        ID_STATUS_INT: linha["ID_STATUS_INT"],
-        STATUS_STR: linha["STATUS_STR"],
-        INSTRUMENTO_STR: linha["INSTRUMENTO_STR"],
-        METODO_STR: linha["METODO_STR"],
-        FONE_STR: linha["FONE_STR"],
-        DATA_NASCIMENTO_DTI: linha["DATA_NASCIMENTO_DTI"] != null
+        idAluno: linha["ID_ALUNO_INT"],
+        nome: linha["NOME_STR"],
+        idStatus: linha["ID_STATUS_INT"],
+        status: linha["STATUS_STR"],
+        instrumento: linha["INSTRUMENTO_STR"],
+        metodo: linha["METODO_STR"],
+        fone: linha["FONE_STR"],
+        dataNascimento: linha["DATA_NASCIMENTO_DTI"] != null
             ? DateTime.parse(linha["DATA_NASCIMENTO_DTI"])
             : null,
-        DATA_BATISMO_DTI: linha["DATA_BATISMO_DTI"] != null
+        dataBatismo: linha["DATA_BATISMO_DTI"] != null
             ? DateTime.parse(linha["DATA_BATISMO_DTI"])
             : null,
-        DATA_INICIO_GEM_DTI: linha["DATA_INICIO_GEM_DTI"] != null
+        dataInicioGEM: linha["DATA_INICIO_GEM_DTI"] != null
             ? DateTime.parse(linha["DATA_INICIO_GEM_DTI"])
             : null,
-        DATA_OFICIALIZACAO_DTI: linha["DATA_OFICIALIZACAO_DTI"] != null
+        dataOficializacao: linha["DATA_OFICIALIZACAO_DTI"] != null
             ? DateTime.parse(linha["DATA_OFICIALIZACAO_DTI"])
             : null,
-        ENDERECO_STR: linha["ENDERECO_STR"],
-        OBSERVACAO_STR: linha["OBSERVACAO_STR"],
+        endereco: linha["ENDERECO_STR"],
+        observacao: linha["OBSERVACAO_STR"],
       );
     });
 
     return lstEntities;
   }
 
-  Future<List<StatusAlunos>> GetStatus() async {
+  Future<List<StatusAlunos>> onGetStatus() async {
     _db = await Connection.Get();
 
     List<Map<String, dynamic>> lstMap =
@@ -61,42 +61,42 @@ class AlunosDAO {
     List<StatusAlunos> lstEntities = List.generate(lstMap.length, (i) {
       var linha = lstMap[i];
       return StatusAlunos(
-          ID_STATUS_INT: linha["ID_STATUS_INT"],
-          DESCRICAO_STR: linha["DESCRICAO_STR"]);
+          idStatus: linha["ID_STATUS_INT"], descricao: linha["DESCRICAO_STR"]);
     });
 
     return lstEntities;
   }
 
-  Future<int> Save(Alunos aluno) async {
+  Future<int> onSave(Alunos aluno) async {
     _db = await Connection.Get();
     String sql;
-    if (aluno.ID_ALUNO_INT == null) {
+    if (aluno.idAluno == null) {
       sql =
           '''INSERT INTO CAD_ALUNOS_TAB (NOME_STR, ID_STATUS_INT, INSTRUMENTO_STR,
               METODO_STR, FONE_STR, DATA_NASCIMENTO_DTI, DATA_BATISMO_DTI, DATA_INICIO_GEM_DTI,
               DATA_OFICIALIZACAO_DTI, ENDERECO_STR, OBSERVACAO_STR)
               VALUES (?,?,?,?,?,?,?,?,?,?,?)''';
       int id = await _db!.rawInsert(sql, [
-        aluno.NOME_STR,
-        aluno.ID_STATUS_INT,
-        aluno.INSTRUMENTO_STR,
-        aluno.METODO_STR,
-        aluno.FONE_STR,
-        aluno.DATA_NASCIMENTO_DTI != null
-            ? aluno.DATA_NASCIMENTO_DTI.toString()
-            : null,
-        aluno.DATA_BATISMO_DTI != null
-            ? aluno.DATA_BATISMO_DTI.toString()
-            : null,
-        aluno.DATA_INICIO_GEM_DTI != null
-            ? aluno.DATA_INICIO_GEM_DTI.toString()
-            : null,
-        aluno.DATA_OFICIALIZACAO_DTI != null
-            ? aluno.DATA_OFICIALIZACAO_DTI.toString()
-            : null,
-        aluno.ENDERECO_STR,
-        aluno.OBSERVACAO_STR
+        aluno.nome,
+        aluno.idStatus,
+        aluno.instrumento,
+        aluno.metodo,
+        aluno.fone,
+        if (aluno.dataNascimento != null)
+          aluno.dataNascimento.toString()
+        else
+          null,
+        if (aluno.dataBatismo != null) aluno.dataBatismo.toString() else null,
+        if (aluno.dataInicioGEM != null)
+          aluno.dataInicioGEM.toString()
+        else
+          null,
+        if (aluno.dataOficializacao != null)
+          aluno.dataOficializacao.toString()
+        else
+          null,
+        aluno.endereco,
+        aluno.observacao
       ]);
 
       return id;
@@ -107,33 +107,34 @@ class AlunosDAO {
               DATA_OFICIALIZACAO_DTI = ?, ENDERECO_STR = ?, OBSERVACAO_STR = ?
               WHERE ID_ALUNO_INT = ?''';
       _db!.rawUpdate(sql, [
-        aluno.NOME_STR,
-        aluno.ID_STATUS_INT,
-        aluno.INSTRUMENTO_STR,
-        aluno.METODO_STR,
-        aluno.FONE_STR,
-        aluno.DATA_NASCIMENTO_DTI != null
-            ? aluno.DATA_NASCIMENTO_DTI.toString()
-            : null,
-        aluno.DATA_BATISMO_DTI != null
-            ? aluno.DATA_BATISMO_DTI.toString()
-            : null,
-        aluno.DATA_INICIO_GEM_DTI != null
-            ? aluno.DATA_INICIO_GEM_DTI.toString()
-            : null,
-        aluno.DATA_OFICIALIZACAO_DTI != null
-            ? aluno.DATA_OFICIALIZACAO_DTI.toString()
-            : null,
-        aluno.ENDERECO_STR,
-        aluno.OBSERVACAO_STR,
-        aluno.ID_ALUNO_INT
+        aluno.nome,
+        aluno.idStatus,
+        aluno.instrumento,
+        aluno.metodo,
+        aluno.fone,
+        if (aluno.dataNascimento != null)
+          aluno.dataNascimento.toString()
+        else
+          null,
+        if (aluno.dataBatismo != null) aluno.dataBatismo.toString() else null,
+        if (aluno.dataInicioGEM != null)
+          aluno.dataInicioGEM.toString()
+        else
+          null,
+        if (aluno.dataOficializacao != null)
+          aluno.dataOficializacao.toString()
+        else
+          null,
+        aluno.endereco,
+        aluno.observacao,
+        aluno.idAluno
       ]);
 
-      return aluno.ID_ALUNO_INT!;
+      return aluno.idAluno!;
     }
   }
 
-  Delete(int id) async {
+  onDelete(int id) async {
     _db = await Connection.Get();
 
     String sql = '''DELETE FROM CAD_AULAS_TAB

@@ -45,11 +45,11 @@ mixin _$AlunosListaBack on _AlunosListaBack, Store {
       ActionController(name: '_AlunosListaBack', context: context);
 
   @override
-  dynamic CarregaLista([dynamic TextPesquisa]) {
+  dynamic carregaLista([dynamic textPesquisa]) {
     final _$actionInfo = _$_AlunosListaBackActionController.startAction(
-        name: '_AlunosListaBack.CarregaLista');
+        name: '_AlunosListaBack.carregaLista');
     try {
-      return super.CarregaLista(TextPesquisa);
+      return super.carregaLista(textPesquisa);
     } finally {
       _$_AlunosListaBackActionController.endAction(_$actionInfo);
     }

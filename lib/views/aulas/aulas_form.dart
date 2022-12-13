@@ -1,41 +1,47 @@
-import 'package:controle_alunos_musica_ft/core/app_toast.dart';
-import 'package:controle_alunos_musica_ft/core/date_picker.dart';
+// ignore_for_file: use_key_in_widget_constructors
+
+import 'package:controle_alunos_musica_ft/components/custom_checkbox.dart';
+import 'package:controle_alunos_musica_ft/components/custom_text_field.dart';
+import 'package:controle_alunos_musica_ft/config/app_toast.dart';
+import 'package:controle_alunos_musica_ft/components/date_picker.dart';
 import 'package:controle_alunos_musica_ft/entities/alunos.dart';
 import 'package:controle_alunos_musica_ft/entities/tipos_aula.dart';
 import 'package:controle_alunos_musica_ft/views/aulas/aulas_form_back.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:url_launcher/url_launcher.dart';
+
+import '../../components/custom_input_decoration.dart';
 
 class AulasForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var _back = AulasFormBack(context);
-    final _keyForm = GlobalKey<FormState>();
+    var back = AulasFormBack(context);
+    final keyForm = GlobalKey<FormState>();
+    double alturaCampos = 15;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Aulas"),
+        title: const Text("Aulas"),
         actions: [
           IconButton(
-              icon: Icon(Icons.check),
+              icon: const Icon(Icons.check),
               tooltip: "Salvar",
               onPressed: () async {
-                if (_keyForm.currentState!.validate()) {
-                  _keyForm.currentState!.save();
-                  _back.aula?.ID_AULA_INT = await _back.Save();
-                  _back.NovoReg = false;
-                  ToastMessage("Salvo");
+                if (keyForm.currentState!.validate()) {
+                  keyForm.currentState!.save();
+                  back.aula?.idAula = await back.onSave();
+                  back.novoReg = false;
+                  onToastMessage("Salvo");
                 }
               }),
           Observer(
             builder: (c) => Visibility(
-              visible: !_back.NovoReg,
+              visible: !back.novoReg,
               child: PopupMenuButton(itemBuilder: (a) {
                 return [
                   PopupMenuItem(
                     child: Row(
-                      children: [
+                      children: const [
                         Icon(
                           Icons.delete,
                           color: Colors.red,
@@ -46,30 +52,31 @@ class AulasForm extends StatelessWidget {
                     ),
                     onTap: () {
                       Future<void>.delayed(
-                          Duration(milliseconds: 500),
-                          () => showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                    title: Text("Exclusão"),
-                                    content:
-                                        Text("Deseja excluir este registro?"),
-                                    actions: [
-                                      TextButton(
-                                          child: Text("Não"),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          }),
-                                      TextButton(
-                                        child: Text("Sim"),
-                                        onPressed: () {
-                                          _back.Delete(
-                                              _back.aula!.ID_AULA_INT!);
-                                          Navigator.of(context).pop();
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                    ],
-                                  )));
+                        const Duration(milliseconds: 500),
+                        () => showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text("Exclusão"),
+                            content:
+                                const Text("Deseja excluir este registro?"),
+                            actions: [
+                              TextButton(
+                                  child: const Text("Não"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  }),
+                              TextButton(
+                                child: const Text("Sim"),
+                                onPressed: () {
+                                  back.onDelete(back.aula!.idAula!);
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
                     },
                   ),
                 ];
@@ -80,123 +87,113 @@ class AulasForm extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-            padding: EdgeInsets.all(10),
-            child: Form(
-                key: _keyForm,
-                child: Column(
-                  children: [
-                    FutureBuilder(
-                      future: _back.GetAlunos(),
-                      builder: (context, future) {
-                        if (future.hasData) {
-                          List<Alunos> lstStatus = future.data as List<Alunos>;
-                          return Observer(
-                            builder: ((context) =>
-                                DropdownButtonFormField<dynamic>(
-                                  decoration:
-                                      InputDecoration(labelText: "Aluno"),
-                                  value: _back.aula?.ID_ALUNO_INT != null
-                                      ? _back.aula!.ID_ALUNO_INT
-                                      : lstStatus[0].ID_ALUNO_INT,
-                                  items: lstStatus.map((e) {
-                                    return DropdownMenuItem(
-                                      value: e.ID_ALUNO_INT,
-                                      child: Text(e.NOME_STR.toString()),
-                                    );
-                                  }).toList(),
-                                  //onChanged: _back.NovoReg ? (value) {} : null,
-                                  onChanged: _back.aula?.ID_ALUNO_INT == null
-                                      ? (value) {}
-                                      : null,
-                                  onSaved: (value) =>
-                                      _back.aula?.ID_ALUNO_INT = value,
-                                )),
-                          );
-                        } else {
-                          return CircularProgressIndicator();
-                        }
-                      },
-                    ),
-                    Row(
-                      children: [
-                        Observer(
-                          builder: (b) => DatePicker(
-                            label: "Data",
-                            date: _back.Data!,
-                            getDate: () async {
-                              DateTime? newDate = await showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(1900),
-                                  lastDate: DateTime.now());
-
-                              if (newDate != null) {
-                                _back.aula!.DATA_DTI = newDate;
-                                _back.setData(newDate);
-                              }
-                            },
-                          ),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+          child: Form(
+            key: keyForm,
+            child: Column(
+              children: [
+                FutureBuilder(
+                  future: back.onGetAlunos(),
+                  builder: (context, future) {
+                    if (future.hasData) {
+                      List<Alunos> lstStatus = future.data as List<Alunos>;
+                      return Observer(
+                        builder: (context) => DropdownButtonFormField<dynamic>(
+                          decoration:
+                              CustomInputDecoration.onCustomInputDecoration(
+                                  "Aluno"),
+                          value: back.aula?.idAluno != null
+                              ? back.aula!.idAluno
+                              : lstStatus[0].idAluno,
+                          items: lstStatus.map((e) {
+                            return DropdownMenuItem(
+                              value: e.idAluno,
+                              child: Text(e.nome.toString()),
+                            );
+                          }).toList(),
+                          //onChanged: _back.NovoReg ? (value) {} : null,
+                          onChanged:
+                              back.aula?.idAluno == null ? (value) {} : null,
+                          onSaved: (value) => back.aula?.idAluno = value,
                         ),
-                        SizedBox(width: 80),
-                        Observer(
-                          builder: (context) => Expanded(
-                            child: CheckboxListTile(
-                              title: Text("Concluído"),
-                              value: _back.Concluido,
-                              onChanged: (bool? value) {
-                                _back.Concluido = value;
-                                _back.aula!.CONCLUIDO_BIT = value!;
-                              },
-                              controlAffinity: ListTileControlAffinity.leading,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    FutureBuilder(
-                      future: _back.GetTipos(),
-                      builder: (context, future) {
-                        if (future.hasData) {
-                          List<TiposAula> lstStatus =
-                              future.data as List<TiposAula>;
-                          return DropdownButtonFormField<dynamic>(
-                            decoration: InputDecoration(labelText: "Tipo"),
-                            value: _back.aula?.ID_TIPO_INT != null
-                                ? _back.aula!.ID_TIPO_INT
-                                : 1,
-                            items: lstStatus.map((e) {
-                              return DropdownMenuItem(
-                                value: e.ID_TIPO_INT,
-                                child: Text(e.DESCRICAO_STR.toString()),
-                              );
-                            }).toList(),
-                            onChanged: (value) {},
-                            onSaved: (value) => _back.aula?.ID_TIPO_INT = value,
-                          );
-                        } else {
-                          return CircularProgressIndicator();
-                        }
+                      );
+                    } else {
+                      return const CircularProgressIndicator();
+                    }
+                  },
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    DatePicker(
+                      label: "Data",
+                      dateInit: back.aula!.data,
+                      tipoData: 0,
+                      onDateTimeChanged: (dt) {
+                        back.aula!.data = dt;
                       },
                     ),
-                    TextFormField(
-                      decoration: InputDecoration(labelText: "Instrutor"),
-                      initialValue: _back.aula?.INSTRUTOR_STR,
-                      onSaved: (value) => _back.aula?.INSTRUTOR_STR = value,
-                    ),
-                    TextFormField(
-                      decoration: InputDecoration(labelText: "Assunto"),
-                      initialValue: _back.aula?.ASSUNTO_STR,
-                      onSaved: (value) => _back.aula?.ASSUNTO_STR = value,
-                    ),
-                    TextFormField(
-                      decoration: InputDecoration(labelText: "Observação"),
-                      initialValue: _back.aula?.OBSERVACAO_STR,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: 5,
-                      onSaved: (value) => _back.aula?.OBSERVACAO_STR = value,
-                    ),
+                    const SizedBox(width: 80),
+                    CustomCheckBox(
+                      label: "Concluído",
+                      value: back.aula!.concluido,
+                      onChange: (bool? value) {
+                        back.aula!.concluido = value!;
+                      },
+                    )
                   ],
-                ))),
+                ),
+                FutureBuilder(
+                  future: back.onGetTipos(),
+                  builder: (context, future) {
+                    if (future.hasData) {
+                      List<TiposAula> lstStatus =
+                          future.data as List<TiposAula>;
+                      return DropdownButtonFormField<dynamic>(
+                        decoration:
+                            CustomInputDecoration.onCustomInputDecoration(
+                                "Tipo"),
+                        value:
+                            back.aula?.idTipo != null ? back.aula!.idTipo : 1,
+                        items: lstStatus.map((e) {
+                          return DropdownMenuItem(
+                            value: e.idTipo,
+                            child: Text(e.descricao.toString()),
+                          );
+                        }).toList(),
+                        onChanged: (value) {},
+                        onSaved: (value) => back.aula?.idTipo = value,
+                      );
+                    } else {
+                      return const CircularProgressIndicator();
+                    }
+                  },
+                ),
+                SizedBox(height: alturaCampos),
+                CustomTextField(
+                  label: "Instrutor",
+                  textCapitalization: TextCapitalization.words,
+                  initialValue: back.aula?.instrutor,
+                  onSaved: (value) => back.aula?.instrutor = value,
+                ),
+                CustomTextField(
+                  label: "Assunto",
+                  textCapitalization: TextCapitalization.words,
+                  initialValue: back.aula?.assunto,
+                  onSaved: (value) => back.aula?.assunto = value,
+                ),
+                CustomTextField(
+                  label: "Observação",
+                  textCapitalization: TextCapitalization.words,
+                  textInputType: TextInputType.multiline,
+                  maxLines: 5,
+                  initialValue: back.aula?.observacao,
+                  onSaved: (value) => back.aula?.observacao = value,
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

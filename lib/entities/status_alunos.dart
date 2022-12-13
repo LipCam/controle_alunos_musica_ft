@@ -1,6 +1,6 @@
 class StatusAlunos {
-  int? ID_STATUS_INT;
-  String? DESCRICAO_STR;
+  int? idStatus;
+  String? descricao;
 
-  StatusAlunos({this.ID_STATUS_INT, this.DESCRICAO_STR});
+  StatusAlunos({this.idStatus, this.descricao});
 }
