@@ -44,7 +44,9 @@ class _DatePickerState extends State<DatePicker> {
           Text(
             widget.label,
             style: TextStyle(
-              color: widget.color != null ? widget.color! : Colors.grey,
+              color: widget.color != null
+                  ? widget.color!
+                  : Theme.of(context).textTheme.bodyText1?.backgroundColor,
               fontSize: 15,
             ),
           ),
@@ -106,7 +108,7 @@ class _DatePickerState extends State<DatePicker> {
   }
 }
 
-class DatePickerClearStf extends StatefulWidget {
+class DatePickerClear extends StatefulWidget {
   final String label;
   final DateTime? date;
   final ValueChanged<DateTime> onDateTimeChanged;
@@ -116,7 +118,7 @@ class DatePickerClearStf extends StatefulWidget {
   ///0-(Default)Data passada e futura, 1-Apenas data passada, 2-Apenas data futura
   final int? tipoData;
 
-  const DatePickerClearStf({
+  const DatePickerClear({
     required this.label,
     this.date,
     required this.onDateTimeChanged,
@@ -126,10 +128,10 @@ class DatePickerClearStf extends StatefulWidget {
   });
 
   @override
-  State<DatePickerClearStf> createState() => _DatePickerClearStfState();
+  State<DatePickerClear> createState() => _DatePickerClearState();
 }
 
-class _DatePickerClearStfState extends State<DatePickerClearStf> {
+class _DatePickerClearState extends State<DatePickerClear> {
   DateTime? data;
 
   @override
@@ -146,78 +148,82 @@ class _DatePickerClearStfState extends State<DatePickerClearStf> {
         Text(
           widget.label,
           style: TextStyle(
-            color: widget.color != null ? widget.color! : Colors.grey,
+            color: widget.color != null
+                ? widget.color!
+                : Theme.of(context).textTheme.bodyText1?.backgroundColor,
             fontSize: 15,
           ),
         ),
         Row(
           children: [
             GestureDetector(
-              onTap: () async {
-                DateTime? newDate = await showDatePicker(
-                  context: context,
-                  locale: const Locale("pt", "BR"),
-                  initialDate: data ?? DateTime.now(),
-                  firstDate: (widget.tipoData == 0 || widget.tipoData == 1)
-                      ? DateTime(1900)
-                      : DateTime.now(),
-                  lastDate: (widget.tipoData == 0 || widget.tipoData == 1)
-                      ? DateTime.now()
-                      : DateTime(
-                          DateTime.now().year,
-                          DateTime.now().month + 12,
-                          DateTime.now().day,
-                        ),
-                  builder: (BuildContext context, Widget? child) {
-                    return Theme(
-                      data: ThemeData.light().copyWith(
-                        colorScheme: ColorScheme.light(
-                          primary: widget.color != null
-                              ? widget.color!
-                              : Theme.of(context).primaryColor,
-                        ),
-                      ),
-                      child: child!,
-                    );
-                  },
-                );
-
-                if (newDate != null) {
-                  setState(() {
-                    data = newDate;
-                    widget.onDateTimeChanged(data!);
-                  });
-                }
-              },
+              onTap: onGetDate,
               child: Text(
                 data != null
                     ? DateFormat("dd/MM/yyyy").format(data!)
-                    : "___/___/_____",
+                    : "___/___/____",
                 style: const TextStyle(fontSize: 17),
               ),
             ),
             const SizedBox(width: 10),
-            Visibility(
-              visible: data != null,
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    data = null;
-                    widget.clearDate();
-                  });
-                },
-                child: const Text(
-                  "X",
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+            if (data != null)
+              IconButton(
+                  icon: const Icon(Icons.cancel_outlined),
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                  onPressed: () {
+                    setState(() {
+                      data = null;
+                      widget.clearDate();
+                    });
+                  })
+            else
+              IconButton(
+                icon: const Icon(Icons.edit),
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+                onPressed: onGetDate,
               ),
-            )
           ],
         ),
       ],
     );
+  }
+
+  onGetDate() async {
+    DateTime? newDate = await showDatePicker(
+      context: context,
+      locale: const Locale("pt", "BR"),
+      initialDate: data ?? DateTime.now(),
+      firstDate: (widget.tipoData == 0 || widget.tipoData == 1)
+          ? DateTime(1900)
+          : DateTime.now(),
+      lastDate: (widget.tipoData == 0 || widget.tipoData == 1)
+          ? DateTime.now()
+          : DateTime(
+              DateTime.now().year,
+              DateTime.now().month + 12,
+              DateTime.now().day,
+            ),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.light(
+              primary: widget.color != null
+                  ? widget.color!
+                  : Theme.of(context).primaryColor,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (newDate != null) {
+      setState(() {
+        data = newDate;
+        widget.onDateTimeChanged(data!);
+      });
+    }
   }
 }

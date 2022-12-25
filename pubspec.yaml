@@ -30,13 +30,15 @@ dev_dependencies:
     sdk: flutter
   build_runner: 2.2.0
   mobx_codegen: 2.0.7
+  flutter_lints: ^2.0.0
+  flutter_launcher_icons: ^0.11.0
 
-  
-  flutter_lints: ^2.0.0 #comente para remover as linhas azuis chatas da P@rr@
-
+flutter_icons:
+  image_path: assets/images/app-icon.png
+  android: true
+  ios: true
 
 flutter:
-
   uses-material-design: true
 
   assets:

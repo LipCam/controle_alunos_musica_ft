@@ -52,9 +52,10 @@ class RelAlunosDAO {
         await _db!.rawQuery('''SELECT A.ID_ALUNO_INT, 
                 A.DATA_DTI, TP.DESCRICAO_STR AS TIPO_STR, A.CONCLUIDO_BIT,
                 CASE WHEN A.CONCLUIDO_BIT = 0 THEN 'Pendente' ELSE 'Concluído' END AS CONCLUIDO_STR,
-                IFNULL(A.INSTRUTOR_STR, '') AS INSTRUTOR_STR, IFNULL(A.ASSUNTO_STR, '') AS ASSUNTO_STR
+                A.ID_INSTRUTOR_INT, INST.NOME_STR AS INSTRUTOR_STR, IFNULL(A.ASSUNTO_STR, '') AS ASSUNTO_STR
                 FROM CAD_AULAS_TAB A
                 INNER JOIN SIS_TIPOS_AULA_TAB TP ON TP.ID_TIPO_INT = A.ID_TIPO_INT
+                INNER JOIN CAD_INSTRUTORES_TAB INST ON INST.ID_INSTRUTOR_INT = A.ID_INSTRUTOR_INT
                 WHERE A.ID_ALUNO_INT = ?
                 ORDER BY A.DATA_DTI''', [idAlunoInt]);
 
@@ -63,6 +64,7 @@ class RelAlunosDAO {
       return Aulas(
         idAluno: linha["ID_ALUNO_INT"],
         tipo: linha["TIPO_STR"],
+        idInstrutor: linha["ID_INSTRUTOR_INT"],
         instrutor: linha["INSTRUTOR_STR"],
         data: DateTime.parse(linha["DATA_DTI"]),
         concluido: linha["CONCLUIDO_BIT"] == 1 ? true : false,

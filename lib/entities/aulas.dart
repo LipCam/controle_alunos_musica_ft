@@ -2,6 +2,7 @@ class Aulas {
   int? idAula;
   int? idAluno;
   int? idTipo;
+  int? idInstrutor;
   String? instrutor;
   DateTime data;
   bool concluido;
@@ -17,6 +18,7 @@ class Aulas {
     this.idAula,
     this.idAluno,
     this.idTipo,
+    this.idInstrutor,
     this.instrutor,
     required this.data,
     required this.concluido,

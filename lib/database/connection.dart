@@ -43,6 +43,15 @@ CriarTabelas(Database db) {
                 OBSERVACAO_STR NVARCHAR(255),
                 DATA_IMPORTACAO_DTI DATETIME)''');
 
+  db.execute('''CREATE TABLE IF NOT EXISTS CAD_INSTRUTORES_TAB (
+                ID_INSTRUTOR_INT INTEGER NOT NULL PRIMARY KEY,
+                NOME_STR NVARCHAR(150),
+                INSTRUMENTO_STR NVARCHAR(150),
+                FONE_STR NVARCHAR(15),
+                DATA_NASCIMENTO_DTI DATETIME, 
+                DATA_OFICIALIZACAO_DTI DATETIME, 
+                ENDERECO_STR NVARCHAR(255))''');
+
   db.execute('''CREATE TABLE IF NOT EXISTS SIS_TIPOS_AULA_TAB (
                 ID_TIPO_INT INT, 
                 DESCRICAO_STR NVARCHAR(150))''');
@@ -51,13 +60,14 @@ CriarTabelas(Database db) {
                 ID_AULA_INT INTEGER NOT NULL PRIMARY KEY, 
                 ID_ALUNO_INT INT, 
                 ID_TIPO_INT INT, 
-                INSTRUTOR_STR NVARCHAR(150), 
+                ID_INSTRUTOR_INT INT, 
                 DATA_DTI DATETIME, 
                 CONCLUIDO_BIT BIT, 
                 ASSUNTO_STR NVARCHAR(255),
                 OBSERVACAO_STR NVARCHAR(255),
                 DATA_IMPORTACAO_DTI DATETIME, 
-                FOREIGN KEY(ID_ALUNO_INT) REFERENCES CAD_ALUNOS_TAB(ID_ALUNO_INT))''');
+                FOREIGN KEY(ID_ALUNO_INT) REFERENCES CAD_ALUNOS_TAB(ID_ALUNO_INT),
+                FOREIGN KEY(ID_INSTRUTOR_INT) REFERENCES CAD_INSTRUTORES_TAB(ID_INSTRUTOR_INT))''');
 
   /*db.execute('''CREATE TABLE IF NOT EXISTS TEMP_ALUNOS_TAB (
                 ID_TEMP_INT INT, 
@@ -92,13 +102,11 @@ InserirDados(Database db) {
   db.execute(
       "INSERT INTO SIS_STATUS_ALUNOS_TAB (ID_STATUS_INT, DESCRICAO_STR) VALUES (1,'Aprendiz')");
   db.execute(
-      "INSERT INTO SIS_STATUS_ALUNOS_TAB (ID_STATUS_INT, DESCRICAO_STR) VALUES (2,'Ensaio musical')");
+      "INSERT INTO SIS_STATUS_ALUNOS_TAB (ID_STATUS_INT, DESCRICAO_STR) VALUES (2,'Culto de jovens/Ensaio')");
   db.execute(
-      "INSERT INTO SIS_STATUS_ALUNOS_TAB (ID_STATUS_INT, DESCRICAO_STR) VALUES (3,'Culto de jovens')");
+      "INSERT INTO SIS_STATUS_ALUNOS_TAB (ID_STATUS_INT, DESCRICAO_STR) VALUES (3,'Culto oficial/Ensaio')");
   db.execute(
-      "INSERT INTO SIS_STATUS_ALUNOS_TAB (ID_STATUS_INT, DESCRICAO_STR) VALUES (4,'Culto oficial')");
-  db.execute(
-      "INSERT INTO SIS_STATUS_ALUNOS_TAB (ID_STATUS_INT, DESCRICAO_STR) VALUES (5,'Oficializado(a)')");
+      "INSERT INTO SIS_STATUS_ALUNOS_TAB (ID_STATUS_INT, DESCRICAO_STR) VALUES (4,'Oficializado(a)')");
 
   db.execute("DELETE FROM SIS_TIPOS_AULA_TAB");
   db.execute(

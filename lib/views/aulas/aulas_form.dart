@@ -5,6 +5,7 @@ import 'package:controle_alunos_musica_ft/components/custom_text_field.dart';
 import 'package:controle_alunos_musica_ft/config/app_toast.dart';
 import 'package:controle_alunos_musica_ft/components/date_picker.dart';
 import 'package:controle_alunos_musica_ft/entities/alunos.dart';
+import 'package:controle_alunos_musica_ft/entities/instrutores.dart';
 import 'package:controle_alunos_musica_ft/entities/tipos_aula.dart';
 import 'package:controle_alunos_musica_ft/views/aulas/aulas_form_back.dart';
 import 'package:flutter/material.dart';
@@ -93,10 +94,10 @@ class AulasForm extends StatelessWidget {
             child: Column(
               children: [
                 FutureBuilder(
-                  future: back.onGetAlunos(),
+                  future: back.onGetAlunosCmb(),
                   builder: (context, future) {
                     if (future.hasData) {
-                      List<Alunos> lstStatus = future.data as List<Alunos>;
+                      List<Alunos> lstAlunos = future.data as List<Alunos>;
                       return Observer(
                         builder: (context) => DropdownButtonFormField<dynamic>(
                           decoration:
@@ -104,17 +105,19 @@ class AulasForm extends StatelessWidget {
                                   "Aluno"),
                           value: back.aula?.idAluno != null
                               ? back.aula!.idAluno
-                              : lstStatus[0].idAluno,
-                          items: lstStatus.map((e) {
+                              : lstAlunos.isNotEmpty
+                                  ? lstAlunos[0].idAluno
+                                  : null,
+                          items: lstAlunos.map((e) {
                             return DropdownMenuItem(
                               value: e.idAluno,
                               child: Text(e.nome.toString()),
                             );
                           }).toList(),
-                          //onChanged: _back.NovoReg ? (value) {} : null,
                           onChanged:
                               back.aula?.idAluno == null ? (value) {} : null,
                           onSaved: (value) => back.aula?.idAluno = value,
+                          validator: back.validaAluno,
                         ),
                       );
                     } else {
@@ -144,7 +147,7 @@ class AulasForm extends StatelessWidget {
                   ],
                 ),
                 FutureBuilder(
-                  future: back.onGetTipos(),
+                  future: back.onGetTiposCmb(),
                   builder: (context, future) {
                     if (future.hasData) {
                       List<TiposAula> lstStatus =
@@ -170,12 +173,37 @@ class AulasForm extends StatelessWidget {
                   },
                 ),
                 SizedBox(height: alturaCampos),
-                CustomTextField(
-                  label: "Instrutor",
-                  textCapitalization: TextCapitalization.words,
-                  initialValue: back.aula?.instrutor,
-                  onSaved: (value) => back.aula?.instrutor = value,
+                FutureBuilder(
+                  future: back.onGetInstrutoresCmb(),
+                  builder: (context, future) {
+                    if (future.hasData) {
+                      List<Instrutores> lstInstrutores =
+                          future.data as List<Instrutores>;
+                      return DropdownButtonFormField<dynamic>(
+                        decoration:
+                            CustomInputDecoration.onCustomInputDecoration(
+                                "Instrutor"),
+                        value: back.aula?.idInstrutor != null
+                            ? back.aula!.idInstrutor
+                            : lstInstrutores.isNotEmpty
+                                ? lstInstrutores[0].idInstrutor
+                                : null,
+                        items: lstInstrutores.map((e) {
+                          return DropdownMenuItem(
+                            value: e.idInstrutor,
+                            child: Text(e.nome.toString()),
+                          );
+                        }).toList(),
+                        onChanged: (value) {},
+                        onSaved: (value) => back.aula?.idInstrutor = value,
+                        validator: back.validaInstrutor,
+                      );
+                    } else {
+                      return const CircularProgressIndicator();
+                    }
+                  },
                 ),
+                SizedBox(height: alturaCampos),
                 CustomTextField(
                   label: "Assunto",
                   textCapitalization: TextCapitalization.words,

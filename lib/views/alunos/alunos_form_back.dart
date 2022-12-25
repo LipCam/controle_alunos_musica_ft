@@ -34,7 +34,7 @@ abstract class _AlunosFormBack with Store {
   }
 
   String? validaNome(String? nome) {
-    if (nome == null || nome == "") return "Informe o nome";
+    if (nome == null || nome == "") return "Informe o Nome";
     return null;
   }
 

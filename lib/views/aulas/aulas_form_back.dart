@@ -1,8 +1,11 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'package:controle_alunos_musica_ft/database/dao/alunos_dao.dart';
 import 'package:controle_alunos_musica_ft/database/dao/aulas_dao.dart';
+import 'package:controle_alunos_musica_ft/database/dao/instrutores_dao.dart';
 import 'package:controle_alunos_musica_ft/entities/alunos.dart';
 import 'package:controle_alunos_musica_ft/entities/aulas.dart';
+import 'package:controle_alunos_musica_ft/entities/instrutores.dart';
 import 'package:controle_alunos_musica_ft/entities/tipos_aula.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
@@ -14,6 +17,8 @@ class AulasFormBack = _AulasFormBack with _$AulasFormBack;
 abstract class _AulasFormBack with Store {
   Aulas? aula;
   final _dao = AulasDAO();
+  final _daoAlunos = AlunosDAO();
+  final _daoInstrutores = InstrutoresDAO();
 
   _AulasFormBack(BuildContext context) {
     aula = ModalRoute.of(context)?.settings.arguments as Aulas;
@@ -27,16 +32,31 @@ abstract class _AulasFormBack with Store {
   @observable
   bool novoReg = true;
 
-  Future<List<Alunos>> onGetAlunos() {
-    return _dao.onGetAlunos();
+  Future<List<Alunos>> onGetAlunosCmb() {
+    return _daoAlunos.onGetCmb();
   }
 
-  Future<List<TiposAula>> onGetTipos() {
-    return _dao.onGetTipos();
+  Future<List<TiposAula>> onGetTiposCmb() {
+    return _dao.onGetTiposCmb();
+  }
+
+  Future<List<Instrutores>> onGetInstrutoresCmb() {
+    return _daoInstrutores.onGetCmb();
   }
 
   Future<int> onSave() async {
     return await _dao.onSave(aula!);
+  }
+
+  ///Validadores
+  String? validaAluno(dynamic idAluno) {
+    if (idAluno == null) return "Informe o Aluno";
+    return null;
+  }
+
+  String? validaInstrutor(dynamic idInstrutor) {
+    if (idInstrutor == null) return "Informe o Instrutor";
+    return null;
   }
 
   onDelete(int id) {

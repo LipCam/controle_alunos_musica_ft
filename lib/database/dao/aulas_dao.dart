@@ -1,5 +1,4 @@
 import 'package:controle_alunos_musica_ft/database/connection.dart';
-import 'package:controle_alunos_musica_ft/entities/alunos.dart';
 import 'package:controle_alunos_musica_ft/entities/aulas.dart';
 import 'package:controle_alunos_musica_ft/entities/tipos_aula.dart';
 import 'package:sqflite/sqflite.dart';
@@ -42,7 +41,7 @@ class AulasDAO {
         aluno: linha["ALUNO_STR"],
         idTipo: linha["ID_TIPO_INT"],
         tipo: linha["TIPO_STR"],
-        instrutor: linha["INSTRUTOR_STR"],
+        idInstrutor: linha["ID_INSTRUTOR_INT"],
         data: DateTime.parse(linha["DATA_DTI"]),
         concluido: linha["CONCLUIDO_BIT"] == 1 ? true : false,
         concluidoStr: linha["CONCLUIDO_STR"],
@@ -54,23 +53,7 @@ class AulasDAO {
     return lstEntities;
   }
 
-  Future<List<Alunos>> onGetAlunos() async {
-    _db = await Connection.Get();
-
-    List<Map<String, dynamic>> lstMap =
-        await _db!.query("CAD_ALUNOS_TAB", orderBy: "NOME_STR");
-    List<Alunos> lstEntities = List.generate(lstMap.length, (i) {
-      var linha = lstMap[i];
-      return Alunos(
-        idAluno: linha["ID_ALUNO_INT"],
-        nome: linha["NOME_STR"],
-      );
-    });
-
-    return lstEntities;
-  }
-
-  Future<List<TiposAula>> onGetTipos() async {
+  Future<List<TiposAula>> onGetTiposCmb() async {
     _db = await Connection.Get();
 
     List<Map<String, dynamic>> lstMap = await _db!.query("SIS_TIPOS_AULA_TAB");
@@ -88,13 +71,13 @@ class AulasDAO {
     String sql;
     if (aula.idAula == null) {
       sql =
-          '''INSERT INTO CAD_AULAS_TAB (ID_ALUNO_INT, ID_TIPO_INT, INSTRUTOR_STR, DATA_DTI, 
+          '''INSERT INTO CAD_AULAS_TAB (ID_ALUNO_INT, ID_TIPO_INT, ID_INSTRUTOR_INT, DATA_DTI, 
               CONCLUIDO_BIT, ASSUNTO_STR, OBSERVACAO_STR)
               VALUES (?,?,?,?,?,?,?)''';
       int id = await _db!.rawInsert(sql, [
         aula.idAluno,
         aula.idTipo,
-        aula.instrutor,
+        aula.idInstrutor,
         aula.data.toString(),
         aula.concluido,
         aula.assunto,
@@ -104,13 +87,13 @@ class AulasDAO {
       return id;
     } else {
       sql =
-          '''UPDATE CAD_AULAS_TAB SET ID_ALUNO_INT = ?, ID_TIPO_INT = ?, INSTRUTOR_STR = ?,
+          '''UPDATE CAD_AULAS_TAB SET ID_ALUNO_INT = ?, ID_TIPO_INT = ?, ID_INSTRUTOR_INT = ?,
               DATA_DTI = ?, CONCLUIDO_BIT = ?, ASSUNTO_STR = ?, OBSERVACAO_STR = ?
               WHERE ID_AULA_INT = ?''';
       _db!.rawUpdate(sql, [
         aula.idAluno,
         aula.idTipo,
-        aula.instrutor,
+        aula.idInstrutor,
         aula.data.toString(),
         aula.concluido,
         aula.assunto,

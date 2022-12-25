@@ -30,6 +30,7 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
     return Expanded(
       child: CheckboxListTile(
         title: Text(widget.label),
+        contentPadding: EdgeInsets.zero,
         value: value,
         onChanged: (bool? value) {
           setState(() {

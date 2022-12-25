@@ -53,6 +53,22 @@ class AlunosDAO {
     return lstEntities;
   }
 
+  Future<List<Alunos>> onGetCmb() async {
+    _db = await Connection.Get();
+
+    List<Map<String, dynamic>> lstMap =
+        await _db!.query("CAD_ALUNOS_TAB", orderBy: "NOME_STR");
+    List<Alunos> lstEntities = List.generate(lstMap.length, (i) {
+      var linha = lstMap[i];
+      return Alunos(
+        idAluno: linha["ID_ALUNO_INT"],
+        nome: linha["NOME_STR"],
+      );
+    });
+
+    return lstEntities;
+  }
+
   Future<List<StatusAlunos>> onGetStatus() async {
     _db = await Connection.Get();
 

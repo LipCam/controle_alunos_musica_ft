@@ -1,27 +1,26 @@
 // ignore_for_file: use_key_in_widget_constructors
 
-import 'package:controle_alunos_musica_ft/components/custom_input_decoration.dart';
 import 'package:controle_alunos_musica_ft/components/custom_text_field.dart';
 import 'package:controle_alunos_musica_ft/config/app_toast.dart';
 import 'package:controle_alunos_musica_ft/components/date_picker.dart';
-import 'package:controle_alunos_musica_ft/entities/status_alunos.dart';
-import 'package:controle_alunos_musica_ft/views/alunos/alunos_form_back.dart';
+import 'package:controle_alunos_musica_ft/views/instrutores/instrutores_form_back.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class AlunosForm extends StatelessWidget {
+class InstrutoresForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var back = AlunosFormBack(context);
+    var back = InstrutoresFormBack(context);
     final keyForm = GlobalKey<FormState>();
     TextEditingController? txtFoneController = TextEditingController();
-    txtFoneController.text = back.aluno?.fone != null ? back.aluno!.fone! : "";
+    txtFoneController.text =
+        back.instrutor?.fone != null ? back.instrutor!.fone! : "";
     double alturaCampos = 15;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Alunos"),
+        title: const Text("Instrutores"),
         actions: [
           IconButton(
               icon: const Icon(Icons.check),
@@ -29,7 +28,7 @@ class AlunosForm extends StatelessWidget {
               onPressed: () async {
                 if (keyForm.currentState!.validate()) {
                   keyForm.currentState!.save();
-                  back.aluno?.idAluno = await back.onSave();
+                  back.instrutor?.idInstrutor = await back.onSave();
                   back.novoReg = false;
                   onToastMessage("Salvo");
                 }
@@ -39,36 +38,6 @@ class AlunosForm extends StatelessWidget {
               visible: !back.novoReg,
               child: PopupMenuButton(itemBuilder: (a) {
                 return [
-                  PopupMenuItem(
-                    child: Row(
-                      children: const [
-                        Icon(
-                          Icons.music_note,
-                          color: Colors.black,
-                        ),
-                        SizedBox(width: 10),
-                        Text("Aulas"),
-                      ],
-                    ),
-                    onTap: () => Future(
-                      () => back.onGoToAulasLista(context, back.aluno!),
-                    ),
-                  ),
-                  PopupMenuItem(
-                    child: Row(
-                      children: const [
-                        Icon(
-                          Icons.notes,
-                          color: Colors.black,
-                        ),
-                        SizedBox(width: 10),
-                        Text("Relatório"),
-                      ],
-                    ),
-                    onTap: () {
-                      back.onGeraRelatorio(back.aluno!.idAluno!);
-                    },
-                  ),
                   PopupMenuItem(
                     child: Row(
                       children: const [
@@ -98,7 +67,7 @@ class AlunosForm extends StatelessWidget {
                               TextButton(
                                 child: const Text("Sim"),
                                 onPressed: () {
-                                  back.onDelete(back.aluno!.idAluno!);
+                                  back.onDelete(back.instrutor!.idInstrutor!);
                                   Navigator.of(context).pop();
                                   Navigator.of(context).pop();
                                 },
@@ -125,49 +94,15 @@ class AlunosForm extends StatelessWidget {
                     CustomTextField(
                       label: "Nome",
                       textCapitalization: TextCapitalization.words,
-                      initialValue: back.aluno?.nome,
+                      initialValue: back.instrutor?.nome,
                       validator: back.validaNome,
-                      onSaved: (value) => back.aluno?.nome = value,
+                      onSaved: (value) => back.instrutor?.nome = value,
                     ),
-                    FutureBuilder(
-                      future: back.onGetStatus(),
-                      builder: (context, future) {
-                        if (future.hasData) {
-                          List<StatusAlunos> lstStatus =
-                              future.data as List<StatusAlunos>;
-                          return DropdownButtonFormField<dynamic>(
-                            decoration:
-                                CustomInputDecoration.onCustomInputDecoration(
-                                    "Status"),
-                            value: back.aluno?.idStatus != null
-                                ? back.aluno!.idStatus
-                                : 1,
-                            items: lstStatus.map((e) {
-                              return DropdownMenuItem(
-                                value: e.idStatus,
-                                child: Text(e.descricao.toString()),
-                              );
-                            }).toList(),
-                            onChanged: (value) {},
-                            onSaved: (value) => back.aluno?.idStatus = value,
-                          );
-                        } else {
-                          return const CircularProgressIndicator();
-                        }
-                      },
-                    ),
-                    SizedBox(height: alturaCampos),
                     CustomTextField(
                       label: "Instrumento",
                       textCapitalization: TextCapitalization.words,
-                      initialValue: back.aluno?.instrumento,
-                      onSaved: (value) => back.aluno?.instrumento = value,
-                    ),
-                    CustomTextField(
-                      label: "Método",
-                      textCapitalization: TextCapitalization.words,
-                      initialValue: back.aluno?.metodo,
-                      onSaved: (value) => back.aluno?.metodo = value,
+                      initialValue: back.instrutor?.instrumento,
+                      onSaved: (value) => back.instrutor?.instrumento = value,
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,8 +112,7 @@ class AlunosForm extends StatelessWidget {
                             label: "Telefone",
                             textInputType: TextInputType.phone,
                             controller: txtFoneController,
-                            //initialValue: _back.aluno?.FONE_STR,
-                            onSaved: (value) => back.aluno?.fone = value,
+                            onSaved: (value) => back.instrutor?.fone = value,
                           ),
                         ),
                         IconButton(
@@ -207,53 +141,25 @@ class AlunosForm extends StatelessWidget {
                       children: [
                         DatePickerClear(
                           label: "Nascimento",
-                          date: back.aluno?.dataNascimento,
+                          date: back.instrutor?.dataNascimento,
                           tipoData: 1,
                           onDateTimeChanged: (dt) {
-                            back.aluno?.dataNascimento = dt;
+                            back.instrutor?.dataNascimento = dt;
                           },
                           clearDate: () {
-                            back.aluno?.dataNascimento = null;
-                          },
-                        ),
-                        const SizedBox(width: 80),
-                        DatePickerClear(
-                          label: "Batismo",
-                          date: back.aluno?.dataBatismo,
-                          tipoData: 1,
-                          onDateTimeChanged: (dt) {
-                            back.aluno?.dataBatismo = dt;
-                          },
-                          clearDate: () {
-                            back.aluno?.dataBatismo = null;
-                          },
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        DatePickerClear(
-                          label: "Início GEM",
-                          date: back.aluno?.dataInicioGEM,
-                          tipoData: 1,
-                          onDateTimeChanged: (dt) {
-                            back.aluno?.dataInicioGEM = dt;
-                          },
-                          clearDate: () {
-                            back.aluno?.dataInicioGEM = null;
+                            back.instrutor?.dataNascimento = null;
                           },
                         ),
                         const SizedBox(width: 80),
                         DatePickerClear(
                           label: "Oficialização",
-                          date: back.aluno?.dataOficializacao,
+                          date: back.instrutor?.dataOficializacao,
                           tipoData: 1,
                           onDateTimeChanged: (dt) {
-                            back.aluno?.dataOficializacao = dt;
+                            back.instrutor?.dataOficializacao = dt;
                           },
                           clearDate: () {
-                            back.aluno?.dataOficializacao = null;
+                            back.instrutor?.dataOficializacao = null;
                           },
                         ),
                       ],
@@ -262,18 +168,10 @@ class AlunosForm extends StatelessWidget {
                     CustomTextField(
                       label: "Endereço",
                       textCapitalization: TextCapitalization.words,
-                      initialValue: back.aluno?.endereco,
+                      initialValue: back.instrutor?.endereco,
                       textInputType: TextInputType.multiline,
                       maxLines: 3,
-                      onSaved: (value) => back.aluno?.endereco = value,
-                    ),
-                    CustomTextField(
-                      label: "Observação",
-                      textCapitalization: TextCapitalization.words,
-                      initialValue: back.aluno?.observacao,
-                      textInputType: TextInputType.multiline,
-                      maxLines: 5,
-                      onSaved: (value) => back.aluno?.observacao = value,
+                      onSaved: (value) => back.instrutor?.endereco = value,
                     ),
                   ],
                 ))),

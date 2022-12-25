@@ -5,6 +5,8 @@ import 'package:controle_alunos_musica_ft/views/alunos/alunos_lista.dart';
 import 'package:controle_alunos_musica_ft/views/aulas/aulas_form.dart';
 import 'package:controle_alunos_musica_ft/views/aulas/aulas_lista.dart';
 import 'package:controle_alunos_musica_ft/views/home/home_page.dart';
+import 'package:controle_alunos_musica_ft/views/instrutores/instrutores_form.dart';
+import 'package:controle_alunos_musica_ft/views/instrutores/instrutores_lista.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -13,6 +15,8 @@ class MyApp extends StatelessWidget {
   final String home = "home";
   final String alunosLista = "alunos_lista";
   final String alunosForm = "alunos_form";
+  final String instrutoresLista = "instrutores_lista";
+  final String instrutoresForm = "instrutores_form";
   final String aulasLista = "aulas_lista";
   final String aulasForm = "aulas_form";
 
@@ -39,6 +43,8 @@ class MyApp extends StatelessWidget {
         home: (context) => HomePage(),
         alunosLista: (context) => AlunosLista(),
         alunosForm: (context) => AlunosForm(),
+        instrutoresLista: (context) => InstrutoresLista(),
+        instrutoresForm: (context) => InstrutoresForm(),
         aulasLista: (context) => AulasLista(),
         aulasForm: (context) => AulasForm(),
       },
