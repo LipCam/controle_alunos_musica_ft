@@ -2,11 +2,11 @@
 
 import 'package:mobx/mobx.dart';
 
-part 'home_page_back.g.dart';
+part 'base_page_back.g.dart';
 
-class HomePageBack = _HomePageBack with _$HomePageBack;
+class BasePageBack = _BasePageBack with _$BasePageBack;
 
-abstract class _HomePageBack with Store {
+abstract class _BasePageBack with Store {
   @observable
   int currentPage = 0;
 }

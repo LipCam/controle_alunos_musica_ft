@@ -4,9 +4,9 @@ import 'package:controle_alunos_musica_ft/components/custom_checkbox.dart';
 import 'package:controle_alunos_musica_ft/components/custom_text_field.dart';
 import 'package:controle_alunos_musica_ft/config/app_toast.dart';
 import 'package:controle_alunos_musica_ft/components/date_picker.dart';
-import 'package:controle_alunos_musica_ft/entities/alunos.dart';
-import 'package:controle_alunos_musica_ft/entities/instrutores.dart';
-import 'package:controle_alunos_musica_ft/entities/tipos_aula.dart';
+import 'package:controle_alunos_musica_ft/models/alunos.dart';
+import 'package:controle_alunos_musica_ft/models/instrutores.dart';
+import 'package:controle_alunos_musica_ft/models/tipos_aula.dart';
 import 'package:controle_alunos_musica_ft/views/aulas/aulas_form_back.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -209,6 +209,7 @@ class AulasForm extends StatelessWidget {
                   textCapitalization: TextCapitalization.words,
                   initialValue: back.aula?.assunto,
                   onSaved: (value) => back.aula?.assunto = value,
+                  validator: back.validaAssunto,
                 ),
                 CustomTextField(
                   label: "Observação",

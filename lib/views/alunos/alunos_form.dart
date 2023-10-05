@@ -4,7 +4,7 @@ import 'package:controle_alunos_musica_ft/components/custom_input_decoration.dar
 import 'package:controle_alunos_musica_ft/components/custom_text_field.dart';
 import 'package:controle_alunos_musica_ft/config/app_toast.dart';
 import 'package:controle_alunos_musica_ft/components/date_picker.dart';
-import 'package:controle_alunos_musica_ft/entities/status_alunos.dart';
+import 'package:controle_alunos_musica_ft/models/status_alunos.dart';
 import 'package:controle_alunos_musica_ft/views/alunos/alunos_form_back.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -193,7 +193,7 @@ class AlunosForm extends StatelessWidget {
                         const SizedBox(width: 10),
                         IconButton(
                           icon: const Icon(
-                            Icons.whatsapp,
+                            Icons.phone,
                             color: Colors.green,
                             size: 40,
                           ),

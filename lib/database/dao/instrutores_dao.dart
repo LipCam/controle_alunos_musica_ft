@@ -1,5 +1,6 @@
+import 'package:controle_alunos_musica_ft/config/app_toast.dart';
 import 'package:controle_alunos_musica_ft/database/connection.dart';
-import 'package:controle_alunos_musica_ft/entities/instrutores.dart';
+import 'package:controle_alunos_musica_ft/models/instrutores.dart';
 import 'package:sqflite/sqflite.dart';
 
 class InstrutoresDAO {
@@ -102,8 +103,15 @@ class InstrutoresDAO {
   onDelete(int id) async {
     _db = await Connection.Get();
 
-    String sql = '''DELETE FROM CAD_INSTRUTORES_TAB
+    var lstMap = await _db!.rawQuery('''SELECT 1 FROM CAD_AULAS_TAB
+                    WHERE ID_INSTRUTOR_INT = ?''', [id]);
+
+    if (lstMap.isEmpty) {
+      String sql = '''DELETE FROM CAD_INSTRUTORES_TAB
                     WHERE ID_INSTRUTOR_INT = ?''';
-    _db!.rawDelete(sql, [id]);
+      _db!.rawDelete(sql, [id]);
+    } else {
+      onToastMessage("Exclusão não permitida. Há aulas para este instrutor.");
+    }
   }
 }

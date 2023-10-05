@@ -1,6 +1,8 @@
 import 'package:controle_alunos_musica_ft/database/connection.dart';
-import 'package:controle_alunos_musica_ft/entities/aulas.dart';
-import 'package:controle_alunos_musica_ft/entities/tipos_aula.dart';
+import 'package:controle_alunos_musica_ft/models/aulas.dart';
+import 'package:controle_alunos_musica_ft/models/aulas_dash.dart';
+import 'package:controle_alunos_musica_ft/models/tipos_aula.dart';
+import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
 
 class AulasDAO {
@@ -110,5 +112,84 @@ class AulasDAO {
     String sql = '''DELETE FROM CAD_AULAS_TAB
                     WHERE ID_AULA_INT = ?''';
     _db!.rawDelete(sql, [id]);
+  }
+
+  //----- Dash home -----
+  Future<AulasDash> onGetAulasHojeDash() async {
+    _db = await Connection.Get();
+
+    List<Map<String, dynamic>> lstMap;
+
+    lstMap = await _db!.rawQuery('''SELECT COUNT(1) AS QTD_INT
+              FROM CAD_AULAS_TAB
+              WHERE DATE(DATA_DTI) = ?''',
+        [DateFormat('yyyy-MM-dd').format(DateTime.now())]);
+
+    return AulasDash(
+      descricao: "Hoje",
+      qtd: lstMap[0]["QTD_INT"],
+    );
+  }
+
+  Future<AulasDash> onGetAulasMesDash() async {
+    _db = await Connection.Get();
+
+    List<Map<String, dynamic>> lstMap;
+
+    lstMap = await _db!.rawQuery('''SELECT COUNT(1) AS QTD_INT
+              FROM CAD_AULAS_TAB
+              WHERE CAST(STRFTIME('%Y', DATA_DTI) AS INTEGER) = ? AND CAST(STRFTIME('%m', DATA_DTI) AS INTEGER) = ?''',
+        [DateTime.now().year, DateTime.now().month]);
+
+    return AulasDash(
+      descricao: "Este Mês",
+      qtd: lstMap[0]["QTD_INT"],
+    );
+  }
+
+  Future<AulasDash> onGetAulasAnoDash() async {
+    _db = await Connection.Get();
+
+    List<Map<String, dynamic>> lstMap;
+
+    lstMap = await _db!.rawQuery('''SELECT COUNT(1) AS QTD_INT
+              FROM CAD_AULAS_TAB
+              WHERE CAST(STRFTIME('%Y', DATA_DTI) AS INTEGER) = ?''',
+        [DateTime.now().year]);
+
+    return AulasDash(
+      descricao: "Este Ano",
+      qtd: lstMap[0]["QTD_INT"],
+    );
+  }
+
+  Future<List<AulasDash>> onGetAulasInstrutoresDash() async {
+    _db = await Connection.Get();
+
+    List<Map<String, dynamic>> lstMap;
+
+    lstMap = await _db!
+        .rawQuery('''SELECT INS.NOME_STR AS INSTRUTOR_STR, COUNT(1) QTD_INT
+                FROM CAD_AULAS_TAB AU
+                INNER JOIN CAD_INSTRUTORES_TAB INS ON INS.ID_INSTRUTOR_INT = AU.ID_INSTRUTOR_INT
+                GROUP BY AU.ID_INSTRUTOR_INT
+                ORDER BY COUNT(AU.ID_AULA_INT) DESC''');
+
+    // lstMap = await _db!.rawQuery(
+    //     '''SELECT INS.NOME_STR AS INSTRUTOR_STR, COUNT(AU.ID_AULA_INT) QTD_INT
+    //             FROM CAD_INSTRUTORES_TAB INS
+    //             left JOIN CAD_AULAS_TAB AU ON INS.ID_INSTRUTOR_INT = AU.ID_INSTRUTOR_INT
+    //             GROUP BY INS.ID_INSTRUTOR_INT
+    //             ORDER BY COUNT(AU.ID_AULA_INT) DESC''');
+
+    List<AulasDash> lstEntities = List.generate(lstMap.length, (i) {
+      var linha = lstMap[i];
+      return AulasDash(
+        descricao: linha["INSTRUTOR_STR"],
+        qtd: linha["QTD_INT"],
+      );
+    });
+
+    return lstEntities;
   }
 }

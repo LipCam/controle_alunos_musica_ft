@@ -2,8 +2,8 @@
 
 import 'package:controle_alunos_musica_ft/config/my_app.dart';
 import 'package:controle_alunos_musica_ft/database/dao/aulas_dao.dart';
-import 'package:controle_alunos_musica_ft/entities/alunos.dart';
-import 'package:controle_alunos_musica_ft/entities/aulas.dart';
+import 'package:controle_alunos_musica_ft/models/alunos.dart';
+import 'package:controle_alunos_musica_ft/models/aulas.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
@@ -17,11 +17,11 @@ abstract class _AulasListaBack with Store {
   Alunos? aluno;
   DateFormat formatter = DateFormat('yyyy-MM-dd');
 
-  _AulasListaBack(BuildContext context) {
+  _AulasListaBack(BuildContext context, DateTime? dtIni, DateTime? dtFim) {
     var arguments = ModalRoute.of(context)?.settings.arguments;
     aluno = arguments != null ? arguments as Alunos : null;
-    dataIni = DateTime.now();
-    dataFim = DateTime.now();
+    dataIni = dtIni ?? DateTime.now();
+    dataFim = dtFim ?? DateTime.now();
     onCarregaLista(
         formatter.format(dataIni!), formatter.format(dataFim!), aluno?.idAluno);
   }

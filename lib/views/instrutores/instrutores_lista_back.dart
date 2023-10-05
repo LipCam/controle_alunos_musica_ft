@@ -2,7 +2,7 @@
 
 import 'package:controle_alunos_musica_ft/config/my_app.dart';
 import 'package:controle_alunos_musica_ft/database/dao/instrutores_dao.dart';
-import 'package:controle_alunos_musica_ft/entities/instrutores.dart';
+import 'package:controle_alunos_musica_ft/models/instrutores.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 

@@ -1,68 +1,100 @@
 // ignore_for_file: use_key_in_widget_constructors, must_be_immutable
 
-import 'package:controle_alunos_musica_ft/config/app_images.dart';
-import 'package:controle_alunos_musica_ft/views/alunos/alunos_lista.dart';
-import 'package:controle_alunos_musica_ft/views/aulas/aulas_lista.dart';
-import 'package:controle_alunos_musica_ft/views/home/home_page_back.dart';
-import 'package:controle_alunos_musica_ft/views/instrutores/instrutores_lista.dart';
+import 'package:controle_alunos_musica_ft/views/home/alunos_dash_tab.dart';
+import 'package:controle_alunos_musica_ft/views/home/aulas_dash_tab.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 
-class HomePage extends StatelessWidget {
-  HomePageBack back = HomePageBack();
+class HomePage extends StatefulWidget {
+  final void Function()? setAulaFiltroHoje;
+  final void Function()? setAulaFiltroMes;
+  final void Function()? setAulaFiltroAno;
+
+  const HomePage({
+    super.key,
+    this.setAulaFiltroHoje,
+    this.setAulaFiltroMes,
+    this.setAulaFiltroAno,
+  });
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int currentPage = 0;
   PageController pageController = PageController();
 
   @override
   Widget build(BuildContext context) {
+    if (pageController.hasClients) pageController.jumpToPage(currentPage);
+
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text("Controle Alunos"),
-      // ),
-      body: PageView(
-        controller: pageController,
-        physics: const NeverScrollableScrollPhysics(),
+      appBar: AppBar(
+        title: const Text("Controle Alunos"),
+      ),
+      body: Column(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage(AppImages.wallpaperHome), fit: BoxFit.fill),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              GestureDetector(
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    "Aulas",
+                    style: TextStyle(
+                        color:
+                            currentPage == 0 ? Colors.black : Colors.grey[400],
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                onTap: () {
+                  setState(() {
+                    currentPage = 0;
+                  });
+                },
+              ),
+              GestureDetector(
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    "Alunos",
+                    style: TextStyle(
+                        color:
+                            currentPage == 1 ? Colors.black : Colors.grey[400],
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                onTap: () {
+                  setState(() {
+                    currentPage = 1;
+                  });
+                },
+              ),
+            ],
+          ),
+          Expanded(
+            child: PageView(
+              controller: pageController,
+              //physics: const NeverScrollableScrollPhysics(),
+              onPageChanged: (value) {
+                setState(() {
+                  currentPage = value;
+                });
+              },
+              children: [
+                AulasDashTab(
+                  setAulaFiltroHoje: widget.setAulaFiltroHoje,
+                  setAulaFiltroMes: widget.setAulaFiltroMes,
+                  setAulaFiltroAno: widget.setAulaFiltroAno,
+                ),
+                AlunosDashTab(),
+              ],
             ),
           ),
-          AlunosLista(),
-          InstrutoresLista(),
-          AulasLista()
         ],
-      ),
-      bottomNavigationBar: Observer(
-        builder: (context) => BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          currentIndex: back.currentPage,
-          backgroundColor: Colors.blue,
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.black,
-          onTap: (value) {
-            back.currentPage = value;
-            pageController.jumpToPage(back.currentPage);
-          },
-          items: const [
-            BottomNavigationBarItem(
-              label: "Home",
-              icon: Icon(Icons.home),
-            ),
-            BottomNavigationBarItem(
-              label: "Alunos",
-              icon: Icon(Icons.person),
-            ),
-            BottomNavigationBarItem(
-              label: "Instrutores",
-              icon: Icon(Icons.school),
-            ),
-            BottomNavigationBarItem(
-              label: "Aulas",
-              icon: Icon(Icons.music_note_sharp),
-            ),
-          ],
-        ),
       ),
     );
   }

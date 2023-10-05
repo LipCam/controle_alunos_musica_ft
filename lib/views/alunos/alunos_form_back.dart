@@ -2,8 +2,8 @@
 
 import 'package:controle_alunos_musica_ft/config/my_app.dart';
 import 'package:controle_alunos_musica_ft/database/dao/alunos_dao.dart';
-import 'package:controle_alunos_musica_ft/entities/alunos.dart';
-import 'package:controle_alunos_musica_ft/entities/status_alunos.dart';
+import 'package:controle_alunos_musica_ft/models/alunos.dart';
+import 'package:controle_alunos_musica_ft/models/status_alunos.dart';
 import 'package:controle_alunos_musica_ft/views/alunos/relatorio/relatorio_alunos.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';

@@ -1,6 +1,6 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, use_key_in_widget_constructors
 
-import 'package:controle_alunos_musica_ft/entities/instrutores.dart';
+import 'package:controle_alunos_musica_ft/models/instrutores.dart';
 import 'package:controle_alunos_musica_ft/views/instrutores/instrutores_lista_back.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -68,18 +68,16 @@ class InstrutoresLista extends StatelessWidget {
                 : const Text("Instrutores"),
             actions: _buildActions(),
           ),
-          body: Column(
-            children: [
-              const SizedBox(height: 10),
-              futureBuilder(),
-            ],
+          body: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: instrutoresLista(),
           ),
         );
       },
     );
   }
 
-  FutureBuilder futureBuilder() {
+  FutureBuilder instrutoresLista() {
     return FutureBuilder(
       future: _back.lstEntities,
       builder: (context, future) {
@@ -91,6 +89,7 @@ class InstrutoresLista extends StatelessWidget {
               itemBuilder: (context, i) {
                 Instrutores aluno = lst[i];
                 return ListTile(
+                  dense: true,
                   title: Text(
                     aluno.nome.toString(),
                     style: const TextStyle(

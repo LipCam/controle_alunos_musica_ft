@@ -2,8 +2,8 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:controle_alunos_musica_ft/database/dao/rel_alunos_dao.dart';
-import 'package:controle_alunos_musica_ft/entities/alunos.dart';
-import 'package:controle_alunos_musica_ft/entities/aulas.dart';
+import 'package:controle_alunos_musica_ft/models/alunos.dart';
+import 'package:controle_alunos_musica_ft/models/aulas.dart';
 import 'package:intl/intl.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';

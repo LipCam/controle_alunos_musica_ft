@@ -46,7 +46,7 @@ class _DatePickerState extends State<DatePicker> {
             style: TextStyle(
               color: widget.color != null
                   ? widget.color!
-                  : Theme.of(context).textTheme.bodyText1?.backgroundColor,
+                  : Theme.of(context).textTheme.bodyLarge?.backgroundColor,
               fontSize: 15,
             ),
           ),
@@ -150,7 +150,7 @@ class _DatePickerClearState extends State<DatePickerClear> {
           style: TextStyle(
             color: widget.color != null
                 ? widget.color!
-                : Theme.of(context).textTheme.bodyText1?.backgroundColor,
+                : Theme.of(context).textTheme.bodyLarge?.backgroundColor,
             fontSize: 15,
           ),
         ),
@@ -225,5 +225,128 @@ class _DatePickerClearState extends State<DatePickerClear> {
         widget.onDateTimeChanged(data!);
       });
     }
+  }
+}
+
+class DatePickerRange extends StatefulWidget {
+  final String label;
+  final DateTime? dateInit;
+  final DateTime? dateEnd;
+  final ValueChanged<DateTimeRange> onDateTimeRageChanged;
+  final Color? color;
+  final int? dateType;
+
+  const DatePickerRange({
+    super.key,
+    required this.label,
+    this.dateInit,
+    this.dateEnd,
+    required this.onDateTimeRageChanged,
+    this.color,
+
+    ///0-(Default)Data passada e futura, 1-Apenas data passada, 2-Apenas data futura
+    this.dateType,
+  });
+
+  @override
+  State<DatePickerRange> createState() => _DatePickerRangeState();
+}
+
+class _DatePickerRangeState extends State<DatePickerRange> {
+  DateTimeRange? dataIntervalo;
+  DateTime? dataInicio;
+  DateTime? dataFim;
+
+  @override
+  void initState() {
+    dataIntervalo = DateTimeRange(
+      start: widget.dateInit ?? DateTime.now(),
+      end: widget.dateEnd ?? DateTime.now(),
+    );
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            widget.label,
+            style: TextStyle(
+              color: widget.color != null ? widget.color! : Colors.grey,
+              fontSize: 15,
+            ),
+          ),
+          Row(
+            children: [
+              GestureDetector(
+                onTap: () async {
+                  DateTimeRange? newDate = await showDateRangePicker(
+                    context: context,
+                    locale: const Locale("pt", "BR"),
+                    initialDateRange: dataIntervalo,
+                    firstDate: (widget.dateType == 0 || widget.dateType == 1)
+                        ? DateTime(1900)
+                        : DateTime.now(),
+                    lastDate: (widget.dateType == 0 || widget.dateType == 1)
+                        ? DateTime.now()
+                        : DateTime(
+                            DateTime.now().year,
+                            DateTime.now().month + 12,
+                            DateTime.now().day,
+                          ),
+                    builder: (BuildContext context, Widget? child) {
+                      return Theme(
+                        data: ThemeData.light().copyWith(
+                          colorScheme: ColorScheme.light(
+                            primary: widget.color != null
+                                ? widget.color!
+                                : Theme.of(context).primaryColor,
+                          ),
+                        ),
+                        child: child!,
+                      );
+                    },
+                  );
+
+                  if (newDate != null) {
+                    setState(() {
+                      dataIntervalo = newDate;
+                      widget.onDateTimeRageChanged(dataIntervalo!);
+                    });
+                  }
+                },
+                child: Row(
+                  children: [
+                    Text(
+                      (dataIntervalo?.start != null
+                          ? DateFormat("dd/MM/yyyy")
+                              .format(dataIntervalo!.start)
+                          : "___/__/____"),
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                    const Text("  -  "),
+                    Text(
+                      (dataIntervalo?.end != null
+                          ? DateFormat("dd/MM/yyyy").format(dataIntervalo!.end)
+                          : "___/__/____"),
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                    const SizedBox(width: 8),
+                    const Icon(
+                      Icons.edit,
+                      //color: AppColors.fontColor,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }

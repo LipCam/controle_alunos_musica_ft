@@ -1,6 +1,7 @@
 import 'package:controle_alunos_musica_ft/database/connection.dart';
-import 'package:controle_alunos_musica_ft/entities/alunos.dart';
-import 'package:controle_alunos_musica_ft/entities/status_alunos.dart';
+import 'package:controle_alunos_musica_ft/models/alunos.dart';
+import 'package:controle_alunos_musica_ft/models/alunos_dash.dart';
+import 'package:controle_alunos_musica_ft/models/status_alunos.dart';
 import 'package:sqflite/sqflite.dart';
 
 class AlunosDAO {
@@ -160,5 +161,39 @@ class AlunosDAO {
     sql = '''DELETE FROM CAD_ALUNOS_TAB
                     WHERE ID_ALUNO_INT = ?''';
     _db!.rawDelete(sql, [id]);
+  }
+
+  //----- Dash home -----
+  Future<List<AlunosDash>> onGetAlunosDash() async {
+    _db = await Connection.Get();
+
+    List<Map<String, dynamic>> lstMap;
+
+    lstMap = await _db!
+        .rawQuery('''SELECT ST.DESCRICAO_STR AS STATUS_STR, COUNT(1) QTD_INT
+                FROM CAD_ALUNOS_TAB AL
+                INNER JOIN SIS_STATUS_ALUNOS_TAB ST ON ST.ID_STATUS_INT = AL.ID_STATUS_INT
+                GROUP BY ST.ID_STATUS_INT''');
+
+    List<AlunosDash> lstEntities = List.generate(lstMap.length, (i) {
+      var linha = lstMap[i];
+      return AlunosDash(
+        descricao: linha["STATUS_STR"],
+        qtd: linha["QTD_INT"],
+      );
+    });
+
+    lstMap =
+        await _db!.rawQuery('''SELECT 'Total' AS DESCRICAO_STR, COUNT(1) QTD_INT
+                FROM CAD_ALUNOS_TAB''');
+
+    for (var element in lstMap) {
+      lstEntities.add(AlunosDash(
+        descricao: element["DESCRICAO_STR"],
+        qtd: element["QTD_INT"],
+      ));
+    }
+
+    return lstEntities;
   }
 }

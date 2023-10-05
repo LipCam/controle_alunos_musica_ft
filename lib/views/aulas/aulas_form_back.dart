@@ -3,10 +3,10 @@
 import 'package:controle_alunos_musica_ft/database/dao/alunos_dao.dart';
 import 'package:controle_alunos_musica_ft/database/dao/aulas_dao.dart';
 import 'package:controle_alunos_musica_ft/database/dao/instrutores_dao.dart';
-import 'package:controle_alunos_musica_ft/entities/alunos.dart';
-import 'package:controle_alunos_musica_ft/entities/aulas.dart';
-import 'package:controle_alunos_musica_ft/entities/instrutores.dart';
-import 'package:controle_alunos_musica_ft/entities/tipos_aula.dart';
+import 'package:controle_alunos_musica_ft/models/alunos.dart';
+import 'package:controle_alunos_musica_ft/models/aulas.dart';
+import 'package:controle_alunos_musica_ft/models/instrutores.dart';
+import 'package:controle_alunos_musica_ft/models/tipos_aula.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 
@@ -56,6 +56,11 @@ abstract class _AulasFormBack with Store {
 
   String? validaInstrutor(dynamic idInstrutor) {
     if (idInstrutor == null) return "Informe o Instrutor";
+    return null;
+  }
+
+  String? validaAssunto(dynamic assunto) {
+    if (assunto == null || assunto == "") return "Informe o Assunto";
     return null;
   }
 

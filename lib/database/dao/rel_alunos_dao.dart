@@ -1,6 +1,6 @@
 import 'package:controle_alunos_musica_ft/database/connection.dart';
-import 'package:controle_alunos_musica_ft/entities/alunos.dart';
-import 'package:controle_alunos_musica_ft/entities/aulas.dart';
+import 'package:controle_alunos_musica_ft/models/alunos.dart';
+import 'package:controle_alunos_musica_ft/models/aulas.dart';
 import 'package:sqflite/sqflite.dart';
 
 class RelAlunosDAO {

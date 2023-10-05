@@ -1,19 +1,25 @@
 // ignore_for_file: non_constant_identifier_names, must_be_immutable, use_key_in_widget_constructors
 
 import 'package:controle_alunos_musica_ft/components/date_picker.dart';
-import 'package:controle_alunos_musica_ft/entities/aulas.dart';
+import 'package:controle_alunos_musica_ft/models/aulas.dart';
 import 'package:controle_alunos_musica_ft/views/aulas/aulas_lista_back.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:intl/intl.dart';
 
 class AulasLista extends StatelessWidget {
+  final DateTime? dtIniFiltro;
+  final DateTime? dtFimFiltro;
+
   DateFormat formatter = DateFormat('yyyy-MM-dd');
   DateFormat formatter2 = DateFormat('dd/MM/yyyy');
 
+  AulasLista({super.key, this.dtIniFiltro, this.dtFimFiltro});
+
   @override
   Widget build(BuildContext context) {
-    var back = AulasListaBack(context);
+    var back = AulasListaBack(context, dtIniFiltro, dtFimFiltro);
+
     return Scaffold(
       appBar: AppBar(
           title: Text(
@@ -75,7 +81,7 @@ class AulasLista extends StatelessWidget {
                   ],
                 ),
               ),
-              futureBuilder(back),
+              aulasLista(back),
             ],
           ),
         ),
@@ -83,7 +89,7 @@ class AulasLista extends StatelessWidget {
     );
   }
 
-  FutureBuilder futureBuilder(AulasListaBack back) {
+  FutureBuilder aulasLista(AulasListaBack back) {
     return FutureBuilder(
       future: back.lstEntities,
       builder: (context, future) {
@@ -109,6 +115,7 @@ class AulasLista extends StatelessWidget {
 
   ListTile tileAulas(Aulas aula, BuildContext context, AulasListaBack back) {
     return ListTile(
+      dense: true,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

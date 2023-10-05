@@ -4,6 +4,7 @@ import 'package:controle_alunos_musica_ft/views/alunos/alunos_form.dart';
 import 'package:controle_alunos_musica_ft/views/alunos/alunos_lista.dart';
 import 'package:controle_alunos_musica_ft/views/aulas/aulas_form.dart';
 import 'package:controle_alunos_musica_ft/views/aulas/aulas_lista.dart';
+import 'package:controle_alunos_musica_ft/views/base/base_page.dart';
 import 'package:controle_alunos_musica_ft/views/home/home_page.dart';
 import 'package:controle_alunos_musica_ft/views/instrutores/instrutores_form.dart';
 import 'package:controle_alunos_musica_ft/views/instrutores/instrutores_lista.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 class MyApp extends StatelessWidget {
+  final String base = "base";
   final String home = "home";
   final String alunosLista = "alunos_lista";
   final String alunosForm = "alunos_form";
@@ -38,9 +40,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: home,
+      initialRoute: base,
       routes: {
-        home: (context) => HomePage(),
+        base: (context) => BasePage(),
+        home: (context) => const HomePage(),
         alunosLista: (context) => AlunosLista(),
         alunosForm: (context) => AlunosForm(),
         instrutoresLista: (context) => InstrutoresLista(),
@@ -50,6 +53,4 @@ class MyApp extends StatelessWidget {
       },
     );
   }
-
-  //testetsete
 }

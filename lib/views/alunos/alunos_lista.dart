@@ -1,6 +1,6 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, use_key_in_widget_constructors
 
-import 'package:controle_alunos_musica_ft/entities/alunos.dart';
+import 'package:controle_alunos_musica_ft/models/alunos.dart';
 import 'package:controle_alunos_musica_ft/views/alunos/alunos_lista_back.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -67,18 +67,16 @@ class AlunosLista extends StatelessWidget {
                 _back.isSearching ? _buildSearchField() : const Text("Alunos"),
             actions: _buildActions(),
           ),
-          body: Column(
-            children: [
-              const SizedBox(height: 10),
-              futureBuilder(),
-            ],
+          body: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: alunosLista(),
           ),
         );
       },
     );
   }
 
-  FutureBuilder futureBuilder() {
+  FutureBuilder alunosLista() {
     return FutureBuilder(
       future: _back.lstEntities,
       builder: (context, future) {
