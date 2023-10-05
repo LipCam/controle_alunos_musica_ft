@@ -13,31 +13,31 @@ Inicialmente este app foi desenvolvido em Java de onde comecei meus estudos. Hoj
 <table border="0" align="center">
     <tr>
         <td>
-            <img src="assets/images/prints/Print 01.png" alt="Home Aulas" width="270" height="430" style="margin-right:10px">
+            <img src="assets/images/prints/Print 01.png" alt="Home Aulas" width="250" height="420" style="margin-right:10px">
         </td>
         <td>
-            <img src="assets/images/prints/Print 02.png" alt="Home Alunos" width="270" height="430" style="margin-right:10px">
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <img src="assets/images/prints/Print 03.png" alt="Alunos" width="270" height="430" style="margin-right:10px">
-        </td>
-        <td>
-            <img src="assets/images/prints/Print 04.png" alt="Cadastro de Alunos" width="270" height="430" style="margin-right:10px">
+            <img src="assets/images/prints/Print 02.png" alt="Home Alunos" width="250" height="420">
         </td>
     </tr>
     <tr>
         <td>
-            <img src="assets/images/prints/Print 05.png" alt="Aulas" width="270" height="430" style="margin-right:10px">
+            <img src="assets/images/prints/Print 03.png" alt="Alunos" width="250" height="420" style="margin-right:10px">
         </td>
         <td>
-            <img src="assets/images/prints/Print 06.png" alt="Cadastro de Aulas" width="270" height="430" style="margin-right:10px">
+            <img src="assets/images/prints/Print 04.png" alt="Cadastro de Alunos" width="250" height="420">
         </td>
     </tr>
     <tr>
         <td>
-            <img src="assets/images/prints/Print 07.png" alt="Relatório do Aluno em pdf" width="270" height="430" style="margin-right:10px">
+            <img src="assets/images/prints/Print 05.png" alt="Aulas" width="250" height="420" style="margin-right:10px">
+        </td>
+        <td>
+            <img src="assets/images/prints/Print 06.png" alt="Cadastro de Aulas" width="250" height="420">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <img src="assets/images/prints/Print 07.png" alt="Relatório do Aluno em pdf" width="250">
         </td>
     </tr>
 </table>
