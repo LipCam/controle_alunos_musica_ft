@@ -10,34 +10,34 @@ Como há a dificuldade em anotar o desenvolvimento e progresso dos alunos em fic
 
 Inicialmente este app foi desenvolvido em Java de onde comecei meus estudos. Hoje reescrevi em Flutter para aprender mais uma ferramenta de desenvolvimento mobile.
 
-<table border="0" align="center">
-    <tr>
-        <td>
-            <img src="assets/images/prints/Print 01.png" alt="Home Aulas" width="270" height="430" style="margin-right:10px">
-        </td>
-        <td>
-            <img src="assets/images/prints/Print 02.png" alt="Home Alunos" width="270" height="430" style="margin-right:10px">
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <img src="assets/images/prints/Print 03.png" alt="Alunos" width="270" height="430" style="margin-right:10px">
-        </td>
-        <td>
-            <img src="assets/images/prints/Print 04.png" alt="Cadastro de Alunos" width="270" height="430" style="margin-right:10px">
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <img src="assets/images/prints/Print 05.png" alt="Aulas" width="270" height="430" style="margin-right:10px">
-        </td>
-        <td>
-            <img src="assets/images/prints/Print 06.png" alt="Cadastro de Aulas" width="270" height="430" style="margin-right:10px">
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <img src="assets/images/prints/Print 07.png" alt="Relatório do Aluno em pdf" width="270" height="430" style="margin-right:10px">
-        </td>
-    </tr>
-</table>
+<div style="width:100%;">
+    <div style="margin:auto; width:510px;">
+        <div style="float:left">
+            <img src="assets/images/prints/Print 01.png" alt="Home Aulas" width="250" height="420" style="margin-right:10px">
+        </div>
+        <div style="float:left">
+            <img src="assets/images/prints/Print 02.png" alt="Home Alunos" width="250" height="420">
+        </div>
+    </div>
+    <div style="margin:auto; width:510px;">
+        <div style="float:left">
+            <img src="assets/images/prints/Print 03.png" alt="Alunos" width="250"" height="420" style="margin-right:10px">
+        </div>
+        <div style="float:left">
+            <img src="assets/images/prints/Print 04.png" alt="Cadastro de Alunos" width="250"" height="420">
+        </div>
+    </div>
+    <div style="margin:auto; width:510px;">
+        <div style="float:left">
+            <img src="assets/images/prints/Print 05.png" alt="Aulas" width="250"" height="420" style="margin-right:10px">
+        </div>
+        <div style="float:left">
+            <img src="assets/images/prints/Print 06.png" alt="Cadastro de Aulas" width="250"" height="420">
+        </div>
+    </div>
+    <div style="margin:auto; width:510px;">
+        <div style="float:left">
+            <img src="assets/images/prints/Print 07.png" alt="Relatório do Aluno em pdf" width="250" height="420">
+        </div>
+    </div>
+</div>
