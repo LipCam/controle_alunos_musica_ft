@@ -10,7 +10,7 @@ Como há a dificuldade em anotar o desenvolvimento e progresso dos alunos em fic
 
 Inicialmente este app foi desenvolvido em Java de onde comecei meus estudos. Hoje reescrevi em Flutter para aprender mais uma ferramenta de desenvolvimento mobile.
 
-<table>
+<table border="0" align="center">
     <tr>
         <td>
             <img src="assets/images/prints/Print 01.png" alt="Home Aulas" width="270" height="430" style="margin-right:10px">
