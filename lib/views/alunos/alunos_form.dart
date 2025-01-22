@@ -1,5 +1,6 @@
 // ignore_for_file: use_key_in_widget_constructors
 
+//import 'package:android_intent_plus/android_intent.dart';
 import 'package:controle_alunos_musica_ft/components/custom_input_decoration.dart';
 import 'package:controle_alunos_musica_ft/components/custom_text_field.dart';
 import 'package:controle_alunos_musica_ft/config/app_toast.dart';
@@ -40,8 +41,8 @@ class AlunosForm extends StatelessWidget {
               child: PopupMenuButton(itemBuilder: (a) {
                 return [
                   PopupMenuItem(
-                    child: Row(
-                      children: const [
+                    child: const Row(
+                      children: [
                         Icon(
                           Icons.music_note,
                           color: Colors.black,
@@ -55,8 +56,8 @@ class AlunosForm extends StatelessWidget {
                     ),
                   ),
                   PopupMenuItem(
-                    child: Row(
-                      children: const [
+                    child: const Row(
+                      children: [
                         Icon(
                           Icons.notes,
                           color: Colors.black,
@@ -70,8 +71,8 @@ class AlunosForm extends StatelessWidget {
                     },
                   ),
                   PopupMenuItem(
-                    child: Row(
-                      children: const [
+                    child: const Row(
+                      children: [
                         Icon(
                           Icons.delete,
                           color: Colors.red,
@@ -199,6 +200,24 @@ class AlunosForm extends StatelessWidget {
                           ),
                           onPressed: () => onSendUrl(
                               "whatsapp://send?phone=+55${txtFoneController.text}"),
+                          // onPressed: () {
+                          //   const intent = AndroidIntent(
+                          //     action: 'android.intent.action.MAIN',
+                          //     package: 'com.br.evoitizarandroid',
+                          //     componentName:
+                          //         'com.br.evoitizarandroid.MainActivity',
+                          //     arguments: <String, dynamic>{
+                          //       'ReceiverBluetooth': '',
+                          //       'Id': '',
+                          //       'MacAdress': 'AC:4D:16:21:F6:7F',
+                          //     },
+                          //     flags: <int>[
+                          //       268435456,
+                          //       32768,
+                          //     ],
+                          //   );
+                          //   intent.launch();
+                          // },
                         ),
                         const SizedBox(width: 10),
                       ],

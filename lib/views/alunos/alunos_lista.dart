@@ -35,6 +35,7 @@ class AlunosLista extends StatelessWidget {
         ),
         IconButton(
             icon: const Icon(Icons.add),
+            tooltip: "Novo",
             onPressed: () {
               _back.goToForm(context);
             })

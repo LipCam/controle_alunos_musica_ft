@@ -80,6 +80,7 @@ class _BasePageState extends State<BasePage> {
             BottomNavigationBarItem(
               label: "Alunos",
               icon: Icon(Icons.person),
+              tooltip: "Cad Alunos",
             ),
             BottomNavigationBarItem(
               label: "Instrutores",

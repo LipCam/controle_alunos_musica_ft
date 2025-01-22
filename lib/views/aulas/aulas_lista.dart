@@ -27,6 +27,7 @@ class AulasLista extends StatelessWidget {
           actions: [
             IconButton(
                 icon: const Icon(Icons.add),
+                tooltip: "Novo",
                 onPressed: () {
                   Aulas aula = Aulas(
                       idAluno: back.aluno?.idAluno,

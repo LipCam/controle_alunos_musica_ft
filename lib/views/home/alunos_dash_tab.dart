@@ -71,9 +71,12 @@ class AlunosDashTab extends StatelessWidget {
                             Text(
                               aulaDash.qtd.toString(),
                               style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 26,
-                                  fontWeight: FontWeight.bold),
+                                color: Colors.white,
+                                fontSize: 26,
+                                fontWeight: FontWeight.bold,
+                                height: 0.8,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             )
                           ],
                         ),

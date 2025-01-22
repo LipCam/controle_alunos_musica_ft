@@ -41,8 +41,8 @@ class AulasForm extends StatelessWidget {
               child: PopupMenuButton(itemBuilder: (a) {
                 return [
                   PopupMenuItem(
-                    child: Row(
-                      children: const [
+                    child: const Row(
+                      children: [
                         Icon(
                           Icons.delete,
                           color: Colors.red,
