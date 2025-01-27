@@ -1,6 +1,7 @@
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
 class DatePicker extends StatefulWidget {
@@ -96,7 +97,17 @@ class _DatePickerState extends State<DatePicker> {
                       style: const TextStyle(fontSize: 18),
                     ),
                     const SizedBox(width: 8),
-                    const Icon(Icons.edit),
+                    const Column(
+                      children: [
+                        SizedBox(
+                          child: Icon(
+                            FontAwesomeIcons.pen,
+                            size: 20,
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -167,22 +178,47 @@ class _DatePickerClearState extends State<DatePickerClear> {
             ),
             const SizedBox(width: 10),
             if (data != null)
-              IconButton(
-                  icon: const Icon(Icons.cancel_outlined),
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                  onPressed: () {
-                    setState(() {
-                      data = null;
-                      widget.clearDate();
-                    });
-                  })
+              Column(
+                children: [
+                  SizedBox(
+                    width: 30,
+                    height: 30,
+                    child: IconButton(
+                        icon: const Icon(
+                          FontAwesomeIcons.circleXmark,
+                          size: 20,
+                        ),
+                        padding: EdgeInsets.zero,
+                        color: Colors.red,
+                        constraints: const BoxConstraints(),
+                        onPressed: () {
+                          setState(() {
+                            data = null;
+                            widget.clearDate();
+                          });
+                        }),
+                  ),
+                  const SizedBox(height: 6)
+                ],
+              )
             else
-              IconButton(
-                icon: const Icon(Icons.edit),
-                padding: EdgeInsets.zero,
-                constraints: const BoxConstraints(),
-                onPressed: onGetDate,
+              Column(
+                children: [
+                  SizedBox(
+                    width: 30,
+                    height: 30,
+                    child: IconButton(
+                      icon: const Icon(
+                        FontAwesomeIcons.pen,
+                        size: 20,
+                      ),
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                      onPressed: onGetDate,
+                    ),
+                  ),
+                  const SizedBox(height: 6)
+                ],
               ),
           ],
         ),
@@ -337,7 +373,7 @@ class _DatePickerRangeState extends State<DatePickerRange> {
                     ),
                     const SizedBox(width: 8),
                     const Icon(
-                      Icons.edit,
+                      FontAwesomeIcons.pen,
                       //color: AppColors.fontColor,
                     ),
                   ],

@@ -9,6 +9,7 @@ import 'package:controle_alunos_musica_ft/models/status_alunos.dart';
 import 'package:controle_alunos_musica_ft/views/alunos/alunos_form_back.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AlunosForm extends StatefulWidget {
@@ -61,7 +62,7 @@ class _AlunosFormState extends State<AlunosForm> {
         title: const Text("Alunos"),
         actions: [
           IconButton(
-              icon: const Icon(Icons.check),
+              icon: const Icon(FontAwesomeIcons.check),
               tooltip: "Salvar",
               onPressed: () async {
                 if (keyForm.currentState!.validate()) {
@@ -80,7 +81,7 @@ class _AlunosFormState extends State<AlunosForm> {
                     child: const Row(
                       children: [
                         Icon(
-                          Icons.music_note,
+                          FontAwesomeIcons.music,
                           color: Colors.black,
                         ),
                         SizedBox(width: 10),
@@ -95,7 +96,7 @@ class _AlunosFormState extends State<AlunosForm> {
                     child: const Row(
                       children: [
                         Icon(
-                          Icons.notes,
+                          FontAwesomeIcons.bars,
                           color: Colors.black,
                         ),
                         SizedBox(width: 10),
@@ -110,7 +111,7 @@ class _AlunosFormState extends State<AlunosForm> {
                     child: const Row(
                       children: [
                         Icon(
-                          Icons.delete,
+                          FontAwesomeIcons.solidTrashCan,
                           color: Colors.red,
                         ),
                         SizedBox(width: 10),
@@ -235,19 +236,20 @@ class _AlunosFormState extends State<AlunosForm> {
                         onSaved: (value) => back.aluno?.fone = value,
                       ),
                     ),
+                    const SizedBox(width: 5),
                     IconButton(
                       icon: const Icon(
-                        Icons.phone,
+                        FontAwesomeIcons.phone,
                         color: Colors.blue,
                         size: 40,
                       ),
                       onPressed: () =>
                           onSendUrl("tel://${txtFoneController.text}"),
                     ),
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 5),
                     IconButton(
                       icon: const Icon(
-                        Icons.phone,
+                        FontAwesomeIcons.whatsapp,
                         color: Colors.green,
                         size: 40,
                       ),
@@ -356,9 +358,8 @@ class _AlunosFormState extends State<AlunosForm> {
   }
 
   Future<void> onSendUrl(String url) async {
-    if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url));
-    } else {
+    if (!await launchUrl(Uri.parse(url),
+        mode: LaunchMode.externalApplication)) {
       onToastMessage('Aplicativo não encontrado');
     }
   }

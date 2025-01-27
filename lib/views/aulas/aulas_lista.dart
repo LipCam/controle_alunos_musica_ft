@@ -5,6 +5,7 @@ import 'package:controle_alunos_musica_ft/models/aulas.dart';
 import 'package:controle_alunos_musica_ft/views/aulas/aulas_lista_back.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
 class AulasLista extends StatelessWidget {
@@ -26,7 +27,7 @@ class AulasLista extends StatelessWidget {
               "Aulas${back.aluno != null ? " - ${back.aluno!.nome}" : ""}"),
           actions: [
             IconButton(
-                icon: const Icon(Icons.add),
+                icon: const Icon(FontAwesomeIcons.plus),
                 tooltip: "Novo",
                 onPressed: () {
                   Aulas aula = Aulas(
@@ -197,7 +198,7 @@ class AulasLista extends StatelessWidget {
 
   Widget DeleteButton(BuildContext context, AulasListaBack back, Aulas aula) {
     return IconButton(
-      icon: const Icon(Icons.delete),
+      icon: const Icon(FontAwesomeIcons.solidTrashCan),
       color: Colors.red,
       onPressed: () {
         showDialog(

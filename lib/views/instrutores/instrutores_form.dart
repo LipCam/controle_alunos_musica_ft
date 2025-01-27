@@ -6,6 +6,7 @@ import 'package:controle_alunos_musica_ft/components/date_picker.dart';
 import 'package:controle_alunos_musica_ft/views/instrutores/instrutores_form_back.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InstrutoresForm extends StatelessWidget {
@@ -23,7 +24,7 @@ class InstrutoresForm extends StatelessWidget {
         title: const Text("Instrutores"),
         actions: [
           IconButton(
-              icon: const Icon(Icons.check),
+              icon: const Icon(FontAwesomeIcons.check),
               tooltip: "Salvar",
               onPressed: () async {
                 if (keyForm.currentState!.validate()) {
@@ -42,7 +43,7 @@ class InstrutoresForm extends StatelessWidget {
                     child: const Row(
                       children: [
                         Icon(
-                          Icons.delete,
+                          FontAwesomeIcons.solidTrashCan,
                           color: Colors.red,
                         ),
                         SizedBox(width: 10),
@@ -115,19 +116,20 @@ class InstrutoresForm extends StatelessWidget {
                             onSaved: (value) => back.instrutor?.fone = value,
                           ),
                         ),
+                        const SizedBox(width: 5),
                         IconButton(
                           icon: const Icon(
-                            Icons.phone,
+                            FontAwesomeIcons.phone,
                             color: Colors.blue,
                             size: 40,
                           ),
                           onPressed: () =>
                               onSendUrl("tel://${txtFoneController.text}"),
                         ),
-                        const SizedBox(width: 10),
+                        const SizedBox(width: 5),
                         IconButton(
                           icon: const Icon(
-                            Icons.phone,
+                            FontAwesomeIcons.whatsapp,
                             color: Colors.green,
                             size: 40,
                           ),
@@ -180,9 +182,8 @@ class InstrutoresForm extends StatelessWidget {
   }
 
   Future<void> onSendUrl(String url) async {
-    if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url));
-    } else {
+    if (!await launchUrl(Uri.parse(url),
+        mode: LaunchMode.externalApplication)) {
       onToastMessage('Aplicativo não encontrado');
     }
   }

@@ -4,6 +4,7 @@ import 'package:controle_alunos_musica_ft/models/alunos.dart';
 import 'package:controle_alunos_musica_ft/views/alunos/alunos_lista_back.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AlunosLista extends StatelessWidget {
   final _back = AlunosListaBack();
@@ -14,7 +15,7 @@ class AlunosLista extends StatelessWidget {
       if (_back.isSearching) {
         return <Widget>[
           IconButton(
-            icon: const Icon(Icons.clear),
+            icon: const Icon(FontAwesomeIcons.xmark),
             onPressed: () {
               if (_back.searchQueryController.text.isEmpty) {
                 Navigator.pop(context);
@@ -28,13 +29,13 @@ class AlunosLista extends StatelessWidget {
 
       return <Widget>[
         IconButton(
-          icon: const Icon(Icons.search),
+          icon: const Icon(FontAwesomeIcons.magnifyingGlass),
           onPressed: () {
             _back.startSearch(context);
           },
         ),
         IconButton(
-            icon: const Icon(Icons.add),
+            icon: const Icon(FontAwesomeIcons.plus),
             tooltip: "Novo",
             onPressed: () {
               _back.goToForm(context);
@@ -129,7 +130,7 @@ class AlunosLista extends StatelessWidget {
 
   Widget deleteButton(BuildContext context, Alunos aluno) {
     return IconButton(
-      icon: const Icon(Icons.delete),
+      icon: const Icon(FontAwesomeIcons.solidTrashCan),
       color: Colors.red,
       onPressed: () {
         showDialog(

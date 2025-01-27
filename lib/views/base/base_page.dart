@@ -7,6 +7,7 @@ import 'package:controle_alunos_musica_ft/views/home/home_page.dart';
 import 'package:controle_alunos_musica_ft/views/instrutores/instrutores_lista.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class BasePage extends StatefulWidget {
   @override
@@ -75,20 +76,20 @@ class _BasePageState extends State<BasePage> {
           items: const [
             BottomNavigationBarItem(
               label: "Home",
-              icon: Icon(Icons.home),
+              icon: Icon(FontAwesomeIcons.house),
             ),
             BottomNavigationBarItem(
               label: "Alunos",
-              icon: Icon(Icons.person),
+              icon: Icon(FontAwesomeIcons.person),
               tooltip: "Cad Alunos",
             ),
             BottomNavigationBarItem(
               label: "Instrutores",
-              icon: Icon(Icons.school),
+              icon: Icon(FontAwesomeIcons.chalkboardUser),
             ),
             BottomNavigationBarItem(
               label: "Aulas",
-              icon: Icon(Icons.music_note_sharp),
+              icon: Icon(FontAwesomeIcons.music),
             ),
           ],
         ),

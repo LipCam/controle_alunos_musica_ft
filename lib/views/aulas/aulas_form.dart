@@ -10,6 +10,7 @@ import 'package:controle_alunos_musica_ft/models/tipos_aula.dart';
 import 'package:controle_alunos_musica_ft/views/aulas/aulas_form_back.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../components/custom_input_decoration.dart';
 
@@ -31,7 +32,7 @@ class _AulasFormState extends State<AulasForm> {
         title: const Text("Aulas"),
         actions: [
           IconButton(
-              icon: const Icon(Icons.check),
+              icon: const Icon(FontAwesomeIcons.check),
               tooltip: "Salvar",
               onPressed: () async {
                 if (keyForm.currentState!.validate()) {
@@ -50,7 +51,7 @@ class _AulasFormState extends State<AulasForm> {
                     child: const Row(
                       children: [
                         Icon(
-                          Icons.delete,
+                          FontAwesomeIcons.solidTrashCan,
                           color: Colors.red,
                         ),
                         SizedBox(width: 10),
