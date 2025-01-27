@@ -13,11 +13,17 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../components/custom_input_decoration.dart';
 
-class AulasForm extends StatelessWidget {
+class AulasForm extends StatefulWidget {
+  @override
+  State<AulasForm> createState() => _AulasFormState();
+}
+
+class _AulasFormState extends State<AulasForm> {
+  final keyForm = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     var back = AulasFormBack(context);
-    final keyForm = GlobalKey<FormState>();
     double alturaCampos = 15;
 
     return Scaffold(

@@ -17,7 +17,7 @@ class AlunosDAO {
                     S.DESCRICAO_STR || IFNULL(' - ' || strftime('%d/%m/%Y',A.DATA_OFICIALIZACAO_DTI ), '') 
                   END AS STATUS_STR
                 FROM CAD_ALUNOS_TAB A
-                INNER JOIN SIS_STATUS_ALUNOS_TAB S ON S.ID_STATUS_INT = A.ID_STATUS_INT
+                LEFT JOIN SIS_STATUS_ALUNOS_TAB S ON S.ID_STATUS_INT = A.ID_STATUS_INT
                 WHERE A.NOME_STR LIKE ?
                 ORDER BY NOME_STR''',
         [(textPesquisa != null ? "%$textPesquisa%" : "%%")]);
@@ -29,9 +29,9 @@ class AlunosDAO {
       return Alunos(
         idAluno: linha["ID_ALUNO_INT"],
         nome: linha["NOME_STR"],
-        idStatus: linha["ID_STATUS_INT"],
-        status: linha["STATUS_STR"],
-        instrumento: linha["INSTRUMENTO_STR"],
+        idStatus: linha["ID_STATUS_INT"] ?? 1,
+        status: linha["STATUS_STR"] ?? "",
+        instrumento: linha["INSTRUMENTO_STR"] ?? "",
         metodo: linha["METODO_STR"],
         fone: linha["FONE_STR"],
         dataNascimento: linha["DATA_NASCIMENTO_DTI"] != null
