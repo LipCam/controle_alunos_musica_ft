@@ -8,18 +8,25 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
-class AulasLista extends StatelessWidget {
-  final DateTime? dtIniFiltro;
-  final DateTime? dtFimFiltro;
-
-  DateFormat formatter = DateFormat('yyyy-MM-dd');
-  DateFormat formatter2 = DateFormat('dd/MM/yyyy');
+class AulasLista extends StatefulWidget {
+  DateTime? dtIniFiltro;
+  DateTime? dtFimFiltro;
 
   AulasLista({super.key, this.dtIniFiltro, this.dtFimFiltro});
 
   @override
+  State<AulasLista> createState() => _AulasListaState();
+}
+
+class _AulasListaState extends State<AulasLista> {
+  DateFormat formatter = DateFormat('yyyy-MM-dd');
+  DateFormat formatter2 = DateFormat('dd/MM/yyyy');
+
+  @override
   Widget build(BuildContext context) {
-    var back = AulasListaBack(context, dtIniFiltro, dtFimFiltro);
+    var back = AulasListaBack(context, widget.dtIniFiltro, widget.dtFimFiltro);
+    back.dataIni = widget.dtIniFiltro ?? DateTime.now();
+    back.dataFim = widget.dtFimFiltro ?? DateTime.now();
 
     return Scaffold(
       appBar: AppBar(
@@ -59,7 +66,7 @@ class AulasLista extends StatelessWidget {
                           dateInit: back.dataIni!,
                           tipoData: 0,
                           onDateTimeChanged: (dt) {
-                            back.dataIni = dt;
+                            widget.dtIniFiltro = dt;
                             back.onCarregaLista(
                               formatter.format(back.dataIni!),
                               formatter.format(back.dataFim!),
@@ -71,7 +78,7 @@ class AulasLista extends StatelessWidget {
                           dateInit: back.dataFim!,
                           tipoData: 0,
                           onDateTimeChanged: (dt) {
-                            back.dataFim = dt;
+                            widget.dtFimFiltro = dt;
                             back.onCarregaLista(
                               formatter.format(back.dataIni!),
                               formatter.format(back.dataFim!),
