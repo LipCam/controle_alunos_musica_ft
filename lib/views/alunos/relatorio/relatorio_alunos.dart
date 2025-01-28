@@ -1,6 +1,9 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:android_intent_plus/android_intent.dart';
+import 'package:android_intent_plus/flag.dart';
+import 'package:controle_alunos_musica_ft/config/app_toast.dart';
 import 'package:controle_alunos_musica_ft/database/dao/rel_alunos_dao.dart';
 import 'package:controle_alunos_musica_ft/models/alunos.dart';
 import 'package:controle_alunos_musica_ft/models/aulas.dart';
@@ -9,6 +12,7 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:permission_handler/permission_handler.dart';
 
 class RelatorioAlunos {
   Future<void> onGeraRelatorio(int idAluno) async {
@@ -126,17 +130,34 @@ class RelatorioAlunos {
 
   Future<void> savePdfFile(String fileName, Uint8List byteList) async {
     try {
-      final directory = (await getExternalStorageDirectories(
-              type: StorageDirectory.downloads))
-          ?.first;
+      if (await _requestPermission()) {
+        String filePath = "/storage/emulated/0/Download/$fileName.pdf";
+        File file = File(filePath);
+        await file.writeAsBytes(byteList);
 
-      //final directory = await getTemporaryDirectory();
-      var filePath = "${directory?.path}/$fileName.pdf";
-      final file = File(filePath);
-      await file.writeAsBytes(byteList);
-      OpenFile.open(filePath);
+        OpenFile.open(filePath);
+
+        await _onLunchFileView();
+
+        onToastMessage("$fileName.pdf salvo em Downloads");
+      }
     } catch (e) {
       //print(e);
     }
+  }
+
+  Future<void> _onLunchFileView() async {
+    const intent = AndroidIntent(
+      action: 'android.intent.action.VIEW_DOWNLOADS',
+    );
+    await intent.launch();
+  }
+
+  Future<bool> _requestPermission() async {
+    if (Platform.isAndroid) {
+      var status = await Permission.manageExternalStorage.request();
+      return status.isGranted;
+    }
+    return false;
   }
 }
