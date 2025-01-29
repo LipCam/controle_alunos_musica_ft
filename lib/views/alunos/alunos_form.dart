@@ -162,7 +162,7 @@ class _AlunosFormState extends State<AlunosForm> {
               children: [
                 CustomTextField(
                   label: "Nome",
-                  textCapitalization: TextCapitalization.words,
+                  textCapitalization: TextCapitalization.sentences,
                   initialValue: back.aluno?.nome,
                   validator: back.validaNome,
                   onSaved: (value) => back.aluno?.nome = value,
@@ -214,13 +214,13 @@ class _AlunosFormState extends State<AlunosForm> {
                 SizedBox(height: alturaCampos),
                 CustomTextField(
                   label: "Instrumento",
-                  textCapitalization: TextCapitalization.words,
+                  textCapitalization: TextCapitalization.sentences,
                   initialValue: back.aluno?.instrumento,
                   onSaved: (value) => back.aluno?.instrumento = value,
                 ),
                 CustomTextField(
                   label: "Método",
-                  textCapitalization: TextCapitalization.words,
+                  textCapitalization: TextCapitalization.sentences,
                   initialValue: back.aluno?.metodo,
                   onSaved: (value) => back.aluno?.metodo = value,
                 ),
@@ -335,7 +335,7 @@ class _AlunosFormState extends State<AlunosForm> {
                 SizedBox(height: alturaCampos),
                 CustomTextField(
                   label: "Endereço",
-                  textCapitalization: TextCapitalization.words,
+                  textCapitalization: TextCapitalization.sentences,
                   initialValue: back.aluno?.endereco,
                   textInputType: TextInputType.multiline,
                   maxLines: 3,
@@ -343,7 +343,7 @@ class _AlunosFormState extends State<AlunosForm> {
                 ),
                 CustomTextField(
                   label: "Observação",
-                  textCapitalization: TextCapitalization.words,
+                  textCapitalization: TextCapitalization.sentences,
                   initialValue: back.aluno?.observacao,
                   textInputType: TextInputType.multiline,
                   maxLines: 5,

@@ -213,14 +213,14 @@ class _AulasFormState extends State<AulasForm> {
                 SizedBox(height: alturaCampos),
                 CustomTextField(
                   label: "Assunto",
-                  textCapitalization: TextCapitalization.words,
+                  textCapitalization: TextCapitalization.sentences,
                   initialValue: back.aula?.assunto,
                   onSaved: (value) => back.aula?.assunto = value,
                   validator: back.validaAssunto,
                 ),
                 CustomTextField(
                   label: "Observação",
-                  textCapitalization: TextCapitalization.words,
+                  textCapitalization: TextCapitalization.sentences,
                   textInputType: TextInputType.multiline,
                   maxLines: 5,
                   initialValue: back.aula?.observacao,

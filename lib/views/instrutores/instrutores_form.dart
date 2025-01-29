@@ -94,14 +94,14 @@ class InstrutoresForm extends StatelessWidget {
                   children: [
                     CustomTextField(
                       label: "Nome",
-                      textCapitalization: TextCapitalization.words,
+                      textCapitalization: TextCapitalization.sentences,
                       initialValue: back.instrutor?.nome,
                       validator: back.validaNome,
                       onSaved: (value) => back.instrutor?.nome = value,
                     ),
                     CustomTextField(
                       label: "Instrumento",
-                      textCapitalization: TextCapitalization.words,
+                      textCapitalization: TextCapitalization.sentences,
                       initialValue: back.instrutor?.instrumento,
                       onSaved: (value) => back.instrutor?.instrumento = value,
                     ),
@@ -169,7 +169,7 @@ class InstrutoresForm extends StatelessWidget {
                     SizedBox(height: alturaCampos),
                     CustomTextField(
                       label: "Endereço",
-                      textCapitalization: TextCapitalization.words,
+                      textCapitalization: TextCapitalization.sentences,
                       initialValue: back.instrutor?.endereco,
                       textInputType: TextInputType.multiline,
                       maxLines: 3,
