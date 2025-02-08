@@ -1,5 +1,6 @@
 // ignore_for_file: use_key_in_widget_constructors
 
+import 'package:controle_alunos_musica_ft/config/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -8,7 +9,6 @@ class DatePicker extends StatefulWidget {
   final String label;
   final DateTime dateInit;
   final ValueChanged<DateTime> onDateTimeChanged;
-  final Color? color;
 
   ///0-(Default)Data passada e futura, 1-Apenas data passada, 2-Apenas data futura
   final int? tipoData;
@@ -18,7 +18,6 @@ class DatePicker extends StatefulWidget {
     required this.label,
     required this.dateInit,
     required this.onDateTimeChanged,
-    this.color,
     this.tipoData = 0,
   });
 
@@ -38,18 +37,13 @@ class _DatePickerState extends State<DatePicker> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 15),
+      padding: const EdgeInsets.only(bottom: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             widget.label,
-            style: TextStyle(
-              color: widget.color != null
-                  ? widget.color!
-                  : Theme.of(context).textTheme.bodyLarge?.backgroundColor,
-              fontSize: 15,
-            ),
+            style: const TextStyle(fontSize: 15),
           ),
           Row(
             children: [
@@ -73,9 +67,7 @@ class _DatePickerState extends State<DatePicker> {
                       return Theme(
                         data: ThemeData.light().copyWith(
                           colorScheme: ColorScheme.light(
-                            primary: widget.color != null
-                                ? widget.color!
-                                : Theme.of(context).primaryColor,
+                            primary: AppColors.cursorColor,
                           ),
                         ),
                         child: child!,
@@ -124,7 +116,6 @@ class DatePickerClear extends StatefulWidget {
   final DateTime? date;
   final ValueChanged<DateTime> onDateTimeChanged;
   final VoidCallback clearDate;
-  final Color? color;
 
   ///0-(Default)Data passada e futura, 1-Apenas data passada, 2-Apenas data futura
   final int? tipoData;
@@ -134,7 +125,6 @@ class DatePickerClear extends StatefulWidget {
     this.date,
     required this.onDateTimeChanged,
     required this.clearDate,
-    this.color,
     this.tipoData = 0,
   });
 
@@ -158,12 +148,7 @@ class _DatePickerClearState extends State<DatePickerClear> {
       children: [
         Text(
           widget.label,
-          style: TextStyle(
-            color: widget.color != null
-                ? widget.color!
-                : Theme.of(context).textTheme.bodyLarge?.backgroundColor,
-            fontSize: 15,
-          ),
+          style: const TextStyle(fontSize: 15),
         ),
         Row(
           children: [
@@ -244,11 +229,7 @@ class _DatePickerClearState extends State<DatePickerClear> {
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.light().copyWith(
-            colorScheme: ColorScheme.light(
-              primary: widget.color != null
-                  ? widget.color!
-                  : Theme.of(context).primaryColor,
-            ),
+            colorScheme: ColorScheme.light(primary: AppColors.cursorColor),
           ),
           child: child!,
         );
@@ -269,7 +250,6 @@ class DatePickerRange extends StatefulWidget {
   final DateTime? dateInit;
   final DateTime? dateEnd;
   final ValueChanged<DateTimeRange> onDateTimeRageChanged;
-  final Color? color;
   final int? dateType;
 
   const DatePickerRange({
@@ -278,7 +258,6 @@ class DatePickerRange extends StatefulWidget {
     this.dateInit,
     this.dateEnd,
     required this.onDateTimeRageChanged,
-    this.color,
 
     ///0-(Default)Data passada e futura, 1-Apenas data passada, 2-Apenas data futura
     this.dateType,
@@ -311,10 +290,7 @@ class _DatePickerRangeState extends State<DatePickerRange> {
         children: [
           Text(
             widget.label,
-            style: TextStyle(
-              color: widget.color != null ? widget.color! : Colors.grey,
-              fontSize: 15,
-            ),
+            style: const TextStyle(fontSize: 15),
           ),
           Row(
             children: [
@@ -338,9 +314,7 @@ class _DatePickerRangeState extends State<DatePickerRange> {
                       return Theme(
                         data: ThemeData.light().copyWith(
                           colorScheme: ColorScheme.light(
-                            primary: widget.color != null
-                                ? widget.color!
-                                : Theme.of(context).primaryColor,
+                            primary: AppColors.cursorColor,
                           ),
                         ),
                         child: child!,

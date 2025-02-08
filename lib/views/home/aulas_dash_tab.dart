@@ -4,7 +4,7 @@ import 'package:controle_alunos_musica_ft/database/dao/aulas_dao.dart';
 import 'package:controle_alunos_musica_ft/models/aulas_dash.dart';
 import 'package:flutter/material.dart';
 
-import '../../config/app_cores.dart';
+import '../../config/app_colors.dart';
 
 class AulasDashTab extends StatelessWidget {
   AulasDashTab({
@@ -25,6 +25,7 @@ class AulasDashTab extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
+          const SizedBox(height: 30),
           const Text(
             "Por Período",
             style: TextStyle(
@@ -132,7 +133,7 @@ class AulasDashTab extends StatelessWidget {
                   ...lstAulasDash.map(
                     (aulaDash) {
                       iCores++;
-                      if (iCores > AppCores().bkgroundDash.length - 1) {
+                      if (iCores > AppColors().bkgroundDash.length - 1) {
                         iCores = 0;
                       }
 
@@ -142,7 +143,7 @@ class AulasDashTab extends StatelessWidget {
                         width: MediaQuery.of(context).size.width / 2 - 35,
                         height: 80,
                         decoration: BoxDecoration(
-                          color: AppCores().bkgroundDash[iCores],
+                          color: AppColors().bkgroundDash[iCores],
                           borderRadius: BorderRadius.circular(7.0),
                         ),
                         child: Column(

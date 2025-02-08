@@ -31,8 +31,8 @@ abstract class _InstrutoresListaBack with Store {
         .then(carregaLista);
   }
 
-  delete(int id) {
-    _dao.onDelete(id);
+  onDelete(int id) async {
+    await _dao.onDelete(id);
     carregaLista();
   }
 

@@ -2,6 +2,7 @@
 
 import 'package:controle_alunos_musica_ft/components/custom_checkbox.dart';
 import 'package:controle_alunos_musica_ft/components/custom_text_field.dart';
+import 'package:controle_alunos_musica_ft/config/app_colors.dart';
 import 'package:controle_alunos_musica_ft/config/app_toast.dart';
 import 'package:controle_alunos_musica_ft/components/date_picker.dart';
 import 'package:controle_alunos_musica_ft/models/alunos.dart';
@@ -30,6 +31,8 @@ class _AulasFormState extends State<AulasForm> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Aulas"),
+        backgroundColor: AppColors.appBarBackGround,
+        foregroundColor: AppColors.appBarFontColor,
         actions: [
           IconButton(
               icon: const Icon(FontAwesomeIcons.check),
@@ -48,14 +51,14 @@ class _AulasFormState extends State<AulasForm> {
               child: PopupMenuButton(itemBuilder: (a) {
                 return [
                   PopupMenuItem(
-                    child: const Row(
+                    child: Row(
                       children: [
                         Icon(
                           FontAwesomeIcons.solidTrashCan,
-                          color: Colors.red,
+                          color: AppColors.deleteIcon,
                         ),
-                        SizedBox(width: 10),
-                        Text("Excluir"),
+                        const SizedBox(width: 10),
+                        const Text("Excluir"),
                       ],
                     ),
                     onTap: () {

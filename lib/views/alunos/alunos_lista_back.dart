@@ -31,7 +31,7 @@ abstract class _AlunosListaBack with Store {
         .then(carregaLista);
   }
 
-  delete(int id) {
+  onDelete(int id) {
     _dao.onDelete(id);
     carregaLista();
   }

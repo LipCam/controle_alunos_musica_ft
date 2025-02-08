@@ -1,8 +1,11 @@
 // ignore_for_file: use_key_in_widget_constructors, must_be_immutable
 
+import 'package:controle_alunos_musica_ft/config/app_colors.dart';
+import 'package:controle_alunos_musica_ft/config/app_dimensions.dart';
 import 'package:controle_alunos_musica_ft/views/home/alunos_dash_tab.dart';
 import 'package:controle_alunos_musica_ft/views/home/aulas_dash_tab.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomePage extends StatefulWidget {
   final void Function()? setAulaFiltroHoje;
@@ -21,80 +24,56 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int currentPage = 0;
-  PageController pageController = PageController();
-
   @override
   Widget build(BuildContext context) {
-    if (pageController.hasClients) pageController.jumpToPage(currentPage);
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Controle Alunos"),
-      ),
-      body: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              GestureDetector(
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text(
-                    "Aulas",
-                    style: TextStyle(
-                        color:
-                            currentPage == 0 ? Colors.black : Colors.grey[400],
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
-                  ),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Controle Alunos"),
+          backgroundColor: AppColors.appBarBackGround,
+          foregroundColor: AppColors.appBarFontColor,
+          bottom: const TabBar(
+            tabs: [
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(FontAwesomeIcons.music),
+                    SizedBox(width: 10),
+                    Text(
+                      "Aulas",
+                      style: TextStyle(fontSize: AppDimensions.homeTabFontSize),
+                    ),
+                  ],
                 ),
-                onTap: () {
-                  setState(() {
-                    currentPage = 0;
-                  });
-                },
               ),
-              GestureDetector(
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text(
-                    "Alunos",
-                    style: TextStyle(
-                        color:
-                            currentPage == 1 ? Colors.black : Colors.grey[400],
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
-                  ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(FontAwesomeIcons.person),
+                    SizedBox(width: 10),
+                    Text(
+                      "Alunos",
+                      style: TextStyle(fontSize: AppDimensions.homeTabFontSize),
+                    ),
+                  ],
                 ),
-                onTap: () {
-                  setState(() {
-                    currentPage = 1;
-                  });
-                },
               ),
             ],
           ),
-          Expanded(
-            child: PageView(
-              controller: pageController,
-              //physics: const NeverScrollableScrollPhysics(),
-              onPageChanged: (value) {
-                setState(() {
-                  currentPage = value;
-                });
-              },
-              children: [
-                AulasDashTab(
-                  setAulaFiltroHoje: widget.setAulaFiltroHoje,
-                  setAulaFiltroMes: widget.setAulaFiltroMes,
-                  setAulaFiltroAno: widget.setAulaFiltroAno,
-                ),
-                AlunosDashTab(),
-              ],
-            ),
+        ),
+        body: TabBarView(children: [
+          AulasDashTab(
+            setAulaFiltroHoje: widget.setAulaFiltroHoje,
+            setAulaFiltroMes: widget.setAulaFiltroMes,
+            setAulaFiltroAno: widget.setAulaFiltroAno,
           ),
-        ],
+          AlunosDashTab(),
+        ]),
       ),
     );
   }

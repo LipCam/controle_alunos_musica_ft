@@ -1,6 +1,9 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, use_key_in_widget_constructors
 
+import 'package:controle_alunos_musica_ft/config/app_colors.dart';
+import 'package:controle_alunos_musica_ft/config/app_dimensions.dart';
 import 'package:controle_alunos_musica_ft/models/instrutores.dart';
+import 'package:controle_alunos_musica_ft/views/instrutores/components/instrutores_tile.dart';
 import 'package:controle_alunos_musica_ft/views/instrutores/instrutores_lista_back.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -54,7 +57,7 @@ class InstrutoresLista extends StatelessWidget {
         ),
         style: const TextStyle(
           color: Colors.white,
-          fontSize: 16.0,
+          fontSize: AppDimensions.searchFieldFontSize,
         ),
         onChanged: (query) => _back.updateSearchQuery(query),
       );
@@ -63,7 +66,10 @@ class InstrutoresLista extends StatelessWidget {
     return Observer(
       builder: (context) {
         return Scaffold(
+          backgroundColor: AppColors.scafoldBackGround,
           appBar: AppBar(
+            backgroundColor: AppColors.appBarBackGround,
+            foregroundColor: AppColors.appBarFontColor,
             leading: _back.isSearching ? const BackButton() : null,
             title: _back.isSearching
                 ? _buildSearchField()
@@ -71,7 +77,7 @@ class InstrutoresLista extends StatelessWidget {
             actions: _buildActions(),
           ),
           body: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
+            padding: const EdgeInsets.symmetric(vertical: 5),
             child: instrutoresLista(),
           ),
         );
@@ -89,69 +95,13 @@ class InstrutoresLista extends StatelessWidget {
               itemCount: lst.length,
               shrinkWrap: true,
               itemBuilder: (context, i) {
-                Instrutores aluno = lst[i];
-                return ListTile(
-                  dense: true,
-                  title: Text(
-                    aluno.nome.toString(),
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        aluno.instrumento!,
-                        style: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  trailing: deleteButton(context, aluno),
-                  onTap: () {
-                    _back.goToForm(context, aluno);
-                  },
-                );
+                return InstrutoresTile(instrutor: lst[i], back: _back);
               });
         } else {
           return const Center(
             child: CircularProgressIndicator(),
           );
         }
-      },
-    );
-  }
-
-  Widget deleteButton(BuildContext context, Instrutores aluno) {
-    return IconButton(
-      icon: const Icon(FontAwesomeIcons.solidTrashCan),
-      color: Colors.red,
-      onPressed: () {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text("Exclusão"),
-            content: Text("Deseja excluir ${aluno.nome}?"),
-            actions: [
-              TextButton(
-                  child: const Text("Não"),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  }),
-              TextButton(
-                child: const Text("Sim"),
-                onPressed: () {
-                  _back.delete(aluno.idInstrutor!);
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          ),
-        );
       },
     );
   }

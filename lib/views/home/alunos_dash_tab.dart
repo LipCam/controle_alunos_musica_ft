@@ -1,6 +1,6 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:controle_alunos_musica_ft/config/app_cores.dart';
+import 'package:controle_alunos_musica_ft/config/app_colors.dart';
 import 'package:controle_alunos_musica_ft/database/dao/alunos_dao.dart';
 import 'package:flutter/material.dart';
 
@@ -14,10 +14,9 @@ class AlunosDashTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        onGetAlunosDash(context),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(top: 30),
+      child: onGetAlunosDash(context),
     );
   }
 
@@ -43,7 +42,7 @@ class AlunosDashTab extends StatelessWidget {
                   ...lstAulasDash.map(
                     (aulaDash) {
                       iCores++;
-                      if (iCores > AppCores().bkgroundDash.length - 1) {
+                      if (iCores > AppColors().bkgroundDash.length - 1) {
                         iCores = 0;
                       }
 
@@ -53,7 +52,7 @@ class AlunosDashTab extends StatelessWidget {
                         width: MediaQuery.of(context).size.width / 2 - 35,
                         height: 80,
                         decoration: BoxDecoration(
-                          color: AppCores().bkgroundDash[iCores],
+                          color: AppColors().bkgroundDash[iCores],
                           borderRadius: BorderRadius.circular(7.0),
                         ),
                         child: Column(

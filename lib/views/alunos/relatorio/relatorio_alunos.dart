@@ -2,11 +2,11 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:android_intent_plus/android_intent.dart';
+import 'package:controle_alunos_musica_ft/config/app_string_formats.dart';
 import 'package:controle_alunos_musica_ft/config/app_toast.dart';
 import 'package:controle_alunos_musica_ft/database/dao/rel_alunos_dao.dart';
 import 'package:controle_alunos_musica_ft/models/alunos.dart';
 import 'package:controle_alunos_musica_ft/models/aulas.dart';
-import 'package:intl/intl.dart';
 import 'package:open_file/open_file.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -17,8 +17,6 @@ class RelatorioAlunos {
     var dao = RelAlunosDAO();
     List<Alunos> lstAluno = await dao.onGetAlunoRelatorio(idAluno);
     List<Aulas> lstAulas = await dao.onGetAulasAlunoRelatorio(idAluno);
-    DateFormat formatter = DateFormat('ddMMyyyy');
-    DateFormat formatter2 = DateFormat('dd/MM/yyyy');
 
     final pdf = pw.Document();
 
@@ -39,8 +37,9 @@ class RelatorioAlunos {
                 "Instrumento: ${lstAluno[0].instrumento}       Método: ${lstAluno[0].metodo}"),
             pw.Text("Status: ${lstAluno[0].status}"),
             pw.Text(
-                "Início: ${lstAluno[0].dataInicioGEM != null ? formatter2.format(lstAluno[0].dataInicioGEM!) : ""}       Oficialização: ${lstAluno[0].dataOficializacao != null ? formatter2.format(lstAluno[0].dataOficializacao!) : ""}"),
-            pw.Text("Data relatório: ${formatter2.format(DateTime.now())}"),
+                "Início: ${lstAluno[0].dataInicioGEM != null ? getDateFormat_dd_MM_yyyy(lstAluno[0].dataInicioGEM!) : ""}       Oficialização: ${lstAluno[0].dataOficializacao != null ? getDateFormat_dd_MM_yyyy(lstAluno[0].dataOficializacao!) : ""}"),
+            pw.Text(
+                "Data relatório: ${getDateFormat_dd_MM_yyyy(DateTime.now())}"),
             pw.SizedBox(height: 20),
 
             ///Título
@@ -60,7 +59,7 @@ class RelatorioAlunos {
               headers: ["Data", "Tipo", "Assunto", "Instrutor", "Status"],
               data: lstAulas
                   .map((aula) => [
-                        formatter2.format(aula.data),
+                        getDateFormat_dd_MM_yyyy(aula.data),
                         aula.tipo,
                         aula.assunto,
                         aula.instrutor,
@@ -122,7 +121,7 @@ class RelatorioAlunos {
 
     final data = await pdf.save();
     String fileName =
-        "Relat ${lstAluno[0].nome} ${formatter.format(DateTime.now())}";
+        "Relat ${lstAluno[0].nome} ${getDateFormat_ddMMyyyy(DateTime.now())}";
     savePdfFile(fileName, data);
   }
 

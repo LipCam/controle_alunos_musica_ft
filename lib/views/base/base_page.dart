@@ -1,5 +1,6 @@
 // ignore_for_file: use_key_in_widget_constructors, must_be_immutable
 
+import 'package:controle_alunos_musica_ft/config/app_colors.dart';
 import 'package:controle_alunos_musica_ft/views/alunos/alunos_lista.dart';
 import 'package:controle_alunos_musica_ft/views/aulas/aulas_lista.dart';
 import 'package:controle_alunos_musica_ft/views/base/base_page_back.dart';
@@ -57,7 +58,7 @@ class _BasePageState extends State<BasePage> {
         builder: (context) => BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           currentIndex: back.currentPage,
-          backgroundColor: Colors.blue,
+          backgroundColor: AppColors.appBarBackGround,
           selectedItemColor: Colors.white,
           unselectedItemColor: Colors.black,
           onTap: (value) {

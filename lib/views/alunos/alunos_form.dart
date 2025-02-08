@@ -3,6 +3,7 @@
 //import 'package:android_intent_plus/android_intent.dart';
 import 'package:controle_alunos_musica_ft/components/custom_input_decoration.dart';
 import 'package:controle_alunos_musica_ft/components/custom_text_field.dart';
+import 'package:controle_alunos_musica_ft/config/app_colors.dart';
 import 'package:controle_alunos_musica_ft/config/app_toast.dart';
 import 'package:controle_alunos_musica_ft/components/date_picker.dart';
 import 'package:controle_alunos_musica_ft/models/status_alunos.dart';
@@ -60,6 +61,8 @@ class _AlunosFormState extends State<AlunosForm> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Alunos"),
+        backgroundColor: AppColors.appBarBackGround,
+        foregroundColor: AppColors.appBarFontColor,
         actions: [
           IconButton(
               icon: const Icon(FontAwesomeIcons.check),
@@ -108,14 +111,14 @@ class _AlunosFormState extends State<AlunosForm> {
                     },
                   ),
                   PopupMenuItem(
-                    child: const Row(
+                    child: Row(
                       children: [
                         Icon(
                           FontAwesomeIcons.solidTrashCan,
-                          color: Colors.red,
+                          color: AppColors.deleteIcon,
                         ),
-                        SizedBox(width: 10),
-                        Text("Excluir"),
+                        const SizedBox(width: 10),
+                        const Text("Excluir"),
                       ],
                     ),
                     onTap: () {

@@ -1,8 +1,8 @@
+import 'package:controle_alunos_musica_ft/config/app_string_formats.dart';
 import 'package:controle_alunos_musica_ft/database/connection.dart';
 import 'package:controle_alunos_musica_ft/models/aulas.dart';
 import 'package:controle_alunos_musica_ft/models/aulas_dash.dart';
 import 'package:controle_alunos_musica_ft/models/tipos_aula.dart';
-import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
 
 class AulasDAO {
@@ -123,7 +123,7 @@ class AulasDAO {
     lstMap = await _db!.rawQuery('''SELECT COUNT(1) AS QTD_INT
               FROM CAD_AULAS_TAB
               WHERE DATE(DATA_DTI) = ?''',
-        [DateFormat('yyyy-MM-dd').format(DateTime.now())]);
+        [getDateFormat_yyyy_MM_dd(DateTime.now())]);
 
     return AulasDash(
       descricao: "Hoje",
