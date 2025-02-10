@@ -15,20 +15,26 @@ class AulasDAO {
     List<Map<String, dynamic>> lstMap;
 
     if (idAlunoInt == null) {
-      lstMap = await _db!.rawQuery(
-          '''SELECT A.*, AL.NOME_STR AS ALUNO_STR, TP.DESCRICAO_STR AS TIPO_STR,
+      lstMap = await _db!.rawQuery('''SELECT A.*, 
+                AL.NOME_STR AS ALUNO_STR, 
+                INST.NOME_STR AS INSTRUTOR_STR,
+                TP.DESCRICAO_STR AS TIPO_STR,
                 CASE WHEN A.CONCLUIDO_BIT = 0 THEN 'Pendente' ELSE 'Concluído' END AS CONCLUIDO_STR
                 FROM CAD_AULAS_TAB A
                 INNER JOIN CAD_ALUNOS_TAB AL ON AL.ID_ALUNO_INT = A.ID_ALUNO_INT
+                INNER JOIN CAD_INSTRUTORES_TAB INST ON INST.ID_INSTRUTOR_INT = A.ID_INSTRUTOR_INT
                 INNER JOIN SIS_TIPOS_AULA_TAB TP ON TP.ID_TIPO_INT = A.ID_TIPO_INT
                 WHERE DATE(DATA_DTI) BETWEEN ? AND ?
                 ORDER BY DATA_DTI''', [dataIni, dataFim]);
     } else {
-      lstMap = await _db!.rawQuery(
-          '''SELECT A.*, AL.NOME_STR AS ALUNO_STR, TP.DESCRICAO_STR AS TIPO_STR,
+      lstMap = await _db!.rawQuery('''SELECT A.*, 
+                AL.NOME_STR AS ALUNO_STR, 
+                INST.NOME_STR AS INSTRUTOR_STR,
+                TP.DESCRICAO_STR AS TIPO_STR,
                 CASE WHEN A.CONCLUIDO_BIT = 0 THEN 'Pendente' ELSE 'Concluído' END AS CONCLUIDO_STR
                 FROM CAD_AULAS_TAB A
                 INNER JOIN CAD_ALUNOS_TAB AL ON AL.ID_ALUNO_INT = A.ID_ALUNO_INT
+                INNER JOIN CAD_INSTRUTORES_TAB INST ON INST.ID_INSTRUTOR_INT = A.ID_INSTRUTOR_INT
                 INNER JOIN SIS_TIPOS_AULA_TAB TP ON TP.ID_TIPO_INT = A.ID_TIPO_INT
                 WHERE A.ID_ALUNO_INT = ?
                 ORDER BY DATA_DTI DESC''', [idAlunoInt]);
@@ -41,6 +47,7 @@ class AulasDAO {
         idAula: linha["ID_AULA_INT"],
         idAluno: linha["ID_ALUNO_INT"],
         aluno: linha["ALUNO_STR"],
+        instrutor: linha["INSTRUTOR_STR"],
         idTipo: linha["ID_TIPO_INT"],
         tipo: linha["TIPO_STR"],
         idInstrutor: linha["ID_INSTRUTOR_INT"],

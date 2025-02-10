@@ -31,8 +31,6 @@ class _AulasFormState extends State<AulasForm> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Aulas"),
-        backgroundColor: AppColors.appBarBackGround,
-        foregroundColor: AppColors.appBarFontColor,
         actions: [
           IconButton(
               icon: const Icon(FontAwesomeIcons.check),

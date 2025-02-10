@@ -30,15 +30,17 @@ class AulasAlunoTile extends StatelessWidget {
           children: [
             Text(
               getDateFormat_dd_MM_yyyy(aula.data),
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                fontSize: AppDimensions.listTileTitleFontSize,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             Text(
               aula.tipo.toString(),
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              aula.concluidoStr.toString(),
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                fontSize: AppDimensions.listTileTitleFontSize,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),
@@ -49,9 +51,35 @@ class AulasAlunoTile extends StatelessWidget {
               aula.assunto!,
               maxLines: 2,
               style: const TextStyle(
-                fontSize: 15,
+                fontSize: AppDimensions.listTileSubtitleFontSize,
                 overflow: TextOverflow.ellipsis,
               ),
+            ),
+            const Divider(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    aula.instrutor.toString(),
+                    style: const TextStyle(
+                      fontSize: AppDimensions.listTileSubtitleFooterFontSize,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+                Text(
+                  aula.concluidoStr.toString(),
+                  style: TextStyle(
+                    fontSize: AppDimensions.listTileSubtitleFooterFontSize,
+                    color: aula.concluidoStr == "Concluído"
+                        ? AppColors.stAulaConcluido
+                        : AppColors.stAulaPendente,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
           ],
         ),

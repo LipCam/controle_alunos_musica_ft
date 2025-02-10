@@ -68,8 +68,6 @@ class AlunosLista extends StatelessWidget {
         return Scaffold(
           backgroundColor: AppColors.scafoldBackGround,
           appBar: AppBar(
-            backgroundColor: AppColors.appBarBackGround,
-            foregroundColor: AppColors.appBarFontColor,
             leading: _back.isSearching ? const BackButton() : null,
             title:
                 _back.isSearching ? _buildSearchField() : const Text("Alunos"),

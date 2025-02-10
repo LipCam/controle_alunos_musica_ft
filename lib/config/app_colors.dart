@@ -28,4 +28,8 @@ class AppColors {
 
   ///Icons
   static Color get deleteIcon => const Color(0xFFF44336);
+
+  ///Status Aula
+  static Color get stAulaPendente => const Color(0xFFF44336);
+  static Color get stAulaConcluido => const Color(0xFF25A737);
 }

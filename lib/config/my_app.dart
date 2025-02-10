@@ -40,6 +40,11 @@ class MyApp extends StatelessWidget {
       supportedLocales: const [Locale("pt", "BR")],
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        primaryColor: AppColors.appBarFontColor,
+        appBarTheme: AppBarTheme(
+          backgroundColor: AppColors.appBarBackGround,
+          foregroundColor: AppColors.appBarFontColor,
+        ),
         textSelectionTheme: TextSelectionThemeData(
           cursorColor: AppColors.cursorColor, // Cor do cursor piscante
           selectionColor:

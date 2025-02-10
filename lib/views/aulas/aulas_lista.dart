@@ -32,8 +32,6 @@ class _AulasListaState extends State<AulasLista> {
       appBar: AppBar(
           title: Text(
               "Aulas${back.aluno != null ? " - ${back.aluno!.nome}" : ""}"),
-          backgroundColor: AppColors.appBarBackGround,
-          foregroundColor: AppColors.appBarFontColor,
           actions: [
             IconButton(
                 icon: const Icon(FontAwesomeIcons.plus),

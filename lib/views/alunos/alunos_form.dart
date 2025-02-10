@@ -61,8 +61,6 @@ class _AlunosFormState extends State<AlunosForm> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Alunos"),
-        backgroundColor: AppColors.appBarBackGround,
-        foregroundColor: AppColors.appBarFontColor,
         actions: [
           IconButton(
               icon: const Icon(FontAwesomeIcons.check),

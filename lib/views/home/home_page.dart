@@ -1,6 +1,5 @@
 // ignore_for_file: use_key_in_widget_constructors, must_be_immutable
 
-import 'package:controle_alunos_musica_ft/config/app_colors.dart';
 import 'package:controle_alunos_musica_ft/config/app_dimensions.dart';
 import 'package:controle_alunos_musica_ft/views/home/alunos_dash_tab.dart';
 import 'package:controle_alunos_musica_ft/views/home/aulas_dash_tab.dart';
@@ -31,8 +30,6 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Controle Alunos"),
-          backgroundColor: AppColors.appBarBackGround,
-          foregroundColor: AppColors.appBarFontColor,
           bottom: const TabBar(
             tabs: [
               Padding(

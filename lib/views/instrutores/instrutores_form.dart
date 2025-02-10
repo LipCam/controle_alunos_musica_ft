@@ -23,8 +23,6 @@ class InstrutoresForm extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Instrutores"),
-        backgroundColor: AppColors.appBarBackGround,
-        foregroundColor: AppColors.appBarFontColor,
         actions: [
           IconButton(
               icon: const Icon(FontAwesomeIcons.check),
