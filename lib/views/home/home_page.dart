@@ -63,14 +63,23 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        body: TabBarView(children: [
-          AulasDashTab(
-            setAulaFiltroHoje: widget.setAulaFiltroHoje,
-            setAulaFiltroMes: widget.setAulaFiltroMes,
-            setAulaFiltroAno: widget.setAulaFiltroAno,
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(
+                  "assets/images/wallpaper_music.jpg"), // Caminho da imagem
+              fit: BoxFit.cover, // Ajusta a imagem para cobrir toda a tela
+            ),
           ),
-          AlunosDashTab(),
-        ]),
+          child: TabBarView(children: [
+            AulasDashTab(
+              setAulaFiltroHoje: widget.setAulaFiltroHoje,
+              setAulaFiltroMes: widget.setAulaFiltroMes,
+              setAulaFiltroAno: widget.setAulaFiltroAno,
+            ),
+            AlunosDashTab(),
+          ]),
+        ),
       ),
     );
   }

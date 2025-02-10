@@ -6,6 +6,7 @@ import 'package:controle_alunos_musica_ft/components/custom_text_field.dart';
 import 'package:controle_alunos_musica_ft/config/app_colors.dart';
 import 'package:controle_alunos_musica_ft/config/app_toast.dart';
 import 'package:controle_alunos_musica_ft/components/date_picker.dart';
+import 'package:controle_alunos_musica_ft/database/dao/status_alunos_dao.dart';
 import 'package:controle_alunos_musica_ft/models/status_alunos.dart';
 import 'package:controle_alunos_musica_ft/views/alunos/alunos_form_back.dart';
 import 'package:flutter/material.dart';
@@ -24,25 +25,16 @@ class _AlunosFormState extends State<AlunosForm> {
   int idStatusSel = 1;
   final keyForm = GlobalKey<FormState>();
   late TextEditingController txtFoneController = TextEditingController();
+  final _dao = StatusAlunosDAO();
 
   @override
   void initState() {
     super.initState();
-    //getStatusAlunos();
+    getStatusAlunos();
   }
 
   getStatusAlunos() async {
-    lstStatus = [
-      StatusAlunos(idStatus: 1, descricao: "Aprendiz teste"),
-      StatusAlunos(idStatus: 2, descricao: "Ensaio"),
-      StatusAlunos(idStatus: 3, descricao: "Culto"),
-    ];
-
-// idStatusSel = (back.aluno?.idStatus != null
-//         ? back.aluno!.idStatus
-//         : lstStatus[0].idStatus)!;
-
-    idStatusSel = lstStatus[0].idStatus!;
+    lstStatus = await _dao.onGetStatus();
 
     setState(() {});
   }
@@ -55,6 +47,7 @@ class _AlunosFormState extends State<AlunosForm> {
       isLoad = false;
       txtFoneController.text =
           back.aluno?.fone != null ? back.aluno!.fone! : txtFoneController.text;
+      idStatusSel = back.aluno?.idStatus ?? 1;
     }
     double alturaCampos = 15;
 
@@ -168,50 +161,23 @@ class _AlunosFormState extends State<AlunosForm> {
                   validator: back.validaNome,
                   onSaved: (value) => back.aluno?.nome = value,
                 ),
-                FutureBuilder(
-                  future: back.onGetStatus(),
-                  builder: (context, future) {
-                    if (future.hasData) {
-                      List<StatusAlunos> lstStatus =
-                          future.data as List<StatusAlunos>;
-                      return DropdownButtonFormField<dynamic>(
-                        decoration:
-                            CustomInputDecoration.onCustomInputDecoration(
-                                "Status"),
-                        value: back.aluno?.idStatus != null
-                            ? back.aluno!.idStatus
-                            : 1,
-                        items: lstStatus.map((e) {
-                          return DropdownMenuItem(
-                            value: e.idStatus,
-                            child: Text(e.descricao.toString()),
-                          );
-                        }).toList(),
-                        onChanged: (value) {},
-                        onSaved: (value) => back.aluno?.idStatus = value,
-                      );
-                    } else {
-                      return const CircularProgressIndicator();
-                    }
+                DropdownButtonFormField<dynamic>(
+                  decoration:
+                      CustomInputDecoration.onCustomInputDecoration("Status"),
+                  value: idStatusSel,
+                  items: lstStatus.map((e) {
+                    return DropdownMenuItem(
+                      value: e.idStatus,
+                      child: Text(e.descricao.toString()),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      idStatusSel = value;
+                    });
                   },
+                  onSaved: (value) => back.aluno?.idStatus = value,
                 ),
-                // DropdownButtonFormField<dynamic>(
-                //   decoration:
-                //       CustomInputDecoration.onCustomInputDecoration("Status"),
-                //   value: idStatusSel,
-                //   items: lstStatus.map((e) {
-                //     return DropdownMenuItem(
-                //       value: e.idStatus,
-                //       child: Text(e.descricao.toString()),
-                //     );
-                //   }).toList(),
-                //   onChanged: (value) {
-                //     setState(() {
-                //       idStatusSel = value;
-                //     });
-                //   },
-                //   onSaved: (value) => back.aluno?.idStatus = value,
-                // ),
                 SizedBox(height: alturaCampos),
                 CustomTextField(
                   label: "Instrumento",

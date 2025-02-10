@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:controle_alunos_musica_ft/components/borded_text.dart';
 import 'package:controle_alunos_musica_ft/config/app_colors.dart';
 import 'package:controle_alunos_musica_ft/database/dao/alunos_dao.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,14 @@ class AlunosDashTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 30),
-      child: onGetAlunosDash(context),
+      child: Column(
+        children: [
+          BordedText(
+            text: "Por Status",
+          ),
+          onGetAlunosDash(context),
+        ],
+      ),
     );
   }
 

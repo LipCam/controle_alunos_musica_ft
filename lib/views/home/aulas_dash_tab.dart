@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:controle_alunos_musica_ft/components/borded_text.dart';
 import 'package:controle_alunos_musica_ft/database/dao/aulas_dao.dart';
 import 'package:controle_alunos_musica_ft/models/aulas_dash.dart';
 import 'package:flutter/material.dart';
@@ -26,12 +27,8 @@ class AulasDashTab extends StatelessWidget {
       child: Column(
         children: [
           const SizedBox(height: 30),
-          const Text(
-            "Por Período",
-            style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-            ),
+          BordedText(
+            text: "Por Período",
           ),
           Padding(
             padding:
@@ -48,12 +45,8 @@ class AulasDashTab extends StatelessWidget {
               ],
             ),
           ),
-          const Text(
-            "Por Instrutor",
-            style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-            ),
+          BordedText(
+            text: "Por Instrutor",
           ),
           onGetAulasIntrutorDash(context),
         ],

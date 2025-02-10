@@ -116,7 +116,7 @@ class AulasTile extends StatelessWidget {
           context: context,
           title: "Exclusão",
           message:
-              "Deseja excluir este registro?\nData: ${getDateFormat_dd_MM_yyyy(aula.data)}\nAssunto: ${aula.assunto}",
+              "Deseja excluir este registro?\nAluno: ${aula.aluno}\nData: ${getDateFormat_dd_MM_yyyy(aula.data)}\nAssunto: ${aula.assunto}",
           functionYes: () {
             back.onDelete(
                 aula.idAula!, back.dataIni!, back.dataFim!, back.aluno);
