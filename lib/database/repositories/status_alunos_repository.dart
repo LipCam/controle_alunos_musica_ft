@@ -2,7 +2,7 @@ import 'package:controle_alunos_musica_ft/database/connection.dart';
 import 'package:controle_alunos_musica_ft/models/status_alunos.dart';
 import 'package:sqflite/sqflite.dart';
 
-class StatusAlunosDAO {
+class StatusAlunosRepository {
   Database? _db;
 
   Future<List<StatusAlunos>> onGetStatus() async {

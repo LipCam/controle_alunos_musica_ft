@@ -2,7 +2,7 @@
 
 import 'package:controle_alunos_musica_ft/config/app_string_formats.dart';
 import 'package:controle_alunos_musica_ft/config/my_app.dart';
-import 'package:controle_alunos_musica_ft/database/dao/aulas_dao.dart';
+import 'package:controle_alunos_musica_ft/database/repositories/aulas_repository.dart';
 import 'package:controle_alunos_musica_ft/models/alunos.dart';
 import 'package:controle_alunos_musica_ft/models/aulas.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +13,7 @@ part 'aulas_lista_back.g.dart';
 class AulasListaBack = _AulasListaBack with _$AulasListaBack;
 
 abstract class _AulasListaBack with Store {
-  final _dao = AulasDAO();
+  final _dao = AulasRepository();
   Alunos? aluno;
 
   _AulasListaBack(BuildContext context, DateTime? dtIni, DateTime? dtFim) {

@@ -5,7 +5,7 @@ import 'package:controle_alunos_musica_ft/models/aulas_dash.dart';
 import 'package:controle_alunos_musica_ft/models/tipos_aula.dart';
 import 'package:sqflite/sqflite.dart';
 
-class AulasDAO {
+class AulasRepository {
   Database? _db;
 
   Future<List<Aulas>> onGetLista(

@@ -1,7 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:controle_alunos_musica_ft/config/my_app.dart';
-import 'package:controle_alunos_musica_ft/database/dao/instrutores_dao.dart';
+import 'package:controle_alunos_musica_ft/database/repositories/instrutores_repository.dart';
 import 'package:controle_alunos_musica_ft/models/instrutores.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
@@ -12,7 +12,7 @@ class InstrutoresFormBack = _InstrutoresFormBack with _$InstrutoresFormBack;
 
 abstract class _InstrutoresFormBack with Store {
   Instrutores? instrutor;
-  final _dao = InstrutoresDAO();
+  final _dao = InstrutoresRepository();
 
   _InstrutoresFormBack(BuildContext context) {
     var parameter = ModalRoute.of(context)?.settings.arguments;

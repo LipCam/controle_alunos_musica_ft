@@ -1,7 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:controle_alunos_musica_ft/config/my_app.dart';
-import 'package:controle_alunos_musica_ft/database/dao/instrutores_dao.dart';
+import 'package:controle_alunos_musica_ft/database/repositories/instrutores_repository.dart';
 import 'package:controle_alunos_musica_ft/models/instrutores.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
@@ -11,7 +11,7 @@ part 'instrutores_lista_back.g.dart';
 class InstrutoresListaBack = _InstrutoresListaBack with _$InstrutoresListaBack;
 
 abstract class _InstrutoresListaBack with Store {
-  final _dao = InstrutoresDAO();
+  final _dao = InstrutoresRepository();
 
   _InstrutoresListaBack() {
     carregaLista();

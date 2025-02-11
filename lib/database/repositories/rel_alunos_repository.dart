@@ -3,7 +3,7 @@ import 'package:controle_alunos_musica_ft/models/alunos.dart';
 import 'package:controle_alunos_musica_ft/models/aulas.dart';
 import 'package:sqflite/sqflite.dart';
 
-class RelAlunosDAO {
+class RelAlunosRepository {
   Database? _db;
 
   Future<List<Alunos>> onGetAlunoRelatorio(int idAlunoInt) async {

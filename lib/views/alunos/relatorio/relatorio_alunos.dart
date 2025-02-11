@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:controle_alunos_musica_ft/config/app_string_formats.dart';
 import 'package:controle_alunos_musica_ft/config/app_toast.dart';
-import 'package:controle_alunos_musica_ft/database/dao/rel_alunos_dao.dart';
+import 'package:controle_alunos_musica_ft/database/repositories/rel_alunos_repository.dart';
 import 'package:controle_alunos_musica_ft/models/alunos.dart';
 import 'package:controle_alunos_musica_ft/models/aulas.dart';
 import 'package:open_file/open_file.dart';
@@ -14,7 +14,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 class RelatorioAlunos {
   Future<void> onGeraRelatorio(int idAluno) async {
-    var dao = RelAlunosDAO();
+    var dao = RelAlunosRepository();
     List<Alunos> lstAluno = await dao.onGetAlunoRelatorio(idAluno);
     List<Aulas> lstAulas = await dao.onGetAulasAlunoRelatorio(idAluno);
 

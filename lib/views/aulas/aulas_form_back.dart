@@ -1,8 +1,8 @@
 // ignore_for_file: library_private_types_in_public_api
 
-import 'package:controle_alunos_musica_ft/database/dao/alunos_dao.dart';
-import 'package:controle_alunos_musica_ft/database/dao/aulas_dao.dart';
-import 'package:controle_alunos_musica_ft/database/dao/instrutores_dao.dart';
+import 'package:controle_alunos_musica_ft/database/repositories/alunos_repository.dart';
+import 'package:controle_alunos_musica_ft/database/repositories/aulas_repository.dart';
+import 'package:controle_alunos_musica_ft/database/repositories/instrutores_repository.dart';
 import 'package:controle_alunos_musica_ft/models/alunos.dart';
 import 'package:controle_alunos_musica_ft/models/aulas.dart';
 import 'package:controle_alunos_musica_ft/models/instrutores.dart';
@@ -16,9 +16,9 @@ class AulasFormBack = _AulasFormBack with _$AulasFormBack;
 
 abstract class _AulasFormBack with Store {
   Aulas? aula;
-  final _dao = AulasDAO();
-  final _daoAlunos = AlunosDAO();
-  final _daoInstrutores = InstrutoresDAO();
+  final _dao = AulasRepository();
+  final _daoAlunos = AlunosRepository();
+  final _daoInstrutores = InstrutoresRepository();
 
   _AulasFormBack(BuildContext context) {
     aula = ModalRoute.of(context)?.settings.arguments as Aulas;

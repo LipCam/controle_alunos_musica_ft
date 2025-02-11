@@ -3,7 +3,7 @@ import 'package:controle_alunos_musica_ft/database/connection.dart';
 import 'package:controle_alunos_musica_ft/models/instrutores.dart';
 import 'package:sqflite/sqflite.dart';
 
-class InstrutoresDAO {
+class InstrutoresRepository {
   Database? _db;
 
   Future<List<Instrutores>> onGetLista(String? textPesquisa) async {

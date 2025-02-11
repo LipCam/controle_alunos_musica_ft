@@ -1,7 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:controle_alunos_musica_ft/components/borded_text.dart';
-import 'package:controle_alunos_musica_ft/database/dao/aulas_dao.dart';
+import 'package:controle_alunos_musica_ft/database/repositories/aulas_repository.dart';
 import 'package:controle_alunos_musica_ft/models/aulas_dash.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +14,7 @@ class AulasDashTab extends StatelessWidget {
     required this.setAulaFiltroMes,
     required this.setAulaFiltroAno,
   });
-  final _dao = AulasDAO();
+  final _dao = AulasRepository();
   final void Function()? setAulaFiltroHoje;
   final void Function()? setAulaFiltroMes;
   final void Function()? setAulaFiltroAno;

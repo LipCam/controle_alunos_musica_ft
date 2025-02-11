@@ -1,7 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:controle_alunos_musica_ft/config/my_app.dart';
-import 'package:controle_alunos_musica_ft/database/dao/alunos_dao.dart';
+import 'package:controle_alunos_musica_ft/database/repositories/alunos_repository.dart';
 import 'package:controle_alunos_musica_ft/models/alunos.dart';
 import 'package:controle_alunos_musica_ft/views/alunos/relatorio/relatorio_alunos.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +13,7 @@ class AlunosFormBack = _AlunosFormBack with _$AlunosFormBack;
 
 abstract class _AlunosFormBack with Store {
   Alunos? aluno;
-  final _dao = AlunosDAO();
+  final _dao = AlunosRepository();
 
   _AlunosFormBack(BuildContext context) {
     var parameter = ModalRoute.of(context)?.settings.arguments;

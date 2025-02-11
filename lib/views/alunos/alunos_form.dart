@@ -6,7 +6,7 @@ import 'package:controle_alunos_musica_ft/components/custom_text_field.dart';
 import 'package:controle_alunos_musica_ft/config/app_colors.dart';
 import 'package:controle_alunos_musica_ft/config/app_toast.dart';
 import 'package:controle_alunos_musica_ft/components/date_picker.dart';
-import 'package:controle_alunos_musica_ft/database/dao/status_alunos_dao.dart';
+import 'package:controle_alunos_musica_ft/database/repositories/status_alunos_repository.dart';
 import 'package:controle_alunos_musica_ft/models/status_alunos.dart';
 import 'package:controle_alunos_musica_ft/views/alunos/alunos_form_back.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +25,7 @@ class _AlunosFormState extends State<AlunosForm> {
   int idStatusSel = 1;
   final keyForm = GlobalKey<FormState>();
   late TextEditingController txtFoneController = TextEditingController();
-  final _dao = StatusAlunosDAO();
+  final _dao = StatusAlunosRepository();
 
   @override
   void initState() {

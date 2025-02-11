@@ -2,14 +2,14 @@
 
 import 'package:controle_alunos_musica_ft/components/borded_text.dart';
 import 'package:controle_alunos_musica_ft/config/app_colors.dart';
-import 'package:controle_alunos_musica_ft/database/dao/alunos_dao.dart';
+import 'package:controle_alunos_musica_ft/database/repositories/alunos_repository.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/alunos_dash.dart';
 
 class AlunosDashTab extends StatelessWidget {
   AlunosDashTab({super.key});
-  final _dao = AlunosDAO();
+  final _dao = AlunosRepository();
   bool loadGetAlunosDash = true;
   int iCores = -1;
 
