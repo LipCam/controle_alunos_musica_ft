@@ -10,15 +10,27 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class InstrutoresForm extends StatelessWidget {
+class InstrutoresForm extends StatefulWidget {
+  @override
+  State<InstrutoresForm> createState() => _InstrutoresFormState();
+}
+
+class _InstrutoresFormState extends State<InstrutoresForm> {
+  bool isLoad = true;
+  final keyForm = GlobalKey<FormState>();
+  late TextEditingController txtFoneController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     var back = InstrutoresFormBack(context);
-    final keyForm = GlobalKey<FormState>();
-    TextEditingController? txtFoneController = TextEditingController();
-    txtFoneController.text =
-        back.instrutor?.fone != null ? back.instrutor!.fone! : "";
     double alturaCampos = 15;
+
+    if (isLoad) {
+      isLoad = false;
+      txtFoneController.text = back.instrutor?.fone != null
+          ? back.instrutor!.fone!
+          : txtFoneController.text;
+    }
 
     return Scaffold(
       appBar: AppBar(
