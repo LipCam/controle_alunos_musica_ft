@@ -17,6 +17,8 @@ class InstrutoresForm extends StatefulWidget {
 
 class _InstrutoresFormState extends State<InstrutoresForm> {
   bool isLoad = true;
+  DateTime? dataNascimento;
+  DateTime? dataOficializacao;
   final keyForm = GlobalKey<FormState>();
   late TextEditingController txtFoneController = TextEditingController();
 
@@ -30,6 +32,8 @@ class _InstrutoresFormState extends State<InstrutoresForm> {
       txtFoneController.text = back.instrutor?.fone != null
           ? back.instrutor!.fone!
           : txtFoneController.text;
+      dataNascimento = back.instrutor?.dataNascimento;
+      dataOficializacao = back.instrutor?.dataOficializacao;
     }
 
     return Scaffold(
@@ -42,6 +46,8 @@ class _InstrutoresFormState extends State<InstrutoresForm> {
               onPressed: () async {
                 if (keyForm.currentState!.validate()) {
                   keyForm.currentState!.save();
+                  back.instrutor?.dataNascimento = dataNascimento;
+                  back.instrutor?.dataOficializacao = dataOficializacao;
                   back.instrutor?.idInstrutor = await back.onSave();
                   back.novoReg = false;
                   onToastMessage("Salvo");
@@ -156,25 +162,25 @@ class _InstrutoresFormState extends State<InstrutoresForm> {
                       children: [
                         DatePickerClear(
                           label: "Nascimento",
-                          date: back.instrutor?.dataNascimento,
+                          date: dataNascimento,
                           tipoData: 1,
                           onDateTimeChanged: (dt) {
-                            back.instrutor?.dataNascimento = dt;
+                            dataNascimento = dt;
                           },
                           clearDate: () {
-                            back.instrutor?.dataNascimento = null;
+                            dataNascimento = null;
                           },
                         ),
                         const SizedBox(width: 80),
                         DatePickerClear(
                           label: "Oficialização",
-                          date: back.instrutor?.dataOficializacao,
+                          date: dataOficializacao,
                           tipoData: 1,
                           onDateTimeChanged: (dt) {
-                            back.instrutor?.dataOficializacao = dt;
+                            dataOficializacao = dt;
                           },
                           clearDate: () {
-                            back.instrutor?.dataOficializacao = null;
+                            dataOficializacao = null;
                           },
                         ),
                       ],

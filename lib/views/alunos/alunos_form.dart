@@ -23,6 +23,10 @@ class _AlunosFormState extends State<AlunosForm> {
   List<StatusAlunos> lstStatus = [];
   bool isLoad = true;
   int idStatusSel = 1;
+  DateTime? dataNascimento;
+  DateTime? dataBatismo;
+  DateTime? dataInicioGEM;
+  DateTime? dataOficializacao;
   final keyForm = GlobalKey<FormState>();
   late TextEditingController txtFoneController = TextEditingController();
   final _repository = StatusAlunosRepository();
@@ -48,6 +52,10 @@ class _AlunosFormState extends State<AlunosForm> {
       txtFoneController.text =
           back.aluno?.fone != null ? back.aluno!.fone! : txtFoneController.text;
       idStatusSel = back.aluno?.idStatus ?? 1;
+      dataNascimento = back.aluno?.dataNascimento;
+      dataBatismo = back.aluno?.dataBatismo;
+      dataInicioGEM = back.aluno?.dataInicioGEM;
+      dataOficializacao = back.aluno?.dataOficializacao;
     }
     double alturaCampos = 15;
 
@@ -61,6 +69,10 @@ class _AlunosFormState extends State<AlunosForm> {
               onPressed: () async {
                 if (keyForm.currentState!.validate()) {
                   keyForm.currentState!.save();
+                  back.aluno?.dataNascimento = dataNascimento;
+                  back.aluno?.dataBatismo = dataBatismo;
+                  back.aluno?.dataInicioGEM = dataInicioGEM;
+                  back.aluno?.dataOficializacao = dataOficializacao;
                   back.aluno?.idAluno = await back.onSave();
                   back.novoReg = false;
                   onToastMessage("Salvo");
@@ -248,25 +260,25 @@ class _AlunosFormState extends State<AlunosForm> {
                   children: [
                     DatePickerClear(
                       label: "Nascimento",
-                      date: back.aluno?.dataNascimento,
+                      date: dataNascimento,
                       tipoData: 1,
                       onDateTimeChanged: (dt) {
-                        back.aluno?.dataNascimento = dt;
+                        dataNascimento = dt;
                       },
                       clearDate: () {
-                        back.aluno?.dataNascimento = null;
+                        dataNascimento = null;
                       },
                     ),
                     const SizedBox(width: 80),
                     DatePickerClear(
                       label: "Batismo",
-                      date: back.aluno?.dataBatismo,
+                      date: dataBatismo,
                       tipoData: 1,
                       onDateTimeChanged: (dt) {
-                        back.aluno?.dataBatismo = dt;
+                        dataBatismo = dt;
                       },
                       clearDate: () {
-                        back.aluno?.dataBatismo = null;
+                        dataBatismo = null;
                       },
                     ),
                   ],
@@ -276,25 +288,25 @@ class _AlunosFormState extends State<AlunosForm> {
                   children: [
                     DatePickerClear(
                       label: "Início GEM",
-                      date: back.aluno?.dataInicioGEM,
+                      date: dataInicioGEM,
                       tipoData: 1,
                       onDateTimeChanged: (dt) {
-                        back.aluno?.dataInicioGEM = dt;
+                        dataInicioGEM = dt;
                       },
                       clearDate: () {
-                        back.aluno?.dataInicioGEM = null;
+                        dataInicioGEM = null;
                       },
                     ),
                     const SizedBox(width: 80),
                     DatePickerClear(
                       label: "Oficialização",
-                      date: back.aluno?.dataOficializacao,
+                      date: dataOficializacao,
                       tipoData: 1,
                       onDateTimeChanged: (dt) {
-                        back.aluno?.dataOficializacao = dt;
+                        dataOficializacao = dt;
                       },
                       clearDate: () {
-                        back.aluno?.dataOficializacao = null;
+                        dataOficializacao = null;
                       },
                     ),
                   ],
