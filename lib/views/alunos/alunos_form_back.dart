@@ -13,7 +13,7 @@ class AlunosFormBack = _AlunosFormBack with _$AlunosFormBack;
 
 abstract class _AlunosFormBack with Store {
   Alunos? aluno;
-  final _dao = AlunosRepository();
+  final _repository = AlunosRepository();
 
   _AlunosFormBack(BuildContext context) {
     var parameter = ModalRoute.of(context)?.settings.arguments;
@@ -25,7 +25,7 @@ abstract class _AlunosFormBack with Store {
   bool novoReg = true;
 
   Future<int> onSave() async {
-    return await _dao.onSave(aluno!);
+    return await _repository.onSave(aluno!);
   }
 
   String? validaNome(String? nome) {
@@ -34,7 +34,7 @@ abstract class _AlunosFormBack with Store {
   }
 
   onDelete(int id) {
-    _dao.onDelete(id);
+    _repository.onDelete(id);
   }
 
   onGoToAulasLista(BuildContext context, Alunos aluno) {

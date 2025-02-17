@@ -29,7 +29,7 @@ class InstrutoresTile extends StatelessWidget {
         title: Text(
           instrutor.nome.toString(),
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: AppDimensions.listTileTitleFontSize,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -37,9 +37,15 @@ class InstrutoresTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
+              instrutor.fone!,
+              style: const TextStyle(
+                fontSize: AppDimensions.listTileSubtitleFontSize,
+              ),
+            ),
+            Text(
               instrutor.instrumento!,
               style: const TextStyle(
-                fontSize: 15,
+                fontSize: AppDimensions.listTileSubtitleFontSize,
                 fontWeight: FontWeight.bold,
               ),
             ),

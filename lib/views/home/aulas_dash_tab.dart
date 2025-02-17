@@ -14,7 +14,7 @@ class AulasDashTab extends StatelessWidget {
     required this.setAulaFiltroMes,
     required this.setAulaFiltroAno,
   });
-  final _dao = AulasRepository();
+  final _repository = AulasRepository();
   final void Function()? setAulaFiltroHoje;
   final void Function()? setAulaFiltroMes;
   final void Function()? setAulaFiltroAno;
@@ -36,11 +36,11 @@ class AulasDashTab extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                onGetAulasPeriodoDash(context, _dao.onGetAulasHojeDash(),
+                onGetAulasPeriodoDash(context, _repository.onGetAulasHojeDash(),
                     const Color(0XFF43aa8b), setAulaFiltroHoje),
-                onGetAulasPeriodoDash(context, _dao.onGetAulasMesDash(),
+                onGetAulasPeriodoDash(context, _repository.onGetAulasMesDash(),
                     const Color(0XFF003049), setAulaFiltroMes),
-                onGetAulasPeriodoDash(context, _dao.onGetAulasAnoDash(),
+                onGetAulasPeriodoDash(context, _repository.onGetAulasAnoDash(),
                     const Color(0XFFc1121f), setAulaFiltroAno),
               ],
             ),
@@ -106,7 +106,7 @@ class AulasDashTab extends StatelessWidget {
 
   FutureBuilder onGetAulasIntrutorDash(BuildContext context) {
     return FutureBuilder(
-      future: _dao.onGetAulasInstrutoresDash(),
+      future: _repository.onGetAulasInstrutoresDash(),
       builder: (context, future) {
         if (loadGetAulasIntrutorDash) {
           loadGetAulasIntrutorDash = false;

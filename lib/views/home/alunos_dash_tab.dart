@@ -9,7 +9,7 @@ import '../../models/alunos_dash.dart';
 
 class AlunosDashTab extends StatelessWidget {
   AlunosDashTab({super.key});
-  final _dao = AlunosRepository();
+  final _repository = AlunosRepository();
   bool loadGetAlunosDash = true;
   int iCores = -1;
 
@@ -30,7 +30,7 @@ class AlunosDashTab extends StatelessWidget {
 
   FutureBuilder onGetAlunosDash(BuildContext context) {
     return FutureBuilder(
-      future: _dao.onGetAlunosDash(),
+      future: _repository.onGetAlunosDash(),
       builder: (context, future) {
         if (loadGetAlunosDash) {
           loadGetAlunosDash = false;

@@ -13,7 +13,7 @@ part 'aulas_lista_back.g.dart';
 class AulasListaBack = _AulasListaBack with _$AulasListaBack;
 
 abstract class _AulasListaBack with Store {
-  final _dao = AulasRepository();
+  final _repository = AulasRepository();
   Alunos? aluno;
 
   _AulasListaBack(BuildContext context, DateTime? dtIni, DateTime? dtFim) {
@@ -31,7 +31,7 @@ abstract class _AulasListaBack with Store {
   onCarregaLista([dynamic dataIni, dynamic dataFim, int? iD_ALUNO_INT]) {
     dataIni = getDateFormat_yyyy_MM_dd(dataIni);
     dataFim = getDateFormat_yyyy_MM_dd(dataFim);
-    lstEntities = _dao.onGetLista(dataIni, dataFim, iD_ALUNO_INT);
+    lstEntities = _repository.onGetLista(dataIni, dataFim, iD_ALUNO_INT);
   }
 
   @observable
@@ -48,7 +48,7 @@ abstract class _AulasListaBack with Store {
   }
 
   onDelete(int id, DateTime dataIni, DateTime dataFim, Alunos? aluno) {
-    _dao.onDelete(id);
+    _repository.onDelete(id);
     onCarregaLista(dataIni, dataFim, aluno?.idAluno);
   }
 }

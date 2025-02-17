@@ -11,7 +11,7 @@ part 'alunos_lista_back.g.dart';
 class AlunosListaBack = _AlunosListaBack with _$AlunosListaBack;
 
 abstract class _AlunosListaBack with Store {
-  final _dao = AlunosRepository();
+  final _repository = AlunosRepository();
 
   _AlunosListaBack() {
     carregaLista();
@@ -22,7 +22,7 @@ abstract class _AlunosListaBack with Store {
 
   @action
   carregaLista([dynamic textPesquisa]) {
-    lstEntities = _dao.onGetLista(textPesquisa);
+    lstEntities = _repository.onGetLista(textPesquisa);
   }
 
   goToForm(BuildContext context, [Alunos? aluno]) {
@@ -32,7 +32,7 @@ abstract class _AlunosListaBack with Store {
   }
 
   onDelete(int id) {
-    _dao.onDelete(id);
+    _repository.onDelete(id);
     carregaLista();
   }
 

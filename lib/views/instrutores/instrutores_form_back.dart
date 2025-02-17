@@ -12,7 +12,7 @@ class InstrutoresFormBack = _InstrutoresFormBack with _$InstrutoresFormBack;
 
 abstract class _InstrutoresFormBack with Store {
   Instrutores? instrutor;
-  final _dao = InstrutoresRepository();
+  final _repository = InstrutoresRepository();
 
   _InstrutoresFormBack(BuildContext context) {
     var parameter = ModalRoute.of(context)?.settings.arguments;
@@ -24,7 +24,7 @@ abstract class _InstrutoresFormBack with Store {
   bool novoReg = true;
 
   Future<int> onSave() async {
-    return await _dao.onSave(instrutor!);
+    return await _repository.onSave(instrutor!);
   }
 
   String? validaNome(String? nome) {
@@ -33,7 +33,7 @@ abstract class _InstrutoresFormBack with Store {
   }
 
   onDelete(int id) {
-    _dao.onDelete(id);
+    _repository.onDelete(id);
   }
 
   onGoToInstrutoresLista(BuildContext context, Instrutores instrutor) {

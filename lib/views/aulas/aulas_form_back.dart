@@ -17,9 +17,9 @@ class AulasFormBack = _AulasFormBack with _$AulasFormBack;
 
 abstract class _AulasFormBack with Store {
   Aulas? aula;
-  final _dao = AulasRepository();
-  final _daoAlunos = AlunosRepository();
-  final _daoInstrutores = InstrutoresRepository();
+  final _aulasRepository = AulasRepository();
+  final _alunosRepository = AlunosRepository();
+  final _instrutoresRepository = InstrutoresRepository();
 
   _AulasFormBack(BuildContext context) {
     aula = ModalRoute.of(context)?.settings.arguments as Aulas;
@@ -30,19 +30,19 @@ abstract class _AulasFormBack with Store {
   bool novoReg = true;
 
   Future<List<Alunos>> onGetAlunosCmb() {
-    return _daoAlunos.onGetCmb();
+    return _alunosRepository.onGetCmb();
   }
 
   Future<List<TiposAula>> onGetTiposCmb() {
-    return _dao.onGetTiposCmb();
+    return _aulasRepository.onGetTiposCmb();
   }
 
   Future<List<Instrutores>> onGetInstrutoresCmb() {
-    return _daoInstrutores.onGetCmb();
+    return _instrutoresRepository.onGetCmb();
   }
 
   Future<int> onSave() async {
-    return await _dao.onSave(aula!);
+    return await _aulasRepository.onSave(aula!);
   }
 
   goToTempAlunosLista(BuildContext context, [int? idAula]) {
@@ -66,6 +66,6 @@ abstract class _AulasFormBack with Store {
   }
 
   onDelete(int id) {
-    _dao.onDelete(id);
+    _aulasRepository.onDelete(id);
   }
 }

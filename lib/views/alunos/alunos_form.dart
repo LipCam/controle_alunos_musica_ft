@@ -25,7 +25,7 @@ class _AlunosFormState extends State<AlunosForm> {
   int idStatusSel = 1;
   final keyForm = GlobalKey<FormState>();
   late TextEditingController txtFoneController = TextEditingController();
-  final _dao = StatusAlunosRepository();
+  final _repository = StatusAlunosRepository();
 
   @override
   void initState() {
@@ -34,7 +34,7 @@ class _AlunosFormState extends State<AlunosForm> {
   }
 
   getStatusAlunos() async {
-    lstStatus = await _dao.onGetStatus();
+    lstStatus = await _repository.onGetStatus();
 
     setState(() {});
   }
