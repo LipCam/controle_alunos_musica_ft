@@ -33,16 +33,17 @@ class _AulasFormState extends State<AulasForm> {
         title: const Text("Aulas"),
         actions: [
           IconButton(
-              icon: const Icon(FontAwesomeIcons.check),
-              tooltip: "Salvar",
-              onPressed: () async {
-                if (keyForm.currentState!.validate()) {
-                  keyForm.currentState!.save();
-                  back.aula?.idAula = await back.onSave();
-                  back.novoReg = false;
-                  onToastMessage("Salvo");
-                }
-              }),
+            icon: const Icon(FontAwesomeIcons.check),
+            tooltip: "Salvar",
+            onPressed: () async {
+              if (keyForm.currentState!.validate()) {
+                keyForm.currentState!.save();
+                back.aula?.idAula = await back.onSave();
+                back.novoReg = false;
+                onToastMessage("Salvo");
+              }
+            },
+          ),
           Observer(
             builder: (c) => Visibility(
               visible: !back.novoReg,
@@ -88,6 +89,21 @@ class _AulasFormState extends State<AulasForm> {
                       );
                     },
                   ),
+                  PopupMenuItem(
+                    child: Row(
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.copy,
+                          color: AppColors.cursorColor,
+                        ),
+                        const SizedBox(width: 10),
+                        const Text("Copiar"),
+                      ],
+                    ),
+                    onTap: () {
+                      back.goToTempAlunosLista(context, back.aula!.idAula);
+                    },
+                  )
                 ];
               }),
             ),

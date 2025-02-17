@@ -9,6 +9,7 @@ import 'package:controle_alunos_musica_ft/views/base/base_page.dart';
 import 'package:controle_alunos_musica_ft/views/home/home_page.dart';
 import 'package:controle_alunos_musica_ft/views/instrutores/instrutores_form.dart';
 import 'package:controle_alunos_musica_ft/views/instrutores/instrutores_lista.dart';
+import 'package:controle_alunos_musica_ft/views/temp_alunos/temp_alunos_lista.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
   final String instrutoresForm = "instrutores_form";
   final String aulasLista = "aulas_lista";
   final String aulasForm = "aulas_form";
+  final String tempAlunosLista = "temp_alunos_lista";
 
   @override
   Widget build(BuildContext context) {
@@ -105,6 +107,7 @@ class MyApp extends StatelessWidget {
         instrutoresForm: (context) => InstrutoresForm(),
         aulasLista: (context) => AulasLista(),
         aulasForm: (context) => AulasForm(),
+        tempAlunosLista: (context) => TempAlunosLista()
       },
     );
   }

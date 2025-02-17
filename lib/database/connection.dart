@@ -12,10 +12,14 @@ class Connection {
       //deleteDatabase(path);
       _db = await openDatabase(
         path,
-        version: 1,
+        version: 3,
         onCreate: (db, v) {
           CriarTabelas(db);
           InserirDados(db);
+        },
+        onUpgrade: (db, oldVersion, newVersion) {
+          CriarTabelas(db);
+          //InserirDados(db);
         },
       );
     }
@@ -60,7 +64,7 @@ CriarTabelas(Database db) {
                 ID_AULA_INT INTEGER NOT NULL PRIMARY KEY, 
                 ID_ALUNO_INT INT, 
                 ID_TIPO_INT INT, 
-                ID_INSTRUTOR_INT INT, 
+                ID_INSTRUTOR_INT INT,   
                 DATA_DTI DATETIME, 
                 CONCLUIDO_BIT BIT, 
                 ASSUNTO_STR NVARCHAR(255),
@@ -69,32 +73,11 @@ CriarTabelas(Database db) {
                 FOREIGN KEY(ID_ALUNO_INT) REFERENCES CAD_ALUNOS_TAB(ID_ALUNO_INT),
                 FOREIGN KEY(ID_INSTRUTOR_INT) REFERENCES CAD_INSTRUTORES_TAB(ID_INSTRUTOR_INT))''');
 
-  /*db.execute('''CREATE TABLE IF NOT EXISTS TEMP_ALUNOS_TAB (
-                ID_TEMP_INT INT, 
+  db.execute('''CREATE TABLE IF NOT EXISTS TEMP_ALUNOS_TAB (
                 ID_ALUNO_INT INT, 
-                NOME_STR NVARCHAR(150), 
-                ID_STATUS_INT INT, 
-                INSTRUMENTO_STR NVARCHAR(150), 
-                METODO_STR NVARCHAR(150), 
-                FONE_STR NVARCHAR(15), 
-                DATA_NASCIMENTO_DTI DATETIME, 
-                DATA_BATISMO_DTI DATETIME, 
-                DATA_INICIO_GEM_DTI DATETIME, 
-                DATA_OFICIALIZACAO_DTI DATETIME, 
-                ENDERECO_STR NVARCHAR(255), 
-                OBSERVACAO_STR NVARCHAR(255),
+                NOME_STR NVARCHAR(150),
+                INSTRUMENTO_STR NVARCHAR(150),
                 FLAG_BIT BIT)''');
-
-  db.execute('''CREATE TABLE IF NOT EXISTS TEMP_AULAS_TAB (
-                ID_TEMP_INT INT, 
-                ID_ITEM_INT INT, 
-                ID_TIPO_INT INT, 
-                INSTRUTOR_STR NVARCHAR(150), 
-                DATA_DTI DATETIME, 
-                CONCLUIDO_BIT BIT, 
-                ASSUNTO_STR NVARCHAR(255),
-                OBSERVACAO_STR NVARCHAR(255),
-                FLAG_BIT BIT)''');*/
 }
 
 InserirDados(Database db) {

@@ -1,5 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'package:controle_alunos_musica_ft/config/my_app.dart';
 import 'package:controle_alunos_musica_ft/database/repositories/alunos_repository.dart';
 import 'package:controle_alunos_musica_ft/database/repositories/aulas_repository.dart';
 import 'package:controle_alunos_musica_ft/database/repositories/instrutores_repository.dart';
@@ -22,10 +23,6 @@ abstract class _AulasFormBack with Store {
 
   _AulasFormBack(BuildContext context) {
     aula = ModalRoute.of(context)?.settings.arguments as Aulas;
-    //var parameter = ModalRoute.of(context)?.settings.arguments;
-    // aula = parameter == null
-    //     ? Aulas(CONCLUIDO_BIT: false, DATA_DTI: DateTime.now())
-    //     : parameter as Aulas;
     novoReg = aula?.idAula == null;
   }
 
@@ -46,6 +43,10 @@ abstract class _AulasFormBack with Store {
 
   Future<int> onSave() async {
     return await _dao.onSave(aula!);
+  }
+
+  goToTempAlunosLista(BuildContext context, [int? idAula]) {
+    Navigator.of(context).pushNamed(MyApp().tempAlunosLista, arguments: idAula);
   }
 
   ///Validadores
