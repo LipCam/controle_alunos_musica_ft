@@ -10,7 +10,7 @@ class AlunosRepository {
     _db = await Connection.Get();
 
     List<Map<String, dynamic>> lstMap = await _db!.rawQuery('''SELECT A.*, 
-                  CASE WHEN A.ID_STATUS_INT IN (1,2,3,4) THEN 
+                  CASE WHEN A.ID_STATUS_INT IN (1,2,3) THEN 
                     S.DESCRICAO_STR || IFNULL(' - Iní. GEM ' || strftime('%d/%m/%Y',A.DATA_INICIO_GEM_DTI ), '')
                   ELSE 	
                     S.DESCRICAO_STR || IFNULL(' - ' || strftime('%d/%m/%Y',A.DATA_OFICIALIZACAO_DTI ), '') 
