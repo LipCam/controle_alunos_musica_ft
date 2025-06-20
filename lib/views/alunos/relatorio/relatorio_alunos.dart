@@ -21,101 +21,174 @@ class RelatorioAlunos {
     final pdf = pw.Document();
 
     pdf.addPage(
-      pw.Page(
+      pw.MultiPage(
         pageFormat: PdfPageFormat.a4,
-        build: (pw.Context context) => pw.Column(
-          mainAxisAlignment: pw.MainAxisAlignment.start,
-          crossAxisAlignment: pw.CrossAxisAlignment.start,
-          children: [
-            ///Cabeçalho
-            pw.Text(
-              lstAluno[0].nome.toString(),
-              style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold),
-            ),
-            pw.Text("Fone: ${lstAluno[0].fone}"),
-            pw.Text(
-                "Instrumento: ${lstAluno[0].instrumento}       Método: ${lstAluno[0].metodo}"),
-            pw.Text("Status: ${lstAluno[0].status}"),
-            pw.Text(
-                "Início: ${lstAluno[0].dataInicioGEM != null ? getDateFormat_dd_MM_yyyy(lstAluno[0].dataInicioGEM!) : ""}       Oficialização: ${lstAluno[0].dataOficializacao != null ? getDateFormat_dd_MM_yyyy(lstAluno[0].dataOficializacao!) : ""}"),
-            pw.Text(
-                "Data relatório: ${getDateFormat_dd_MM_yyyy(DateTime.now())}"),
-            pw.SizedBox(height: 20),
+        build: (pw.Context context) => [
+          ///Cabeçalho
+          pw.Text(
+            lstAluno[0].nome.toString(),
+            style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold),
+          ),
 
-            ///Título
-            pw.Center(
-              child: pw.Text(
-                "Aulas",
-                style: pw.TextStyle(
-                  fontSize: 20,
-                  fontWeight: pw.FontWeight.bold,
-                ),
+          pw.RichText(
+            text: pw.TextSpan(
+              text: "Fone: ",
+              style: pw.TextStyle(
+                fontWeight: pw.FontWeight.bold,
               ),
+              children: [
+                pw.TextSpan(
+                  text: lstAluno[0].fone,
+                  style: pw.TextStyle(
+                    fontWeight: pw.FontWeight.normal,
+                  ),
+                ),
+              ],
             ),
-            pw.SizedBox(height: 10),
+          ),
 
-            ///Conteúdo/tabela
-            pw.Table.fromTextArray(
-              headers: ["Data", "Tipo", "Assunto", "Instrutor", "Status"],
-              data: lstAulas
-                  .map((aula) => [
-                        getDateFormat_dd_MM_yyyy(aula.data),
-                        aula.tipo,
-                        aula.assunto,
-                        aula.instrutor,
-                        aula.concluidoStr
-                      ])
-                  .toList(),
+          pw.RichText(
+            text: pw.TextSpan(
+              text: "Instrumento: ",
+              style: pw.TextStyle(
+                fontWeight: pw.FontWeight.bold,
+              ),
+              children: [
+                pw.TextSpan(
+                  text: lstAluno[0].instrumento,
+                  style: pw.TextStyle(
+                    fontWeight: pw.FontWeight.normal,
+                  ),
+                ),
+                pw.TextSpan(
+                  text: "       Método: ",
+                  style: pw.TextStyle(
+                    fontWeight: pw.FontWeight.bold,
+                  ),
+                ),
+                pw.TextSpan(
+                  text: lstAluno[0].metodo,
+                  style: pw.TextStyle(
+                    fontWeight: pw.FontWeight.normal,
+                  ),
+                ),
+              ],
             ),
-            // pw.Expanded(
-            //   child: pw.Column(
-            //     children: [
-            //       pw.Row(
-            //         children: [
-            //           pw.Expanded(
-            //               child: pw.Text("Data",
-            //                   textAlign: pw.TextAlign.left,
-            //                   style: pw.TextStyle(
-            //                       fontWeight: pw.FontWeight.bold))),
-            //           pw.Expanded(
-            //               child: pw.Text("Assunto",
-            //                   textAlign: pw.TextAlign.left,
-            //                   style: pw.TextStyle(
-            //                       fontWeight: pw.FontWeight.bold))),
-            //           pw.Expanded(
-            //               child: pw.Text("Instrutor",
-            //                   textAlign: pw.TextAlign.left,
-            //                   style: pw.TextStyle(
-            //                       fontWeight: pw.FontWeight.bold))),
-            //           pw.Expanded(
-            //               child: pw.Text("Status",
-            //                   textAlign: pw.TextAlign.left,
-            //                   style: pw.TextStyle(
-            //                       fontWeight: pw.FontWeight.bold))),
-            //         ],
-            //       ),
-            //       for (Aulas aula in lstAulas)
-            //         pw.Row(
-            //           children: [
-            //             pw.Expanded(
-            //                 child: pw.Text(formatter2.format(aula.DATA_DTI),
-            //                     textAlign: pw.TextAlign.left)),
-            //             pw.Expanded(
-            //                 child: pw.Text(aula.ASSUNTO_STR.toString(),
-            //                     textAlign: pw.TextAlign.left)),
-            //             pw.Expanded(
-            //                 child: pw.Text(aula.INSTRUTOR_STR.toString(),
-            //                     textAlign: pw.TextAlign.left)),
-            //             pw.Expanded(
-            //                 child: pw.Text(aula.CONCLUIDO_STR.toString(),
-            //                     textAlign: pw.TextAlign.left)),
-            //           ],
-            //         )
-            //     ],
-            //   ),
-            // ),
-          ],
-        ),
+          ),
+
+          pw.RichText(
+            text: pw.TextSpan(
+              text: "Início: ",
+              style: pw.TextStyle(
+                fontWeight: pw.FontWeight.bold,
+              ),
+              children: [
+                pw.TextSpan(
+                  text: lstAluno[0].dataInicioGEM != null
+                      ? getDateFormat_dd_MM_yyyy(lstAluno[0].dataInicioGEM!)
+                      : "",
+                  style: pw.TextStyle(
+                    fontWeight: pw.FontWeight.normal,
+                  ),
+                ),
+                pw.TextSpan(
+                  text: "       Status: ",
+                  style: pw.TextStyle(
+                    fontWeight: pw.FontWeight.bold,
+                  ),
+                ),
+                pw.TextSpan(
+                  text: lstAluno[0].status,
+                  style: pw.TextStyle(
+                    fontWeight: pw.FontWeight.normal,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          pw.RichText(
+            text: pw.TextSpan(
+              text: "Oficialização: ",
+              style: pw.TextStyle(
+                fontWeight: pw.FontWeight.bold,
+              ),
+              children: [
+                pw.TextSpan(
+                  text: lstAluno[0].dataOficializacao != null
+                      ? getDateFormat_dd_MM_yyyy(lstAluno[0].dataOficializacao!)
+                      : "",
+                  style: pw.TextStyle(
+                    fontWeight: pw.FontWeight.normal,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          pw.RichText(
+            text: pw.TextSpan(
+              text: "Data relatório: ",
+              style: pw.TextStyle(
+                fontWeight: pw.FontWeight.bold,
+              ),
+              children: [
+                pw.TextSpan(
+                  text: getDateFormat_dd_MM_yyyy(DateTime.now()),
+                  style: pw.TextStyle(
+                    fontWeight: pw.FontWeight.normal,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          pw.SizedBox(height: 10),
+
+          ///Título
+          pw.Center(
+            child: pw.Text(
+              "Aulas",
+              style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold),
+            ),
+          ),
+          pw.SizedBox(height: 10),
+
+          ///Conteúdo/tabela
+          pw.Table.fromTextArray(
+            headers: ["Data", "Tipo", "Assunto", "Instrutor", "Status"],
+            data: lstAulas
+                .map((aula) => [
+                      getDateFormat_dd_MM_yyyy(aula.data),
+                      aula.tipo,
+                      aula.assunto,
+                      aula.instrutor,
+                      aula.concluidoStr
+                    ])
+                .toList(),
+            headerStyle: pw.TextStyle(
+              fontSize: 11,
+              fontWeight: pw.FontWeight.bold,
+            ),
+            headerDecoration: const pw.BoxDecoration(
+              color: PdfColors.grey300,
+            ),
+            cellStyle: const pw.TextStyle(
+              fontSize: 9,
+            ),
+            cellAlignment: pw.Alignment.centerLeft,
+            border: pw.TableBorder.all(
+              color: PdfColors.grey700,
+              width: 0.5,
+            ),
+            columnWidths: {
+              0: const pw.FixedColumnWidth(57), // Data
+              1: const pw.FixedColumnWidth(42), // Tipo
+              2: const pw.FlexColumnWidth(2), // Assunto
+              3: const pw.FlexColumnWidth(1.5), // Instrutor
+              4: const pw.FixedColumnWidth(53), // Status
+            },
+          ),
+        ],
       ),
     );
 
